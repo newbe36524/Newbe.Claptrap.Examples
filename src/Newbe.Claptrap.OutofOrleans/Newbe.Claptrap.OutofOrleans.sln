@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.OutofOrleans", "Newbe.Claptrap.OutofOrleans\Newbe.Claptrap.OutofOrleans.csproj", "{EAE58C7C-B0A5-4306-9FD8-2E073ED2E059}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EAE58C7C-B0A5-4306-9FD8-2E073ED2E059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE58C7C-B0A5-4306-9FD8-2E073ED2E059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE58C7C-B0A5-4306-9FD8-2E073ED2E059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE58C7C-B0A5-4306-9FD8-2E073ED2E059}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
