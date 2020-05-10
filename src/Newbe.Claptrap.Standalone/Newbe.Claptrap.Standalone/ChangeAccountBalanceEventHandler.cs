@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Newbe.Claptrap.Preview.Abstractions.Components;
-using Newbe.Claptrap.Preview.Abstractions.Core;
 
-namespace Newbe.Claptrap.OutofOrleans
+namespace Newbe.Claptrap.Standalone
 {
     public class ChangeAccountBalanceEventHandler : IEventHandler
     {
@@ -15,7 +13,7 @@ namespace Newbe.Claptrap.OutofOrleans
         {
             var accountStateData = (AccountStateData) eventContext.State.Data;
             var changeAccountBalanceEventData = (ChangeAccountBalanceEventData) eventContext.Event.Data;
-            accountStateData.Balance += changeAccountBalanceEventData.Diff;
+            accountStateData.Balance = changeAccountBalanceEventData.NewBalance;
             return Task.FromResult(eventContext.State);
         }
     }

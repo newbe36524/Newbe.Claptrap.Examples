@@ -5,18 +5,19 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newbe.Claptrap.Preview.Impl.Bootstrapper;
-using Newbe.Claptrap.Preview.Orleans;
+using Newbe.Claptrap.Bootstrapper;
 
-namespace Newbe.Claptrap.OutofOrleans
+namespace Newbe.Claptrap.Standalone
 {
     class Program
     {
         static async Task Main(string[] args)
         {
             var loggerFactory = CreateLoggerFactory();
-            var claptrapBootstrapper = CreateClaptrapBootstrapper(loggerFactory);
-            var container = BootClaptrapAndCreateContainer(claptrapBootstrapper);
+            var containerBuilder = new ContainerBuilder();
+            var claptrapBootstrapper = CreateClaptrapBootstrapper(loggerFactory, containerBuilder);
+            claptrapBootstrapper.Boot();
+            var container = BootClaptrapAndCreateContainer(containerBuilder);
             await using var scope = container.BeginLifetimeScope();
             await RunTest(scope, loggerFactory);
         }
@@ -25,7 +26,7 @@ namespace Newbe.Claptrap.OutofOrleans
         {
             var factory = scope.Resolve<AccountClaptrap.Factory>();
 
-            var accountClaptrap = factory.Invoke(new GrainClaptrapIdentity("123", typeof(AccountStateData).FullName!));
+            var accountClaptrap = factory.Invoke(new ClaptrapIdentity("123", ClaptrapCodes.Account));
 
             var logger = loggerFactory.CreateLogger<Program>();
             await accountClaptrap.ActivateAsync();
@@ -54,11 +55,10 @@ namespace Newbe.Claptrap.OutofOrleans
                 sw.ElapsedMilliseconds);
         }
 
-        private static IContainer BootClaptrapAndCreateContainer(IClaptrapBootstrapper claptrapBootstrapper)
+        private static IContainer BootClaptrapAndCreateContainer(
+            ContainerBuilder builder)
         {
-            var builder = new ContainerBuilder();
             builder.Populate(new ServiceCollection().AddLogging(logging => { logging.AddConsole(); }));
-            claptrapBootstrapper.RegisterServices(builder);
             builder.RegisterType<AccountClaptrap>()
                 .AsSelf()
                 .InstancePerLifetimeScope();
@@ -67,14 +67,21 @@ namespace Newbe.Claptrap.OutofOrleans
             return container;
         }
 
-        private static IClaptrapBootstrapper CreateClaptrapBootstrapper(ILoggerFactory loggerFactory)
+        private static IClaptrapBootstrapper CreateClaptrapBootstrapper(ILoggerFactory loggerFactory,
+            ContainerBuilder builder)
         {
-            var claptrapBootstrapperFactory = new AutofacClaptrapBootstrapperFactory(loggerFactory);
-            var claptrapBootstrapper = claptrapBootstrapperFactory.Create(new[]
-            {
-                typeof(IAccountClaptrap).Assembly
-            });
-            return claptrapBootstrapper;
+            var claptrapBootstrapperBuilder =
+                new AutofacClaptrapBootstrapperBuilder(loggerFactory, builder);
+            var bootstrapper = claptrapBootstrapperBuilder
+                .ScanClaptrapModule()
+                .ScanClaptrapDesigns(new[]
+                {
+                    typeof(IAccountClaptrap).Assembly
+                })
+                .UseSQLiteAsEventStore()
+                .UseSQLiteAsStateStore()
+                .Build();
+            return bootstrapper;
         }
 
         private static ILoggerFactory CreateLoggerFactory()

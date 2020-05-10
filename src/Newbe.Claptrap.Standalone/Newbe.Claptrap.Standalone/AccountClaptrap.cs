@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Newbe.Claptrap.Preview.Abstractions.Core;
-using Newbe.Claptrap.Preview.Attributes;
-using Newbe.Claptrap.Preview.Impl;
-using Newbe.Claptrap.Preview.StorageProvider.SQLite;
 
-namespace Newbe.Claptrap.OutofOrleans
+namespace Newbe.Claptrap.Standalone
 {
     [ClaptrapStateInitialFactoryHandler]
-    [EventStore(typeof(SQLiteEventStoreFactory), typeof(SQLiteEventStoreFactory))]
-    [StateStore(typeof(SQLiteStateStoreFactory), typeof(SQLiteStateStoreFactory))]
-    [ClaptrapEventHandler(typeof(ChangeAccountBalanceEventHandler), typeof(ChangeAccountBalanceEventData))]
+    [ClaptrapEventHandler(typeof(ChangeAccountBalanceEventHandler), ClaptrapCodes.BalanceChangeEvent)]
     public class AccountClaptrap : IAccountClaptrap
     {
         public delegate AccountClaptrap Factory(IClaptrapIdentity identity);
@@ -41,13 +35,14 @@ namespace Newbe.Claptrap.OutofOrleans
 
             var dataEvent = new DataEvent(
                 _identity,
-                typeof(ChangeAccountBalanceEventData).FullName!,
+                ClaptrapCodes.BalanceChangeEvent,
                 new ChangeAccountBalanceEventData
                 {
-                    Diff = diff
-                },
-                Guid.NewGuid().ToString());
-            return _claptrap.HandleEvent(dataEvent);
+                    Diff = diff,
+                    NewBalance = accountStateData.Balance + diff,
+                    OldBalance = accountStateData.Balance,
+                }, Guid.NewGuid().ToString());
+            return _claptrap.HandleEventAsync(dataEvent);
         }
 
         public Task<decimal> GetBalanceAsync()
