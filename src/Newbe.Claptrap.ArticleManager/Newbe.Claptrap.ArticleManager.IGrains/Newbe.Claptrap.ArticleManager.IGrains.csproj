@@ -9,8 +9,8 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Newbe.Claptrap.Attributes" Version="0.1.22-alpha.gb9c9f69b77" />
-        <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.1.22-alpha.gb9c9f69b77" />
+        <PackageReference Include="Newbe.Claptrap.Attributes" Version="0.1.23-alpha.g265d98c83b" />
+        <PackageReference Include="Newbe.Claptrap.Orleans.Core" Version="0.1.23-alpha.g265d98c83b" />
     </ItemGroup>
 
 </Project>
