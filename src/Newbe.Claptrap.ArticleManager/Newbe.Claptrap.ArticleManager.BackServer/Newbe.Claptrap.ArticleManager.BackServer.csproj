@@ -7,8 +7,12 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.3" />
-        <PackageReference Include="Microsoft.Orleans.Server" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Orleans.OrleansProviders" Version="3.1.6" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="Newbe.Claptrap" Version="0.1.23-alpha.g265d98c83b" />
+        <PackageReference Include="Newbe.Claptrap.DataSerializer.Json" Version="0.1.23-alpha.g265d98c83b" />
+        <PackageReference Include="Newbe.Claptrap.StorageProvider.SQLite" Version="0.1.23-alpha.g265d98c83b" />
     </ItemGroup>
 
     <ItemGroup>

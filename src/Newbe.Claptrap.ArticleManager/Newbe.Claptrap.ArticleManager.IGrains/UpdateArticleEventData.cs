@@ -1,6 +1,4 @@
-﻿using Newbe.Claptrap.Preview.Abstractions.Core;
-
-namespace Newbe.Claptrap.ArticleManager.IGrains
+﻿namespace Newbe.Claptrap.ArticleManager.IGrains
 {
     public class UpdateArticleEventData : IEventData
     {
