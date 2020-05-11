@@ -287,3 +287,4 @@ __pycache__/
 
 *.orig
 *.temp
+/nuget.config
