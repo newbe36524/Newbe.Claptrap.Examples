@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop", "Newbe.Claptrap.Shop\Newbe.Claptrap.Shop.csproj", "{95021A4D-B809-4A99-B41F-0B8B18443FA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.IGrains", "Newbe.Claptrap.Shop.IGrains\Newbe.Claptrap.Shop.IGrains.csproj", "{C7ECA39C-87DB-4229-AF8E-533872EB3A50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Grains", "Newbe.Claptrap.Shop.Grains\Newbe.Claptrap.Shop.Grains.csproj", "{F79A95CE-2750-4F18-A759-6496E4C2F4CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Web", "Newbe.Claptrap.Shop.Web\Newbe.Claptrap.Shop.Web.csproj", "{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Cluster", "Newbe.Claptrap.Shop.Cluster\Newbe.Claptrap.Shop.Cluster.csproj", "{782A78CB-F9C0-40C9-827F-E01C76D1080D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Repository", "Newbe.Claptrap.Shop.Repository\Newbe.Claptrap.Shop.Repository.csproj", "{8FDBF1F3-6A0D-4C97-BA27-5F009D27CC97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Models", "Newbe.Claptrap.Shop.Models\Newbe.Claptrap.Shop.Models.csproj", "{7F57037A-7EDA-484A-AC3A-3EF0D7FEF663}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95021A4D-B809-4A99-B41F-0B8B18443FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95021A4D-B809-4A99-B41F-0B8B18443FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95021A4D-B809-4A99-B41F-0B8B18443FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95021A4D-B809-4A99-B41F-0B8B18443FA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7ECA39C-87DB-4229-AF8E-533872EB3A50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7ECA39C-87DB-4229-AF8E-533872EB3A50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7ECA39C-87DB-4229-AF8E-533872EB3A50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7ECA39C-87DB-4229-AF8E-533872EB3A50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F79A95CE-2750-4F18-A759-6496E4C2F4CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F79A95CE-2750-4F18-A759-6496E4C2F4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F79A95CE-2750-4F18-A759-6496E4C2F4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F79A95CE-2750-4F18-A759-6496E4C2F4CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{782A78CB-F9C0-40C9-827F-E01C76D1080D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{782A78CB-F9C0-40C9-827F-E01C76D1080D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{782A78CB-F9C0-40C9-827F-E01C76D1080D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{782A78CB-F9C0-40C9-827F-E01C76D1080D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FDBF1F3-6A0D-4C97-BA27-5F009D27CC97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FDBF1F3-6A0D-4C97-BA27-5F009D27CC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FDBF1F3-6A0D-4C97-BA27-5F009D27CC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FDBF1F3-6A0D-4C97-BA27-5F009D27CC97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F57037A-7EDA-484A-AC3A-3EF0D7FEF663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F57037A-7EDA-484A-AC3A-3EF0D7FEF663}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F57037A-7EDA-484A-AC3A-3EF0D7FEF663}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F57037A-7EDA-484A-AC3A-3EF0D7FEF663}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
