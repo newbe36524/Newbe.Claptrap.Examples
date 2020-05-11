@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newbe.Claptrap.ArticleManager.IGrains;
-using Newbe.Claptrap.Preview.Abstractions.Components;
-using Newbe.Claptrap.Preview.Abstractions.Core;
 
 namespace Newbe.Claptrap.ArticleManager.Grains
 {

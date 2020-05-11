@@ -1,16 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Newbe.Claptrap.ArticleManager.IGrains;
-using Newbe.Claptrap.Preview.Attributes;
-using Newbe.Claptrap.Preview.Orleans;
-using Newbe.Claptrap.Preview.StorageProvider.SQLite;
+using Newbe.Claptrap.Orleans;
 
 namespace Newbe.Claptrap.ArticleManager.Grains
 {
     [ClaptrapStateInitialFactoryHandler]
-    [EventStore(typeof(SQLiteEventStoreFactory), typeof(SQLiteEventStoreFactory))]
-    [StateStore(typeof(SQLiteStateStoreFactory), typeof(SQLiteStateStoreFactory))]
-    [ClaptrapEventHandler(typeof(UpdateArticleEventHandler), typeof(UpdateArticleEventData))]
-    public class ArticleGrain : ClaptrapBox<ArticleStateData>, IArticleGrain
+    [ClaptrapEventHandler(typeof(UpdateArticleEventHandler), ClaptrapCodes.UpdateArticleEvent)]
+    public class ArticleGrain : ClaptrapBoxGrain<ArticleStateData>, IArticleGrain
     {
         public ArticleGrain(IClaptrapGrainCommonService claptrapGrainCommonService)
             : base(claptrapGrainCommonService)
@@ -28,7 +24,7 @@ namespace Newbe.Claptrap.ArticleManager.Grains
             {
                 ArticleData = articleData
             });
-            await Claptrap.HandleEvent(dataEvent);
+            await Claptrap.HandleEventAsync(dataEvent);
             return StateData.Current;
         }
     }

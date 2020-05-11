@@ -5,7 +5,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newbe.Claptrap.ArticleManager.Grains;
-using Newbe.Claptrap.Preview.Impl.Bootstrapper;
+using Newbe.Claptrap.Bootstrapper;
 using Orleans;
 using Orleans.Hosting;
 
@@ -34,14 +34,19 @@ namespace Newbe.Claptrap.ArticleManager.BackServer
 
                     var buildServiceProvider = collection.BuildServiceProvider();
                     var loggerFactory = buildServiceProvider.GetService<ILoggerFactory>();
-                    var claptrapBootstrapperFactory = new AutofacClaptrapBootstrapperFactory(loggerFactory);
-                    var claptrapBootstrapper = claptrapBootstrapperFactory.Create(new[]
-                    {
-                        typeof(ArticleGrain).Assembly
-                    });
-                    claptrapBootstrapper.RegisterServices(builder);
+                    var bootstrapperBuilder = new AutofacClaptrapBootstrapperBuilder(loggerFactory, builder);
+                    var claptrapBootstrapper = bootstrapperBuilder
+                        .ScanClaptrapModule()
+                        .UseSQLiteAsEventStore()
+                        .UseSQLiteAsStateStore()
+                        .ScanClaptrapDesigns(new[]
+                        {
+                            typeof(ArticleGrain).Assembly
+                        })
+                        .Build();
+                    claptrapBootstrapper.Boot();
 
-                   
+
                     var container = builder.Build();
                     var serviceProvider = new AutofacServiceProvider(container);
                     return serviceProvider;
