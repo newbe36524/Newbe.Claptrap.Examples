@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newbe.Claptrap.Shop.Models;
 
-namespace Newbe.Claptrap.IGrain
+namespace Newbe.Claptrap.IGrain.Domain.Sku.Master
 {
     public class SkuStateData : IStateData
     {

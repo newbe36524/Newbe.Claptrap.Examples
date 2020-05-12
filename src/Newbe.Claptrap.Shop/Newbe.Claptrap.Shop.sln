@@ -6,13 +6,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.IGrains
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Grains", "Newbe.Claptrap.Shop.Grains\Newbe.Claptrap.Shop.Grains.csproj", "{F79A95CE-2750-4F18-A759-6496E4C2F4CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Web", "Newbe.Claptrap.Shop.Web\Newbe.Claptrap.Shop.Web.csproj", "{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Cluster", "Newbe.Claptrap.Shop.Cluster\Newbe.Claptrap.Shop.Cluster.csproj", "{782A78CB-F9C0-40C9-827F-E01C76D1080D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Repository", "Newbe.Claptrap.Shop.Repository\Newbe.Claptrap.Shop.Repository.csproj", "{8FDBF1F3-6A0D-4C97-BA27-5F009D27CC97}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Models", "Newbe.Claptrap.Shop.Models\Newbe.Claptrap.Shop.Models.csproj", "{7F57037A-7EDA-484A-AC3A-3EF0D7FEF663}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Shop.Web", "Newbe.Claptrap.Shop.Web\Newbe.Claptrap.Shop.Web.csproj", "{EBE99808-1067-448A-8188-37425258D21E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,10 +32,6 @@ Global
 		{F79A95CE-2750-4F18-A759-6496E4C2F4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F79A95CE-2750-4F18-A759-6496E4C2F4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F79A95CE-2750-4F18-A759-6496E4C2F4CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF924EA3-DD90-4A56-9D0C-B13A5475AAA0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{782A78CB-F9C0-40C9-827F-E01C76D1080D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{782A78CB-F9C0-40C9-827F-E01C76D1080D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{782A78CB-F9C0-40C9-827F-E01C76D1080D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,5 +44,9 @@ Global
 		{7F57037A-7EDA-484A-AC3A-3EF0D7FEF663}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F57037A-7EDA-484A-AC3A-3EF0D7FEF663}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F57037A-7EDA-484A-AC3A-3EF0D7FEF663}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBE99808-1067-448A-8188-37425258D21E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBE99808-1067-448A-8188-37425258D21E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBE99808-1067-448A-8188-37425258D21E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBE99808-1067-448A-8188-37425258D21E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

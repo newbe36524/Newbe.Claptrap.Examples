@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
-using Newbe.Claptrap.IGrain;
+using Newbe.Claptrap.IGrain.Domain.Sku.Master;
+using Newbe.Claptrap.Shop.Models;
 
-namespace Newbe.Claptrap.Shop.Grains
+namespace Newbe.Claptrap.Shop.Grains.Domain.Sku.Master
 {
     public class SkuSoldEventHandler : IEventHandler
     {

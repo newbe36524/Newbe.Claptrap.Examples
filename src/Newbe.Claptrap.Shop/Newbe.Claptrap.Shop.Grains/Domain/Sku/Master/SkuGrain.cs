@@ -1,9 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using Newbe.Claptrap.IGrain;
+using Newbe.Claptrap.IGrain.Domain.Sku.Events;
+using Newbe.Claptrap.IGrain.Domain.Sku.Master;
 using Newbe.Claptrap.Orleans;
+using Newbe.Claptrap.Shop.Models;
 
-namespace Newbe.Claptrap.Shop.Grains
+namespace Newbe.Claptrap.Shop.Grains.Domain.Sku.Master
 {
     [ClaptrapStateInitialFactoryHandler(typeof(SkuStateDataInitFactoryHandler))]
     [ClaptrapEventHandler(typeof(SkuSoldEventHandler), ClaptrapCodes.SkuSoldEvent)]
@@ -29,7 +32,7 @@ namespace Newbe.Claptrap.Shop.Grains
 
             async Task<SoldResult> Sold()
             {
-                var @event = this.CreateEvent(new SkuSoldEvent
+                var @event = this.CreateEvent(new SkuSoldEventData
                 {
                     BuyerUserId = buyerUserId,
                     SoldTime = _clock.UtcNow,
@@ -37,6 +40,16 @@ namespace Newbe.Claptrap.Shop.Grains
                 await Claptrap.HandleEventAsync(@event);
                 return SoldResult.Success;
             }
+        }
+
+        public Task SetupAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task<SkuStatus> GetStatusAsync()
+        {
+            return Task.FromResult(StateData.Status);
         }
     }
 }

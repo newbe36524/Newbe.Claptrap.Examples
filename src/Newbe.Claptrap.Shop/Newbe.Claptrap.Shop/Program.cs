@@ -1,14 +1,19 @@
-﻿using System.Threading.Tasks;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Newbe.Claptrap.ArticleManager.Grains;
-using Newbe.Claptrap.Bootstrapper;
 using Orleans;
 using Orleans.Hosting;
+using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Newbe.Claptrap.Bootstrapper;
+using Newbe.Claptrap.Shop.Grains.Domain.Sku.Master;
+using Newbe.Claptrap.Shop.Grains.Modules;
+using Newbe.Claptrap.Shop.Repository.Modules;
+using Orleans.Configuration;
+using Orleans.Configuration.Overrides;
 
-namespace Newbe.Claptrap.ArticleManager.BackServer
+namespace Newbe.Claptrap.Shop
 {
     class Program
     {
@@ -27,6 +32,8 @@ namespace Newbe.Claptrap.ArticleManager.BackServer
                                 logging.AddFilter((s, level) => s.StartsWith("Orleans") && level >= LogLevel.Warning);
                                 logging.AddFilter((s, level) => s.Contains("Claptrap"));
                             });
+                            builder.RegisterModule<RepositoryModule>();
+                            builder.RegisterModule<GrainsModule>();
                             var buildServiceProvider = collection.BuildServiceProvider();
                             var loggerFactory = buildServiceProvider.GetService<ILoggerFactory>();
                             var bootstrapperBuilder = new AutofacClaptrapBootstrapperBuilder(loggerFactory, builder);
@@ -36,7 +43,7 @@ namespace Newbe.Claptrap.ArticleManager.BackServer
                                 .UseSQLiteAsStateStore()
                                 .ScanClaptrapDesigns(new[]
                                 {
-                                    typeof(ArticleGrain).Assembly
+                                    typeof(SkuGrain).Assembly
                                 })
                                 .Build();
                             claptrapBootstrapper.Boot();

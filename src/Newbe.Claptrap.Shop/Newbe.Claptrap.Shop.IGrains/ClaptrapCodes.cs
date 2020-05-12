@@ -2,7 +2,9 @@ namespace Newbe.Claptrap.IGrain
 {
     public static class ClaptrapCodes
     {
-        public const string Sku = "Newbe.Claptrap.Shop.Sku";
-        public const string SkuSoldEvent = "Newbe.Claptrap.Shop.Sku.SkuSoldEvent";
+        private const string Suffix = ".Shop.Claptrap.Newbe";
+        public const string Sku = "Sku" + Suffix;
+        public const string SkuDb = "Db.Sku" + Suffix;
+        public const string SkuSoldEvent = "SkuSoldEvent.Event" + Suffix;
     }
 }

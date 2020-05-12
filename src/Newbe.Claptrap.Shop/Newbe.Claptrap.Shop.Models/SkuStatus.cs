@@ -1,4 +1,4 @@
-namespace Newbe.Claptrap.IGrain
+namespace Newbe.Claptrap.Shop.Models
 {
     public enum SkuStatus
     {

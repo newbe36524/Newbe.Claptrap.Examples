@@ -1,8 +1,8 @@
 using System;
 
-namespace Newbe.Claptrap.IGrain
+namespace Newbe.Claptrap.IGrain.Domain.Sku.Events
 {
-    public class SkuSoldEvent : IEventData
+    public class SkuSoldEventData : IEventData
     {
         public string BuyerUserId { get; set; }
         public DateTime SoldTime { get; set; }
