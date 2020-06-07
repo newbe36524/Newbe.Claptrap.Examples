@@ -1,4 +1,4 @@
-name: Newbe.Claptrap.OutofOrleans
+name: Newbe.Claptrap.Standalone
 
 on:
   push:
@@ -23,9 +23,9 @@ jobs:
         dotnet-version: 3.1.101
     - name: Install dependencies
       run: |
-        cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.OutofOrleans
+        cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Standalone
         dotnet restore
     - name: Build
       run: |
-        cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.OutofOrleans
+        cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Standalone
         dotnet build --configuration Release --no-restore

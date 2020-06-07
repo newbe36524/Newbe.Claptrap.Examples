@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JWT" Version="7.2.1" />
+      <PackageReference Include="Newbe.Claptrap" Version="0.2.3-alpha.gbfc9257e7d" />
+      <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.2.3-alpha.gbfc9257e7d" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Newbe.Claptrap.Auth.IGrains\Newbe.Claptrap.Auth.IGrains.csproj" />
+      <ProjectReference Include="..\Newbe.Claptrap.Auth.Repository\Newbe.Claptrap.Auth.Repository.csproj" />
+    </ItemGroup>
+
+</Project>

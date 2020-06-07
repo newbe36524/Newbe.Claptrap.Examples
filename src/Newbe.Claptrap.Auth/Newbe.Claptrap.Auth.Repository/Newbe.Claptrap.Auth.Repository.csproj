@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Newbe.Claptrap.Auth.Models\Newbe.Claptrap.Auth.Models.csproj" />
+    </ItemGroup>
+
+</Project>

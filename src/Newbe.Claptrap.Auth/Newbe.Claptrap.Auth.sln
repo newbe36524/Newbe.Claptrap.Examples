@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Auth.WebApi", "Newbe.Claptrap.Auth.WebApi\Newbe.Claptrap.Auth.WebApi.csproj", "{A9959BE8-26F6-4E44-B3FE-159BA964E8DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Auth.BackendServer", "Newbe.Claptrap.Auth.BackendServer\Newbe.Claptrap.Auth.BackendServer.csproj", "{C67A1AF5-C9A0-44EC-8F3B-7604C9595A88}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{316F996A-27AC-4846-8197-BF149C5BE40B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Auth.IGrains", "Newbe.Claptrap.Auth.IGrains\Newbe.Claptrap.Auth.IGrains.csproj", "{36275933-C3A4-4D59-9EF8-AD929B0FA423}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Auth.Grains", "Newbe.Claptrap.Auth.Grains\Newbe.Claptrap.Auth.Grains.csproj", "{AD239FD7-1035-45EF-A3D0-46C2A72248E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Auth.Models", "Newbe.Claptrap.Auth.Models\Newbe.Claptrap.Auth.Models.csproj", "{7069BDDE-D23E-46C5-AEB1-5B6F6F56C697}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Auth.Repository", "Newbe.Claptrap.Auth.Repository\Newbe.Claptrap.Auth.Repository.csproj", "{B4A0A81A-7283-40B8-AEF6-8BCB367E274D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9959BE8-26F6-4E44-B3FE-159BA964E8DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9959BE8-26F6-4E44-B3FE-159BA964E8DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9959BE8-26F6-4E44-B3FE-159BA964E8DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9959BE8-26F6-4E44-B3FE-159BA964E8DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C67A1AF5-C9A0-44EC-8F3B-7604C9595A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C67A1AF5-C9A0-44EC-8F3B-7604C9595A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C67A1AF5-C9A0-44EC-8F3B-7604C9595A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C67A1AF5-C9A0-44EC-8F3B-7604C9595A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36275933-C3A4-4D59-9EF8-AD929B0FA423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36275933-C3A4-4D59-9EF8-AD929B0FA423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36275933-C3A4-4D59-9EF8-AD929B0FA423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36275933-C3A4-4D59-9EF8-AD929B0FA423}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD239FD7-1035-45EF-A3D0-46C2A72248E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD239FD7-1035-45EF-A3D0-46C2A72248E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD239FD7-1035-45EF-A3D0-46C2A72248E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD239FD7-1035-45EF-A3D0-46C2A72248E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7069BDDE-D23E-46C5-AEB1-5B6F6F56C697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7069BDDE-D23E-46C5-AEB1-5B6F6F56C697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7069BDDE-D23E-46C5-AEB1-5B6F6F56C697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7069BDDE-D23E-46C5-AEB1-5B6F6F56C697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A0A81A-7283-40B8-AEF6-8BCB367E274D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A0A81A-7283-40B8-AEF6-8BCB367E274D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A0A81A-7283-40B8-AEF6-8BCB367E274D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A0A81A-7283-40B8-AEF6-8BCB367E274D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{36275933-C3A4-4D59-9EF8-AD929B0FA423} = {316F996A-27AC-4846-8197-BF149C5BE40B}
+		{AD239FD7-1035-45EF-A3D0-46C2A72248E2} = {316F996A-27AC-4846-8197-BF149C5BE40B}
+		{7069BDDE-D23E-46C5-AEB1-5B6F6F56C697} = {316F996A-27AC-4846-8197-BF149C5BE40B}
+		{B4A0A81A-7283-40B8-AEF6-8BCB367E274D} = {316F996A-27AC-4846-8197-BF149C5BE40B}
+	EndGlobalSection
+EndGlobal
