@@ -1,53 +1,48 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Newbe.Claptrap.Box;
 
 namespace Newbe.Claptrap.Standalone
 {
-    [ClaptrapStateInitialFactoryHandler]
     [ClaptrapEventHandler(typeof(ChangeAccountBalanceEventHandler), ClaptrapCodes.BalanceChangeEvent)]
-    public class AccountClaptrap : IAccountClaptrap
+    public class AccountClaptrap : NormalClaptrapBox, IAccountClaptrap
     {
-        public delegate AccountClaptrap Factory(IClaptrapIdentity identity);
-
-        private readonly IClaptrapIdentity _identity;
-        private readonly IClaptrap _claptrap;
+        public new delegate AccountClaptrap Factory(IClaptrapIdentity identity);
 
         public AccountClaptrap(
             IClaptrapIdentity identity,
-            IClaptrapFactory claptrapFactory)
+            IClaptrapFactory claptrapFactory) : base(identity,
+            claptrapFactory)
         {
-            _identity = identity;
-            _claptrap = claptrapFactory.Create(identity);
         }
 
         public Task ActivateAsync()
         {
-            return _claptrap.ActivateAsync();
+            return Claptrap.ActivateAsync();
         }
 
         public Task ChangeBalanceAsync(decimal diff)
         {
-            var accountStateData = (AccountStateData) _claptrap.State.Data;
+            var accountStateData = (AccountStateData) Claptrap.State.Data;
             if (accountStateData.Balance + diff < 0)
             {
                 return Task.CompletedTask;
             }
 
             var dataEvent = new DataEvent(
-                _identity,
+                Claptrap.State.Identity,
                 ClaptrapCodes.BalanceChangeEvent,
                 new ChangeAccountBalanceEventData
                 {
                     Diff = diff,
                     NewBalance = accountStateData.Balance + diff,
                     OldBalance = accountStateData.Balance,
-                }, Guid.NewGuid().ToString());
-            return _claptrap.HandleEventAsync(dataEvent);
+                });
+            return Claptrap.HandleEventAsync(dataEvent);
         }
 
         public Task<decimal> GetBalanceAsync()
         {
-            var accountStateData = (AccountStateData) _claptrap.State.Data;
+            var accountStateData = (AccountStateData) Claptrap.State.Data;
             return Task.FromResult(accountStateData.Balance);
         }
     }

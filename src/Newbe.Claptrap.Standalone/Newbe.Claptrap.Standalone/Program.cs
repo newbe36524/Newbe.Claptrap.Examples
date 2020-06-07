@@ -78,8 +78,7 @@ namespace Newbe.Claptrap.Standalone
                 {
                     typeof(IAccountClaptrap).Assembly
                 })
-                .UseSQLiteAsEventStore()
-                .UseSQLiteAsStateStore()
+                .UseSQLiteAsTestingStorage()
                 .Build();
             return bootstrapper;
         }

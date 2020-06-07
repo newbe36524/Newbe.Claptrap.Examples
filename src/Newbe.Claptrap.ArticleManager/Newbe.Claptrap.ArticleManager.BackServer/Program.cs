@@ -37,8 +37,7 @@ namespace Newbe.Claptrap.ArticleManager.BackServer
                     var bootstrapperBuilder = new AutofacClaptrapBootstrapperBuilder(loggerFactory, builder);
                     var claptrapBootstrapper = bootstrapperBuilder
                         .ScanClaptrapModule()
-                        .UseSQLiteAsEventStore()
-                        .UseSQLiteAsStateStore()
+                        .UseSQLiteAsTestingStorage()
                         .ScanClaptrapDesigns(new[]
                         {
                             typeof(ArticleGrain).Assembly
