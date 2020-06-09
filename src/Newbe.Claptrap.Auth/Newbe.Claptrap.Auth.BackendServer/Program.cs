@@ -112,6 +112,7 @@ namespace Newbe.Claptrap.Auth.BackendServer
                         })
                         .ConfigureApplicationParts(manager =>
                             manager.AddFromDependencyContext().WithReferences())
+                        .UseDashboard(options => options.Port = 9000)
                         ;
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })

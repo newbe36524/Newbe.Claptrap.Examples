@@ -2,18 +2,23 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+        <UserSecretsId>9d49744e-897c-4c3b-8578-e86bd6aee841</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newbe.Claptrap" Version="0.2.3-alpha.gbfc9257e7d" />
-        <PackageReference Include="Newbe.Claptrap.AppMetrics" Version="0.2.3-alpha.gbfc9257e7d" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+        <PackageReference Include="Newbe.Claptrap" Version="0.2.3-alpha" />
+        <PackageReference Include="Newbe.Claptrap.AppMetrics" Version="0.2.3-alpha" />
         <PackageReference Include="App.Metrics.AspNetCore" Version="4.0.0" />
         <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="4.0.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
-
         <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.2.0" />
         <PackageReference Include="Microsoft.Orleans.OrleansProviders" Version="3.2.0" />
-        <PackageReference Include="Newbe.Claptrap.StorageProvider.MySql" Version="0.2.3-alpha.gbfc9257e7d" />
+        <PackageReference Include="Newbe.Claptrap.StorageProvider.MySql" Version="0.2.3-alpha" />
+        <PackageReference Include="Orleans.Clustering.Redis" Version="1.1.2" />
+        <PackageReference Include="OrleansDashboard" Version="3.1.0" />
     </ItemGroup>
 
     <ItemGroup>

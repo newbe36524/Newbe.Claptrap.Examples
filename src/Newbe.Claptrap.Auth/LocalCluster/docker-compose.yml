@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+  influxdb:
+    image: influxdb
+    ports:
+      - 19086:8086
+    environment:
+      INFLUXDB_DB: metricsdatabase
+      INFLUXDB_ADMIN_USER: claptrap
+      INFLUXDB_ADMIN_PASSWORD: claptrap
+      
+  webapi:
+    image: newbeclaptrapauthwebapi
+    ports:
+      - "80"
+      - "443"
+    deploy:
+      replicas: 1
+      
+  backendserver:
+    image: newbeclaptrapauthbackendserver
+    ports:
+      - "11111:11111"
+      - "30000:30000"
+      - "9000:9000"
+
+  backendserver1:
+    image: newbeclaptrapauthbackendserver
+    ports:
+      - "11112:11111"
+      - "30002:30000"
+  backendserver2:
+    image: newbeclaptrapauthbackendserver
+    ports:
+      - "11113:11111"
+      - "30003:30000"
+  redis:
+    image: redis
+    ports:
+      - "6379"
