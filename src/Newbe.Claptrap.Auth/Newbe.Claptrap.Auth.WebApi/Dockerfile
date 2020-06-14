@@ -8,7 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Newbe.Claptrap.Auth.WebApi/Newbe.Claptrap.Auth.WebApi.csproj", "Newbe.Claptrap.Auth.WebApi/"]
-RUN dotnet restore "Newbe.Claptrap.Auth.WebApi/Newbe.Claptrap.Auth.WebApi.csproj"
+COPY .nuget.config ./nuget.config
+RUN dotnet nuget disable source nuget.org && dotnet restore "Newbe.Claptrap.Auth.WebApi/Newbe.Claptrap.Auth.WebApi.csproj"
 COPY . .
 WORKDIR "/src/Newbe.Claptrap.Auth.WebApi"
 RUN dotnet build "Newbe.Claptrap.Auth.WebApi.csproj" -c Release -o /app/build

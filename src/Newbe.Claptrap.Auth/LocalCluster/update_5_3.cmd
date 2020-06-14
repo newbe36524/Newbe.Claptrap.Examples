@@ -1,0 +1,1 @@
+docker-compose up -d --scale clsuter_core=5 --scale clsuter_gateway=3

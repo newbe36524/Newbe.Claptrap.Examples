@@ -18,7 +18,8 @@ COPY ["Newbe.Claptrap.Auth.Grains/Newbe.Claptrap.Auth.Grains.csproj", "Newbe.Cla
 COPY ["Newbe.Claptrap.Auth.IGrains/Newbe.Claptrap.Auth.IGrains.csproj", "Newbe.Claptrap.Auth.IGrains/"]
 COPY ["Newbe.Claptrap.Auth.Models/Newbe.Claptrap.Auth.Models.csproj", "Newbe.Claptrap.Auth.Models/"]
 COPY ["Newbe.Claptrap.Auth.Repository/Newbe.Claptrap.Auth.Repository.csproj", "Newbe.Claptrap.Auth.Repository/"]
-RUN dotnet restore "Newbe.Claptrap.Auth.BackendServer/Newbe.Claptrap.Auth.BackendServer.csproj"
+COPY .nuget.config ./nuget.config
+RUN dotnet nuget disable source nuget.org && dotnet restore "Newbe.Claptrap.Auth.BackendServer/Newbe.Claptrap.Auth.BackendServer.csproj"
 COPY . .
 WORKDIR "/src/Newbe.Claptrap.Auth.BackendServer"
 RUN dotnet build "Newbe.Claptrap.Auth.BackendServer.csproj" -c Release -o /app/build

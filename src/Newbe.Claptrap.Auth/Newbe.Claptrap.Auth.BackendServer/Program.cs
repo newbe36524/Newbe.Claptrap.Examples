@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
 using App.Metrics;
@@ -20,6 +21,7 @@ using Newbe.Claptrap.Bootstrapper;
 using Newbe.Claptrap.DesignStoreFormatter;
 using Newbe.Claptrap.StorageProvider.Relational;
 using Orleans;
+using Orleans.Configuration;
 using Orleans.Hosting;
 
 namespace Newbe.Claptrap.Auth.BackendServer
@@ -69,14 +71,16 @@ namespace Newbe.Claptrap.Auth.BackendServer
                         {
                             var collection = new ServiceCollection().AddLogging(logging =>
                             {
+                                var configurationSection = context.Configuration.GetSection("Logging");
+                                logging.AddConfiguration(configurationSection);
                                 logging.AddConsole();
-                                logging.SetMinimumLevel(LogLevel.Debug);
                             });
                             var buildServiceProvider = collection.BuildServiceProvider();
                             var loggerFactory = buildServiceProvider.GetService<ILoggerFactory>();
                             var bootstrapperBuilder = new AutofacClaptrapBootstrapperBuilder(loggerFactory, builder);
-                            const string mysqlConnectionString =
-                                "Server=localhost;Database=claptrap;Uid=root;Pwd=claptrap;Pooling=True;";
+                            var config = context.Configuration.GetSection("Claptrap");
+                            var claptrapConfig = new Models.ClaptrapClusteringOptions();
+                            config.Bind(claptrapConfig);
                             var claptrapBootstrapper = bootstrapperBuilder
                                 .ScanClaptrapModule()
                                 .ScanClaptrapDesigns(new[]
@@ -84,7 +88,7 @@ namespace Newbe.Claptrap.Auth.BackendServer
                                     typeof(UserGrain).Assembly
                                 })
                                 .AddConnectionString(Defaults.ConnectionName,
-                                    mysqlConnectionString)
+                                    claptrapConfig.DefaultConnectionString)
                                 .UseMySql(mysql =>
                                     mysql
                                         .AsEventStore(eventStore =>
@@ -102,18 +106,50 @@ namespace Newbe.Claptrap.Auth.BackendServer
                 .UseOrleans(siloBuilder =>
                 {
                     siloBuilder
+                        .ConfigureDefaults()
                         .UseLocalhostClustering()
-                        .ConfigureLogging(logging =>
+                        .ConfigureServices((context, services) =>
                         {
-                            logging.SetMinimumLevel(LogLevel.Debug);
-                            logging.AddFilter(
-                                (s, level) => s.StartsWith("Microsoft.Orleans") && level >= LogLevel.Error);
-                            logging.AddFilter((s, level) => s.Contains("Claptrap") && level >= LogLevel.Error);
+                            services.Configure<EndpointOptions>(options =>
+                            {
+                                var claptrapOptions = BindClaptrapOptions();
+                                var claptrapOptionsOrleans = claptrapOptions.Orleans;
+                                var hostname = claptrapOptionsOrleans.Hostname ?? "localhost";
+                                var ip = hostname == "localhost"
+                                    ? IPAddress.Loopback
+                                    : Dns.GetHostEntry(hostname).AddressList.First();
+                                const int defaultGatewayPort = 30000;
+                                const int defaultSiloPort = 11111;
+                                options.GatewayPort = defaultGatewayPort;
+                                options.SiloPort = defaultSiloPort;
+                                options.AdvertisedIPAddress = ip;
+                                options.GatewayListeningEndpoint = new IPEndPoint(ip,
+                                    claptrapOptionsOrleans.GatewayPort ?? defaultGatewayPort);
+                                options.SiloListeningEndpoint = new IPEndPoint(ip,
+                                    claptrapOptionsOrleans.SiloPort ?? defaultSiloPort);
+                            });
+                        })
+                        .UseAdoNetClustering(options =>
+                        {
+                            var claptrapOptions = BindClaptrapOptions();
+                            var clustering = claptrapOptions.Orleans.Clustering;
+                            options.Invariant = clustering.Invariant;
+                            options.ConnectionString = clustering.ConnectionString;
                         })
                         .ConfigureApplicationParts(manager =>
                             manager.AddFromDependencyContext().WithReferences())
-                        .UseDashboard(options => options.Port = 9000)
-                        ;
+                        .UseDashboard(options => options.Port = 9000);
+
+                    Models.ClaptrapClusteringOptions BindClaptrapOptions()
+                    {
+                        var webHostBuilderContext =
+                            (WebHostBuilderContext) siloBuilder.Properties[
+                                typeof(WebHostBuilderContext)];
+                        var config = webHostBuilderContext.Configuration.GetSection("Claptrap");
+                        var claptrapOptions = new Models.ClaptrapClusteringOptions();
+                        config.Bind(claptrapOptions);
+                        return claptrapOptions;
+                    }
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .ConfigureMetrics(ClaptrapMetrics.MetricsRoot)

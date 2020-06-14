@@ -6,8 +6,8 @@
 
     <ItemGroup>
       <PackageReference Include="JWT" Version="7.2.1" />
-      <PackageReference Include="Newbe.Claptrap" Version="0.2.3-alpha" />
-      <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.2.3-alpha" />
+      <PackageReference Include="Newbe.Claptrap" Version="0.2.3-alpha.gbfc9257e7d" />
+      <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.2.3-alpha.gbfc9257e7d" />
     </ItemGroup>
 
     <ItemGroup>
