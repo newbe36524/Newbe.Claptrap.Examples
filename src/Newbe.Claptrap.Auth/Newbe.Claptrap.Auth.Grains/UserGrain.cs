@@ -4,6 +4,7 @@ using JWT.Algorithms;
 using JWT.Builder;
 using Newbe.Claptrap.Auth.IGrains;
 using Newbe.Claptrap.Auth.Models;
+using Newbe.Claptrap.Auth.Repository;
 using Newbe.Claptrap.Orleans;
 
 namespace Newbe.Claptrap.Auth.Grains
@@ -22,7 +23,8 @@ namespace Newbe.Claptrap.Auth.Grains
         public async Task<string> LoginAsync(string username, string password)
         {
             var userInfo = StateData;
-            if (username != userInfo.Username || password != userInfo.Password)
+            var hashPassword = PasswordHelper.HashPassword(userInfo.Secret,password);
+            if (username != userInfo.Username || hashPassword != userInfo.Password)
             {
                 return null;
             }

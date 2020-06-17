@@ -5,11 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Newbe.Claptrap.Auth.Models\Newbe.Claptrap.Auth.Models.csproj"/>
+        <ProjectReference Include="..\Newbe.Claptrap.Auth.Models\Newbe.Claptrap.Auth.Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="5.2.0"/>
+        <PackageReference Include="Autofac" Version="5.2.0" />
     </ItemGroup>
 
 </Project>

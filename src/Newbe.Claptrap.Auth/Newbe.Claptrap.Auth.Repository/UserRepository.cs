@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -29,7 +28,7 @@ namespace Newbe.Claptrap.Auth.Repository
             {
                 UserId = userId,
                 Secret = secret,
-                Password = GetPassword(secret, userId + "pwd"),
+                Password = PasswordHelper.HashPassword(secret, userId + "pwd"),
                 Username = $"User{userId}"
             };
             return re;
@@ -44,18 +43,6 @@ namespace Newbe.Claptrap.Auth.Repository
             var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(source));
             var re = string.Join("", hash.Select(x => x.ToString("x2")));
             return re;
-        }
-
-        private string GetPassword(string secret, string password)
-        {
-            using (var hmac = HMAC.Create())
-            {
-                hmac.Key = Encoding.UTF8.GetBytes(secret);
-                hmac.Initialize();
-                var pwdHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                var re = Convert.ToBase64String(pwdHash);
-                return re;
-            }
         }
     }
 }

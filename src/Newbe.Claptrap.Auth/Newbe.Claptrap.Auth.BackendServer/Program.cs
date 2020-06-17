@@ -9,6 +9,7 @@ using App.Metrics;
 using App.Metrics.AspNetCore;
 using App.Metrics.Formatters.InfluxDB;
 using App.Metrics.Formatters.Prometheus;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newbe.Claptrap.AppMetrics;
 using Newbe.Claptrap.Auth.Grains;
+using Newbe.Claptrap.Auth.Repository;
 using Newbe.Claptrap.Bootstrapper;
 using Newbe.Claptrap.DesignStoreFormatter;
 using Newbe.Claptrap.StorageProvider.Relational;
@@ -69,6 +71,8 @@ namespace Newbe.Claptrap.Auth.BackendServer
                     var serviceProviderFactory = new AutofacServiceProviderFactory(
                         builder =>
                         {
+                            builder.RegisterModule<RepositoryModule>();
+                            
                             var collection = new ServiceCollection().AddLogging(logging =>
                             {
                                 var configurationSection = context.Configuration.GetSection("Logging");

@@ -5,14 +5,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="JWT" Version="7.2.1" />
-      <PackageReference Include="Newbe.Claptrap" Version="0.2.3-alpha.gbfc9257e7d" />
-      <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.2.3-alpha.gbfc9257e7d" />
+        <PackageReference Include="JWT" Version="7.2.1" />
+        <PackageReference Include="Newbe.Claptrap" Version="0.2.3-alpha.gbfc9257e7d" />
+        <PackageReference Include="Newbe.Claptrap.DataSerializer.Json" Version="0.2.3-alpha.gbfc9257e7d" />
+        <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.2.3-alpha.gbfc9257e7d" />
+        <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.2.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Newbe.Claptrap.Auth.IGrains\Newbe.Claptrap.Auth.IGrains.csproj" />
-      <ProjectReference Include="..\Newbe.Claptrap.Auth.Repository\Newbe.Claptrap.Auth.Repository.csproj" />
+        <ProjectReference Include="..\Newbe.Claptrap.Auth.IGrains\Newbe.Claptrap.Auth.IGrains.csproj" />
+        <ProjectReference Include="..\Newbe.Claptrap.Auth.Repository\Newbe.Claptrap.Auth.Repository.csproj" />
     </ItemGroup>
 
 </Project>
