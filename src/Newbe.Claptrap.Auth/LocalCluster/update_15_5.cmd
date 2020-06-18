@@ -1,0 +1,1 @@
+docker-compose up -d --scale cluster_core=15 --scale cluster_gateway=5

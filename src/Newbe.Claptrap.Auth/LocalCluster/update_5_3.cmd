@@ -1,1 +1,1 @@
-docker-compose up -d --scale clsuter_core=5 --scale clsuter_gateway=3
+docker-compose up -d --scale cluster_core=5 --scale cluster_gateway=3

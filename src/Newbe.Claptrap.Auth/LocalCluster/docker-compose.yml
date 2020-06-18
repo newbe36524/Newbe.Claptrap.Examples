@@ -31,22 +31,38 @@ services:
         MYSQL_ROOT_PASSWORD: claptrap
     volumes:
         - ./clustering:/docker-entrypoint-initdb.d
+  
+  claptrap_db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+        - "3306"
+    environment:
+        MYSQL_ROOT_PASSWORD: claptrap
+    volumes:
+        - ./claptrap_db:/docker-entrypoint-initdb.d
       
-  # webapi:
-  #   image: newbeclaptrapauthwebapi
-  #   ports:
-  #     - "80"
-  #     - "443"
-  #   deploy:
-  #     replicas: 1
+  webapi:
+    image: newb-eclaptrap-auth-webapi
+    restart: always
+    ports:
+      - "10080:80"
+    environment: 
+      Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
+      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Database=claptrap_clustering;Uid=root;Pwd=claptrap;Pooling=True;
+      ASPNETCORE_URLS: "http://+:80"
+    depends_on: 
+      - cluster_bootstrap
 
-  clsuter_bootstrap:
-    image: newbeclaptrapauthbackendserver
+  cluster_bootstrap:
+    image: newbe-claptrap-auth-backendserver
     restart: always
     ports:
       - "11111"
     environment: 
-      Claptrap__Orleans__Hostname: clsuter_bootstrap
+      Claptrap__DefaultConnectionString: Server=claptrap_db;Database=claptrap;Uid=root;Pwd=claptrap;Pooling=True;
+      Claptrap__Orleans__Hostname: cluster_bootstrap
       Claptrap__Orleans__GatewayPort: 0
       Claptrap__Orleans__SiloPort: 11111
       Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
@@ -54,42 +70,44 @@ services:
     depends_on: 
       - clustering
 
-  clsuter_core:
-    image: newbeclaptrapauthbackendserver
+  cluster_core:
+    image: newbe-claptrap-auth-backendserver
     restart: always
     ports:
       - "11111"
     environment: 
-      Claptrap__Orleans__Hostname: clsuter_core
+      Claptrap__DefaultConnectionString: Server=claptrap_db;Database=claptrap;Uid=root;Pwd=claptrap;Pooling=True;
+      Claptrap__Orleans__Hostname: cluster_core
       Claptrap__Orleans__GatewayPort: 0
       Claptrap__Orleans__SiloPort: 11111
       Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
       Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Database=claptrap_clustering;Uid=root;Pwd=claptrap;Pooling=True;
     depends_on: 
-      - clsuter_bootstrap
+      - cluster_bootstrap
 
-  clsuter_gateway:
-    image: newbeclaptrapauthbackendserver
+  cluster_gateway:
+    image: newbe-claptrap-auth-backendserver
     restart: always
     ports:
       - "11111"
       - "30000"
     environment: 
-      Claptrap__Orleans__Hostname: clsuter_gateway
+      Claptrap__Orleans__Hostname: cluster_gateway
       Claptrap__Orleans__GatewayPort: 30000
       Claptrap__Orleans__SiloPort: 11111
       Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
       Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Database=claptrap_clustering;Uid=root;Pwd=claptrap;Pooling=True;
     depends_on: 
-      - clsuter_bootstrap
+      - cluster_bootstrap
 
   dashboard:
-    image: newbeclaptrapauthbackendserver
+    image: newbe-claptrap-auth-backendserver
     restart: always
     ports:
       - "11111"
       - "9000:9000"
     environment: 
+      Claptrap__DefaultConnectionString: Server=claptrap_db;Database=claptrap;Uid=root;Pwd=claptrap;Pooling=True;
       Claptrap__Orleans__EnableDashboard: "true"
       Claptrap__Orleans__Hostname: dashboard
       Claptrap__Orleans__GatewayPort: 0
@@ -97,4 +115,4 @@ services:
       Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
       Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Database=claptrap_clustering;Uid=root;Pwd=claptrap;Pooling=True;
     depends_on: 
-      - clsuter_bootstrap
+      - cluster_bootstrap
