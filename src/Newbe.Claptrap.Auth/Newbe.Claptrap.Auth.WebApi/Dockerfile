@@ -5,9 +5,10 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS build
+ARG nuget_config=.nuget.config
 WORKDIR /src
 COPY ["Newbe.Claptrap.Auth.WebApi/Newbe.Claptrap.Auth.WebApi.csproj", "Newbe.Claptrap.Auth.WebApi/"]
-COPY .nuget.config ./nuget.config
+COPY $nuget_config ./nuget.config
 RUN dotnet nuget disable source nuget.org && dotnet restore "Newbe.Claptrap.Auth.WebApi/Newbe.Claptrap.Auth.WebApi.csproj"
 COPY . .
 WORKDIR "/src/Newbe.Claptrap.Auth.WebApi"

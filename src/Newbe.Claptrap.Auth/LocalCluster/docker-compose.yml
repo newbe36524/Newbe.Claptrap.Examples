@@ -22,26 +22,24 @@ services:
         - 58080:8080
 
   clustering:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: postgres
     restart: always
-    ports:
-        - "3306"
     environment:
-        MYSQL_ROOT_PASSWORD: claptrap
+      POSTGRES_PASSWORD: claptrap
+    ports:
+      - "5432"
     volumes:
-        - ./clustering:/docker-entrypoint-initdb.d
+      - ./clustering:/docker-entrypoint-initdb.d
   
   claptrap_db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: postgres
     restart: always
-    ports:
-        - "3306"
     environment:
-        MYSQL_ROOT_PASSWORD: claptrap
+      POSTGRES_PASSWORD: claptrap
+    ports:
+      - "5432"
     volumes:
-        - ./claptrap_db:/docker-entrypoint-initdb.d
+      - ./claptrap_db:/docker-entrypoint-initdb.d        
       
   webapi:
     image: newb-eclaptrap-auth-webapi
@@ -49,26 +47,11 @@ services:
     ports:
       - "10080:80"
     environment: 
-      Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
-      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Database=claptrap_clustering;Uid=root;Pwd=claptrap;Pooling=True;
+      Claptrap__Orleans__Clustering__Invariant: Npgsql
+      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Port=5432;Database=postgres;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
       ASPNETCORE_URLS: "http://+:80"
     depends_on: 
-      - cluster_bootstrap
-
-  cluster_bootstrap:
-    image: newbe-claptrap-auth-backendserver
-    restart: always
-    ports:
-      - "11111"
-    environment: 
-      Claptrap__DefaultConnectionString: Server=claptrap_db;Database=claptrap;Uid=root;Pwd=claptrap;Pooling=True;
-      Claptrap__Orleans__Hostname: cluster_bootstrap
-      Claptrap__Orleans__GatewayPort: 0
-      Claptrap__Orleans__SiloPort: 11111
-      Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
-      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Database=claptrap_clustering;Uid=root;Pwd=claptrap;Pooling=True;
-    depends_on: 
-      - clustering
+      - cluster_gateway
 
   cluster_core:
     image: newbe-claptrap-auth-backendserver
@@ -76,14 +59,14 @@ services:
     ports:
       - "11111"
     environment: 
-      Claptrap__DefaultConnectionString: Server=claptrap_db;Database=claptrap;Uid=root;Pwd=claptrap;Pooling=True;
+      Claptrap__DefaultConnectionString: Server=claptrap_db;Port=5432;Database=claptrap;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
       Claptrap__Orleans__Hostname: cluster_core
       Claptrap__Orleans__GatewayPort: 0
       Claptrap__Orleans__SiloPort: 11111
-      Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
-      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Database=claptrap_clustering;Uid=root;Pwd=claptrap;Pooling=True;
+      Claptrap__Orleans__Clustering__Invariant: Npgsql
+      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Port=5432;Database=postgres;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
     depends_on: 
-      - cluster_bootstrap
+      - clustering
 
   cluster_gateway:
     image: newbe-claptrap-auth-backendserver
@@ -95,10 +78,10 @@ services:
       Claptrap__Orleans__Hostname: cluster_gateway
       Claptrap__Orleans__GatewayPort: 30000
       Claptrap__Orleans__SiloPort: 11111
-      Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
-      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Database=claptrap_clustering;Uid=root;Pwd=claptrap;Pooling=True;
+      Claptrap__Orleans__Clustering__Invariant: Npgsql
+      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Port=5432;Database=postgres;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
     depends_on: 
-      - cluster_bootstrap
+      - cluster_core
 
   dashboard:
     image: newbe-claptrap-auth-backendserver
@@ -107,12 +90,12 @@ services:
       - "11111"
       - "9000:9000"
     environment: 
-      Claptrap__DefaultConnectionString: Server=claptrap_db;Database=claptrap;Uid=root;Pwd=claptrap;Pooling=True;
+      Claptrap__DefaultConnectionString: Server=claptrap_db;Port=5432;Database=claptrap;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
       Claptrap__Orleans__EnableDashboard: "true"
       Claptrap__Orleans__Hostname: dashboard
       Claptrap__Orleans__GatewayPort: 0
       Claptrap__Orleans__SiloPort: 11111
-      Claptrap__Orleans__Clustering__Invariant: MySql.Data.MySqlClient
-      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Database=claptrap_clustering;Uid=root;Pwd=claptrap;Pooling=True;
+      Claptrap__Orleans__Clustering__Invariant: Npgsql
+      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Port=5432;Database=postgres;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
     depends_on: 
-      - cluster_bootstrap
+      - cluster_core

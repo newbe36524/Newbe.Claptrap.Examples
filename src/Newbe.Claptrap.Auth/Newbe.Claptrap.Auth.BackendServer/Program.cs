@@ -93,7 +93,7 @@ namespace Newbe.Claptrap.Auth.BackendServer
                                 })
                                 .AddConnectionString(Defaults.ConnectionName,
                                     claptrapConfig.DefaultConnectionString)
-                                .UseMySql(mysql =>
+                                .UsePostgreSQL(mysql =>
                                     mysql
                                         .AsEventStore(eventStore =>
                                             eventStore.SharedTable())

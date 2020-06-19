@@ -12,13 +12,14 @@ EXPOSE 30000
 EXPOSE 9000
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS build
+ARG nuget_config=.nuget.config
 WORKDIR /src
 COPY ["Newbe.Claptrap.Auth.BackendServer/Newbe.Claptrap.Auth.BackendServer.csproj", "Newbe.Claptrap.Auth.BackendServer/"]
 COPY ["Newbe.Claptrap.Auth.Grains/Newbe.Claptrap.Auth.Grains.csproj", "Newbe.Claptrap.Auth.Grains/"]
 COPY ["Newbe.Claptrap.Auth.IGrains/Newbe.Claptrap.Auth.IGrains.csproj", "Newbe.Claptrap.Auth.IGrains/"]
 COPY ["Newbe.Claptrap.Auth.Models/Newbe.Claptrap.Auth.Models.csproj", "Newbe.Claptrap.Auth.Models/"]
 COPY ["Newbe.Claptrap.Auth.Repository/Newbe.Claptrap.Auth.Repository.csproj", "Newbe.Claptrap.Auth.Repository/"]
-COPY .nuget.config ./nuget.config
+COPY $nuget_config ./nuget.config
 RUN dotnet nuget disable source nuget.org && dotnet restore "Newbe.Claptrap.Auth.BackendServer/Newbe.Claptrap.Auth.BackendServer.csproj"
 COPY . .
 WORKDIR "/src/Newbe.Claptrap.Auth.BackendServer"

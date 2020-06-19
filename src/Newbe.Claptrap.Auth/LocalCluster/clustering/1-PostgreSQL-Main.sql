@@ -1,3 +1,5 @@
+-- requires Postgres 9.5 (or perhaps higher)
+
 /*
 Implementation notes:
 
@@ -24,14 +26,16 @@ Implementation notes:
         https://dotnet.github.io/orleans/Documentation/Runtime-Implementation-Details/Cluster-Management.html
         https://github.com/dotnet/orleans/blob/master/src/Orleans.Core/SystemTargetInterfaces/IMembershipTable.cs
 */
+
+
+
 -- This table defines Orleans operational queries. Orleans uses these to manage its operations,
 -- these are the only queries Orleans issues to the database.
 -- These can be redefined (e.g. to provide non-destructive updates) provided the stated interface principles hold.
-USE claptrap_clustering;
 CREATE TABLE OrleansQuery
 (
-    QueryKey VARCHAR(64) NOT NULL,
-    QueryText VARCHAR(8000) NOT NULL,
+    QueryKey varchar(64) NOT NULL,
+    QueryText varchar(8000) NOT NULL,
 
     CONSTRAINT OrleansQuery_Key PRIMARY KEY(QueryKey)
 );
