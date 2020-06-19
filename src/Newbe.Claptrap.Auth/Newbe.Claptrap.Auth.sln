@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Newbe.Claptrap.Auth.Reposit
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D3C2B870-F8FD-45AC-9362-7EBD265BFFBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Auth.TestConsole", "Newbe.Claptrap.Auth.TestConsole\Newbe.Claptrap.Auth.TestConsole.csproj", "{A0F79D62-1AA8-4DFD-ACA2-68D9F2E07AB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{D3C2B870-F8FD-45AC-9362-7EBD265BFFBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3C2B870-F8FD-45AC-9362-7EBD265BFFBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3C2B870-F8FD-45AC-9362-7EBD265BFFBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0F79D62-1AA8-4DFD-ACA2-68D9F2E07AB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0F79D62-1AA8-4DFD-ACA2-68D9F2E07AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0F79D62-1AA8-4DFD-ACA2-68D9F2E07AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0F79D62-1AA8-4DFD-ACA2-68D9F2E07AB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

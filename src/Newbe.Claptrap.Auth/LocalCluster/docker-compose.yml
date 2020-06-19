@@ -20,16 +20,6 @@ services:
     restart: always
     ports:
         - 58080:8080
-
-  clustering:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: claptrap
-    ports:
-      - "5432"
-    volumes:
-      - ./clustering:/docker-entrypoint-initdb.d
   
   claptrap_db:
     image: postgres
@@ -46,9 +36,8 @@ services:
     restart: always
     ports:
       - "10080:80"
-    environment: 
-      Claptrap__Orleans__Clustering__Invariant: Npgsql
-      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Port=5432;Database=postgres;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
+    environment:
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
       ASPNETCORE_URLS: "http://+:80"
     depends_on: 
       - cluster_gateway
@@ -63,10 +52,9 @@ services:
       Claptrap__Orleans__Hostname: cluster_core
       Claptrap__Orleans__GatewayPort: 0
       Claptrap__Orleans__SiloPort: 11111
-      Claptrap__Orleans__Clustering__Invariant: Npgsql
-      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Port=5432;Database=postgres;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
     depends_on: 
-      - clustering
+      - consulnode1
 
   cluster_gateway:
     image: newbe-claptrap-auth-backendserver
@@ -74,12 +62,12 @@ services:
     ports:
       - "11111"
       - "30000"
-    environment: 
+    environment:
+      Claptrap__DefaultConnectionString: Server=claptrap_db;Port=5432;Database=claptrap;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
       Claptrap__Orleans__Hostname: cluster_gateway
       Claptrap__Orleans__GatewayPort: 30000
       Claptrap__Orleans__SiloPort: 11111
-      Claptrap__Orleans__Clustering__Invariant: Npgsql
-      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Port=5432;Database=postgres;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
     depends_on: 
       - cluster_core
 
@@ -95,7 +83,42 @@ services:
       Claptrap__Orleans__Hostname: dashboard
       Claptrap__Orleans__GatewayPort: 0
       Claptrap__Orleans__SiloPort: 11111
-      Claptrap__Orleans__Clustering__Invariant: Npgsql
-      Claptrap__Orleans__Clustering__ConnectionString: Server=clustering;Port=5432;Database=postgres;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=20;
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
     depends_on: 
       - cluster_core
+        
+  consulnode1:
+    image: bitnami/consul
+    restart: always
+    environment:
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT_LAN_ADDRESS=0.0.0.0
+      - CONSUL_DISABLE_KEYRING_FILE=true
+      - CONSUL_RETRY_JOIN_ADDRESS=consulnode1
+    ports:
+      - '8300:8300'
+      - '8301:8301'
+      - '8301:8301/udp'
+      - '8500:8500'
+      - '8600:8600'
+      - '8600:8600/udp'
+
+  consulnode2:
+    image: bitnami/consul
+    restart: always
+    environment:
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT_LAN_ADDRESS=0.0.0.0
+      - CONSUL_DISABLE_KEYRING_FILE=true
+      - CONSUL_RETRY_JOIN_ADDRESS=consulnode1
+      - CONSUL_ENABLE_UI=false
+
+  consulnode3:
+    image: bitnami/consul
+    restart: always
+    environment:
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT_LAN_ADDRESS=0.0.0.0
+      - CONSUL_DISABLE_KEYRING_FILE=true
+      - CONSUL_RETRY_JOIN_ADDRESS=consulnode1
+      - CONSUL_ENABLE_UI=false

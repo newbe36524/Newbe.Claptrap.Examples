@@ -45,21 +45,20 @@ namespace Newbe.Claptrap.Auth.WebApi
                                             : Dns.GetHostEntry(hostname).AddressList.First();
                                         const int defaultGatewayPort = 30000;
                                         const int defaultSiloPort = 11111;
-                                        options.GatewayPort = defaultGatewayPort;
-                                        options.SiloPort = defaultSiloPort;
+                                        var gatewayPort = claptrapOptionsOrleans.GatewayPort
+                                                          ?? defaultGatewayPort;
+                                        var siloPort = claptrapOptionsOrleans.SiloPort
+                                                       ?? defaultSiloPort;
+                                        options.GatewayPort = gatewayPort;
+                                        options.SiloPort = siloPort;
                                         options.AdvertisedIPAddress = ip;
-                                        options.GatewayListeningEndpoint = new IPEndPoint(ip,
-                                            claptrapOptionsOrleans.GatewayPort ?? defaultGatewayPort);
-                                        options.SiloListeningEndpoint = new IPEndPoint(ip,
-                                            claptrapOptionsOrleans.SiloPort ?? defaultSiloPort);
                                     });
                                 })
-                                .UseAdoNetClustering(options =>
+                                .UseConsulClustering(options =>
                                 {
                                     var claptrapOptions = BindClaptrapOptions();
                                     var clustering = claptrapOptions.Orleans.Clustering;
-                                    options.Invariant = clustering.Invariant;
-                                    options.ConnectionString = clustering.ConnectionString;
+                                    options.Address = new Uri(clustering.ConsulUrl);
                                 })
                                 .ConfigureApplicationParts(manager =>
                                     manager.AddFromDependencyContext().WithReferences())
