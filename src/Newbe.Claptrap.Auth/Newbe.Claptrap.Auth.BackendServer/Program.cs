@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newbe.Claptrap.AppMetrics;
 using Newbe.Claptrap.Auth.Grains;
+using Newbe.Claptrap.Auth.Models;
 using Newbe.Claptrap.Auth.Repository;
 using Newbe.Claptrap.Bootstrapper;
 using Newbe.Claptrap.DesignStoreFormatter;
@@ -83,7 +84,7 @@ namespace Newbe.Claptrap.Auth.BackendServer
                             var loggerFactory = buildServiceProvider.GetService<ILoggerFactory>();
                             var bootstrapperBuilder = new AutofacClaptrapBootstrapperBuilder(loggerFactory, builder);
                             var config = context.Configuration.GetSection("Claptrap");
-                            var claptrapConfig = new Models.ClaptrapClusteringOptions();
+                            var claptrapConfig = new ClaptrapClusteringOptions();
                             config.Bind(claptrapConfig);
                             var claptrapBootstrapper = bootstrapperBuilder
                                 .ScanClaptrapModule()
@@ -107,51 +108,33 @@ namespace Newbe.Claptrap.Auth.BackendServer
 
                     return serviceProviderFactory;
                 })
-                .UseOrleans(siloBuilder =>
+                .UseOrleans((context, siloBuilder) =>
                 {
+                    var claptrapOptions = new ClaptrapClusteringOptions();
+                    var config = context.Configuration.GetSection("Claptrap");
+                    config.Bind(claptrapOptions);
+                    var claptrapOptionsOrleans = claptrapOptions.Orleans;
+                    var hostname = claptrapOptionsOrleans.Hostname ?? "localhost";
+                    const int defaultGatewayPort = 30000;
+                    const int defaultSiloPort = 11111;
+                    var gatewayPort = claptrapOptionsOrleans.GatewayPort
+                                      ?? defaultGatewayPort;
+                    var siloPort = claptrapOptionsOrleans.SiloPort
+                                   ?? defaultSiloPort;
                     siloBuilder
                         .ConfigureDefaults()
                         .UseLocalhostClustering()
-                        .ConfigureServices((context, services) =>
-                        {
-                            services.Configure<EndpointOptions>(options =>
-                            {
-                                var claptrapOptions = BindClaptrapOptions();
-                                var claptrapOptionsOrleans = claptrapOptions.Orleans;
-                                var hostname = claptrapOptionsOrleans.Hostname ?? "localhost";
-                                var ip = hostname == "localhost"
-                                    ? IPAddress.Loopback
-                                    : Dns.GetHostEntry(hostname).AddressList.First();
-                                const int defaultGatewayPort = 30000;
-                                const int defaultSiloPort = 11111;
-                                var gatewayPort = claptrapOptionsOrleans.GatewayPort
-                                                  ?? defaultGatewayPort;
-                                var siloPort = claptrapOptionsOrleans.SiloPort
-                                               ?? defaultSiloPort;
-                                options.GatewayPort = gatewayPort;
-                                options.SiloPort = siloPort;
-                                options.AdvertisedIPAddress = ip;
-                            });
-                        })
+                        .ConfigureEndpoints(hostname, siloPort, gatewayPort)
                         .UseConsulClustering(options =>
                         {
-                            var claptrapOptions = BindClaptrapOptions();
                             var clustering = claptrapOptions.Orleans.Clustering;
                             options.Address = new Uri(clustering.ConsulUrl);
                         })
                         .ConfigureApplicationParts(manager =>
-                            manager.AddFromDependencyContext().WithReferences())
-                        .UseDashboard(options => options.Port = 9000);
-
-                    Models.ClaptrapClusteringOptions BindClaptrapOptions()
+                            manager.AddFromDependencyContext().WithReferences());
+                    if (claptrapOptionsOrleans.EnableDashboard)
                     {
-                        var webHostBuilderContext =
-                            (WebHostBuilderContext) siloBuilder.Properties[
-                                typeof(WebHostBuilderContext)];
-                        var config = webHostBuilderContext.Configuration.GetSection("Claptrap");
-                        var claptrapOptions = new Models.ClaptrapClusteringOptions();
-                        config.Bind(claptrapOptions);
-                        return claptrapOptions;
+                        siloBuilder.UseDashboard(options => options.Port = 9000);
                     }
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })

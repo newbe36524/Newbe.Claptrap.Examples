@@ -33,27 +33,6 @@ namespace Newbe.Claptrap.Auth.WebApi
                             var clientBuilder = new ClientBuilder();
                             clientBuilder
                                 .UseLocalhostClustering()
-                                .ConfigureServices((context, services) =>
-                                {
-                                    services.Configure<EndpointOptions>(options =>
-                                    {
-                                        var claptrapOptions = BindClaptrapOptions();
-                                        var claptrapOptionsOrleans = claptrapOptions.Orleans;
-                                        var hostname = claptrapOptionsOrleans.Hostname ?? "localhost";
-                                        var ip = hostname == "localhost"
-                                            ? IPAddress.Loopback
-                                            : Dns.GetHostEntry(hostname).AddressList.First();
-                                        const int defaultGatewayPort = 30000;
-                                        const int defaultSiloPort = 11111;
-                                        var gatewayPort = claptrapOptionsOrleans.GatewayPort
-                                                          ?? defaultGatewayPort;
-                                        var siloPort = claptrapOptionsOrleans.SiloPort
-                                                       ?? defaultSiloPort;
-                                        options.GatewayPort = gatewayPort;
-                                        options.SiloPort = siloPort;
-                                        options.AdvertisedIPAddress = ip;
-                                    });
-                                })
                                 .UseConsulClustering(options =>
                                 {
                                     var claptrapOptions = BindClaptrapOptions();
