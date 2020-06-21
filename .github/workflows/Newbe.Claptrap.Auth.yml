@@ -1,0 +1,36 @@
+name: Newbe.Claptrap.Auth
+
+on:
+  push:
+    branches: 
+      - master
+      - develop
+  pull_request: 
+    branches: 
+      - master
+      - develop
+
+env:
+  ALIYUN_USERNAME: pianzide1117
+  ALIYUN_NAMESPACE: newbe36524
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the images
+        run: |
+          cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Auth
+          docker-compose build
+      - name: docker login
+        run: |
+          echo "${{ secrets.ALIYUN_TOKEN }}" | docker login -u $ALIYUN_USERNAME --password-stdin registry.cn-hangzhou.aliyuncs.com
+      - name: Publish newbe-claptrap-auth-webapi
+        run: |
+          docker push registry.cn-hangzhou.aliyuncs.com/newbe36524/newbe-claptrap-auth-webapi
+      - name: Publish newbe-claptrap-auth-backendserver
+        run: |
+          docker push registry.cn-hangzhou.aliyuncs.com/newbe36524/newbe-claptrap-auth-backendserver

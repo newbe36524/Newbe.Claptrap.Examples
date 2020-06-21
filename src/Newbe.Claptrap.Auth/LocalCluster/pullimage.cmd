@@ -1,0 +1,1 @@
+docker-mcr -i mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine,mcr.microsoft.com/dotnet/core/sdk:3.1-alpine

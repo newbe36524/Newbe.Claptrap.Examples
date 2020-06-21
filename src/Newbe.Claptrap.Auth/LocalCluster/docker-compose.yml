@@ -1,0 +1,144 @@
+version: '3.4'
+
+
+services:
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 23000:3000
+    volumes: 
+      - ./grafana-storage:/var/lib/grafana grafana/grafana
+
+  influxdb:
+    image: influxdb
+    ports:
+      - 29086:8086
+    environment:
+      INFLUXDB_DB: metricsdatabase
+      INFLUXDB_ADMIN_USER: claptrap
+      INFLUXDB_ADMIN_PASSWORD: claptrap
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+        - 58080:8080
+  
+  claptrap_db:
+    image: postgres
+    restart: always
+    command: postgres -c 'max_connections=500'
+    environment:
+      POSTGRES_PASSWORD: claptrap
+    ports:
+      - "5432"
+    volumes:
+      - ./claptrap_db:/docker-entrypoint-initdb.d        
+      
+  webapi:
+    image: ${DOCKER_REGISTRY-}newbe-claptrap-auth-webapi
+    restart: always
+    ports:
+      - "10080:80"
+    environment:
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
+      ASPNETCORE_URLS: "http://+:80"
+    depends_on: 
+      - cluster_gateway
+
+  cluster_core:
+    image: ${DOCKER_REGISTRY-}newbe-claptrap-auth-backendserver
+    restart: always
+    ports:
+      - "11111"
+    environment: 
+      Claptrap__DefaultConnectionString: Server=claptrap_db;Port=5432;Database=claptrap;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=200;
+      Claptrap__Orleans__Hostname: cluster_core
+      Claptrap__Orleans__GatewayPort: 0
+      Claptrap__Orleans__SiloPort: 11111
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
+      Claptrap__MetricsInfluxDb__Enabled: "true"
+      Claptrap__MetricsInfluxDb__BaseUri: "http://influxdb:8086"
+      Claptrap__MetricsInfluxDb__UserName: claptrap
+      Claptrap__MetricsInfluxDb__Password: claptrap
+      Claptrap__MetricsInfluxDb__Database: metricsdatabase
+    depends_on: 
+      - consulnode1
+
+  cluster_gateway:
+    image: ${DOCKER_REGISTRY-}newbe-claptrap-auth-backendserver
+    restart: always
+    ports:
+      - "11111"
+      - "30000"
+    environment:
+      Claptrap__DefaultConnectionString: Server=claptrap_db;Port=5432;Database=claptrap;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=200;
+      Claptrap__Orleans__Hostname: cluster_gateway
+      Claptrap__Orleans__GatewayPort: 30000
+      Claptrap__Orleans__SiloPort: 11111
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
+      Claptrap__MetricsInfluxDb__Enabled: "true"
+      Claptrap__MetricsInfluxDb__BaseUri: "http://influxdb:8086"
+      Claptrap__MetricsInfluxDb__UserName: claptrap
+      Claptrap__MetricsInfluxDb__Password: claptrap
+      Claptrap__MetricsInfluxDb__Database: metricsdatabase
+    depends_on: 
+      - cluster_core
+
+  dashboard:
+    image: ${DOCKER_REGISTRY-}newbe-claptrap-auth-backendserver
+    restart: always
+    ports:
+      - "11111"
+      - "30000"
+      - "19000:9000"
+    environment: 
+      Claptrap__DefaultConnectionString: Server=claptrap_db;Port=5432;Database=claptrap;User Id=postgres;Password=claptrap;CommandTimeout=20;Timeout=15;Pooling=true;MinPoolSize=1;MaxPoolSize=200;
+      Claptrap__Orleans__EnableDashboard: "true"
+      Claptrap__Orleans__Hostname: dashboard
+      Claptrap__Orleans__GatewayPort: 30000
+      Claptrap__Orleans__SiloPort: 11111
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
+      Claptrap__MetricsInfluxDb__Enabled: "true"
+      Claptrap__MetricsInfluxDb__BaseUri: "http://influxdb:8086"
+      Claptrap__MetricsInfluxDb__UserName: claptrap
+      Claptrap__MetricsInfluxDb__Password: claptrap
+      Claptrap__MetricsInfluxDb__Database: metricsdatabase
+    depends_on: 
+      - cluster_core
+        
+  consulnode1:
+    image: bitnami/consul
+    restart: always
+    environment:
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT_LAN_ADDRESS=0.0.0.0
+      - CONSUL_DISABLE_KEYRING_FILE=true
+      - CONSUL_RETRY_JOIN_ADDRESS=consulnode1
+    ports:
+      - '8300:8300'
+      - '8301:8301'
+      - '8301:8301/udp'
+      - '8500:8500'
+      - '8600:8600'
+      - '8600:8600/udp'
+
+  consulnode2:
+    image: bitnami/consul
+    restart: always
+    environment:
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT_LAN_ADDRESS=0.0.0.0
+      - CONSUL_DISABLE_KEYRING_FILE=true
+      - CONSUL_RETRY_JOIN_ADDRESS=consulnode1
+      - CONSUL_ENABLE_UI=false
+
+  consulnode3:
+    image: bitnami/consul
+    restart: always
+    environment:
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT_LAN_ADDRESS=0.0.0.0
+      - CONSUL_DISABLE_KEYRING_FILE=true
+      - CONSUL_RETRY_JOIN_ADDRESS=consulnode1
+      - CONSUL_ENABLE_UI=false
