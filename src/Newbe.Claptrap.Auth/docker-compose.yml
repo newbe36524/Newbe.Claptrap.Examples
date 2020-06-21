@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   newbe.claptrap.auth.webapi:
-    image: ${DOCKER_REGISTRY-}newb-eclaptrap-auth-webapi
+    image: ${DOCKER_REGISTRY-}newbe-claptrap-auth-webapi
     build:
       context: .
       dockerfile: Newbe.Claptrap.Auth.WebApi/Dockerfile

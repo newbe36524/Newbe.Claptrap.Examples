@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newbe.Claptrap.AppMetrics;
 
 namespace Newbe.Claptrap.Auth.BackendServer
 {
@@ -26,6 +28,8 @@ namespace Newbe.Claptrap.Auth.BackendServer
                 app.UseDeveloperExceptionPage();
             }
 
+            var metricsRoot = app.ApplicationServices.GetRequiredService<IMetricsRoot>();
+            ClaptrapMetrics.MetricsRoot = metricsRoot;
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

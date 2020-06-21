@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newbe.Claptrap.Auth.Models;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
@@ -33,12 +31,13 @@ namespace Newbe.Claptrap.Auth.WebApi
                             var clientBuilder = new ClientBuilder();
                             clientBuilder
                                 .UseLocalhostClustering()
+#if !DEBUG
                                 .UseConsulClustering(options =>
                                 {
-                                    var claptrapOptions = BindClaptrapOptions();
-                                    var clustering = claptrapOptions.Orleans.Clustering;
-                                    options.Address = new Uri(clustering.ConsulUrl);
+                                    options.Address =
+                                        new Uri(context.Configuration["Claptrap:Orleans:Clustering:ConsulUrl"]);
                                 })
+#endif
                                 .ConfigureApplicationParts(manager =>
                                     manager.AddFromDependencyContext().WithReferences())
                                 ;
@@ -51,14 +50,6 @@ namespace Newbe.Claptrap.Auth.WebApi
                         });
 
                     return serviceProviderFactory;
-
-                    ClaptrapClusteringOptions BindClaptrapOptions()
-                    {
-                        var config = context.Configuration.GetSection("Claptrap");
-                        var claptrapOptions = new ClaptrapClusteringOptions();
-                        config.Bind(claptrapOptions);
-                        return claptrapOptions;
-                    }
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }

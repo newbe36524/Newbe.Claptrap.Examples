@@ -9,7 +9,7 @@ ARG nuget_config=.nuget.config
 WORKDIR /src
 COPY ["Newbe.Claptrap.Auth.WebApi/Newbe.Claptrap.Auth.WebApi.csproj", "Newbe.Claptrap.Auth.WebApi/"]
 COPY $nuget_config ./nuget.config
-RUN dotnet nuget disable source nuget.org && dotnet restore "Newbe.Claptrap.Auth.WebApi/Newbe.Claptrap.Auth.WebApi.csproj"
+RUN dotnet restore "Newbe.Claptrap.Auth.WebApi/Newbe.Claptrap.Auth.WebApi.csproj"
 COPY . .
 WORKDIR "/src/Newbe.Claptrap.Auth.WebApi"
 RUN dotnet build "Newbe.Claptrap.Auth.WebApi.csproj" -c Release -o /app/build

@@ -6,9 +6,9 @@
 
     <ItemGroup>
         <PackageReference Include="JWT" Version="7.2.1" />
-        <PackageReference Include="Newbe.Claptrap" Version="0.2.4-alpha.g0440ec2700" />
-        <PackageReference Include="Newbe.Claptrap.DataSerializer.Json" Version="0.2.4-alpha.g0440ec2700" />
-        <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.2.4-alpha.g0440ec2700" />
+        <PackageReference Include="Newbe.Claptrap" Version="0.2.6-alpha.g3612e6ba20" />
+        <PackageReference Include="Newbe.Claptrap.DataSerializer.Json" Version="0.2.6-alpha.g3612e6ba20" />
+        <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.2.6-alpha.g3612e6ba20" />
         <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.2.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

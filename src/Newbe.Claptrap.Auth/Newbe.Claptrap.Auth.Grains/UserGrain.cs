@@ -9,6 +9,7 @@ using Newbe.Claptrap.Orleans;
 
 namespace Newbe.Claptrap.Auth.Grains
 {
+    [ClaptrapStateSavingOptions(SaveWhenDeactivateAsync = true)]
     [ClaptrapStateInitialFactoryHandler(typeof(UserInfoInitFactory))]
     [ClaptrapEventHandler(typeof(UserLoginEventHandler), ClaptrapCodes.UserLoginEvent)]
     public class UserGrain : ClaptrapBoxGrain<UserInfo>, IUserGrain
@@ -23,7 +24,7 @@ namespace Newbe.Claptrap.Auth.Grains
         public async Task<string> LoginAsync(string username, string password)
         {
             var userInfo = StateData;
-            var hashPassword = PasswordHelper.HashPassword(userInfo.Secret,password);
+            var hashPassword = PasswordHelper.HashPassword(userInfo.Secret, password);
             if (username != userInfo.Username || hashPassword != userInfo.Password)
             {
                 return null;

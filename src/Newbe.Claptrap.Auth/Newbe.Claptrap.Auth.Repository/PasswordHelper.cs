@@ -14,8 +14,13 @@ namespace Newbe.Claptrap.Auth.Repository
             };
             hmac.Initialize();
             var pwdHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            var re = Convert.ToBase64String(pwdHash);
-            return re;
+            var sb = new StringBuilder();
+            foreach (var b in pwdHash)
+            {
+                sb.Append(b.ToString("X"));
+            }
+
+            return sb.ToString();
         }
     }
 }

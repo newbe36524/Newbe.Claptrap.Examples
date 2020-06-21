@@ -35,7 +35,7 @@ namespace Newbe.Claptrap.Auth.Repository
         }
 
         private string GetSecret(string userId)
-            => GetMd5(userId);
+            => GetMd5(userId).Substring(0, 16);
 
         private string GetMd5(string source)
         {
