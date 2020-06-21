@@ -30,7 +30,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Auth
           echo "${{ secrets.ALIYUN_TOKEN }}" | docker login -u $ALIYUN_USERNAME --password-stdin registry.cn-hangzhou.aliyuncs.com
-          docker push $DOCKER_REGISTRY/newbe-eclaptrap-auth-webapi
+          docker push $DOCKER_REGISTRY/newbe-claptrap-auth-webapi
       - name: Publish newbe-claptrap-auth-backendserver
         run: |
           cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Auth
