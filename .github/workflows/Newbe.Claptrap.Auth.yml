@@ -26,13 +26,12 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Auth
           docker-compose build
+      - name: docker login
+        run: |
+          echo "${{ secrets.ALIYUN_TOKEN }}" | docker login -u $ALIYUN_USERNAME --password-stdin registry.cn-hangzhou.aliyuncs.com
       - name: Publish newbe-claptrap-auth-webapi
         run: |
-          cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Auth
-          echo "${{ secrets.ALIYUN_TOKEN }}" | docker login -u $ALIYUN_USERNAME --password-stdin registry.cn-hangzhou.aliyuncs.com
-          docker push $DOCKER_REGISTRY/newbe-claptrap-auth-webapi
+          docker push registry.cn-hangzhou.aliyuncs.com/newbe36524/newbe-claptrap-auth-webapi
       - name: Publish newbe-claptrap-auth-backendserver
         run: |
-          cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Auth
-          echo "${{ secrets.ALIYUN_TOKEN }}" | docker login -u $ALIYUN_USERNAME --password-stdin registry.cn-hangzhou.aliyuncs.com
-          docker push $DOCKER_REGISTRY/newbe-claptrap-auth-backendserver
+          docker push registry.cn-hangzhou.aliyuncs.com/newbe36524/newbe-claptrap-auth-backendserver
