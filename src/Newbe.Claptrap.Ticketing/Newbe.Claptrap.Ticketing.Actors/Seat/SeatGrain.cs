@@ -72,9 +72,10 @@ namespace Newbe.Claptrap.Ticketing.Actors.Seat
             });
             return Claptrap.HandleEventAsync(evt);
 
-            LocationNotFoundException CreateNotFoundException()
+            StationNotFoundException CreateNotFoundException()
             {
-                return new LocationNotFoundException(SeatId,
+                var seatId = Seat.SeatId.FromSeatId(this.GetPrimaryKeyString());
+                return new StationNotFoundException(seatId.TrainId,
                     fromLocationId,
                     toLocationId);
             }

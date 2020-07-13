@@ -17,7 +17,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Seat
         public async Task<IStateData> Create(IClaptrapIdentity identity)
         {
             var seatId = SeatId.FromSeatId(identity.Id);
-            var locations = await _trainInfoRepository.GetLocationsAsync(seatId.TrainId);
+            var locations = await _trainInfoRepository.GetStationsAsync(seatId.TrainId);
             var seatInfo = SeatInfo.Create(locations);
             return seatInfo;
         }

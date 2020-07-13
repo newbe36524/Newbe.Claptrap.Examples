@@ -8,7 +8,7 @@ namespace Newbe.Claptrap.Ticketing.Repository
 {
     public class TrainInfoRepository : ITrainInfoRepository
     {
-        public Task<int[]> GetLocationsAsync(int trainId)
+        public Task<int[]> GetStationsAsync(int trainId)
         {
             var re = DataSource.TrainLocations[trainId];
             return Task.FromResult(re);

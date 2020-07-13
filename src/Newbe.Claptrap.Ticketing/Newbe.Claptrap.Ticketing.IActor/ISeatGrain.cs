@@ -17,7 +17,7 @@ namespace Newbe.Claptrap.Ticketing.IActor
         /// <param name="toLocationId"></param>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        /// <exception cref="LocationNotFoundException">location not found</exception>
+        /// <exception cref="StationNotFoundException">location not found</exception>
         /// <exception cref="SeatHasBeenTakenException">seat has been taken</exception>
         Task TakeSeatAsync(int fromLocationId, int toLocationId, string requestId);
     }

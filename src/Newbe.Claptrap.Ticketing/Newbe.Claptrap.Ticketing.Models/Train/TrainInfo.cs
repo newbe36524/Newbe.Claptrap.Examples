@@ -3,30 +3,31 @@ using System.Collections.Generic;
 
 namespace Newbe.Claptrap.Ticketing.Models.Train
 {
-    public class TrainInfo
+    public class TrainInfo : IStateData
     {
-        public Dictionary<LocationTuple, int> SeatCount { get; set; }
+        public IReadOnlyList<int> Stations { get; set; }
+        public IDictionary<StationTuple, int> SeatCount { get; set; }
     }
 
-    public struct LocationTuple
+    public struct StationTuple
     {
-        public int FromLocationId { get; set; }
-        public int ToLocationId { get; set; }
+        public int FromStationId { get; set; }
+        public int ToStationId { get; set; }
 
-        private sealed class FromLocationIdToLocationIdEqualityComparer : IEqualityComparer<LocationTuple>
+        private sealed class FromLocationIdToLocationIdEqualityComparer : IEqualityComparer<StationTuple>
         {
-            public bool Equals(LocationTuple x, LocationTuple y)
+            public bool Equals(StationTuple x, StationTuple y)
             {
-                return x.FromLocationId == y.FromLocationId && x.ToLocationId == y.ToLocationId;
+                return x.FromStationId == y.FromStationId && x.ToStationId == y.ToStationId;
             }
 
-            public int GetHashCode(LocationTuple obj)
+            public int GetHashCode(StationTuple obj)
             {
-                return HashCode.Combine(obj.FromLocationId, obj.ToLocationId);
+                return HashCode.Combine(obj.FromStationId, obj.ToStationId);
             }
         }
 
-        public static IEqualityComparer<LocationTuple> FromLocationIdToLocationIdComparer { get; } =
+        public static IEqualityComparer<StationTuple> FromLocationIdToLocationIdComparer { get; } =
             new FromLocationIdToLocationIdEqualityComparer();
     }
 }

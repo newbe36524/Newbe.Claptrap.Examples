@@ -41,9 +41,9 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Seat
             var grain = mocker.Create<SeatGrain>();
             grain.SeatId = 123;
             const string reqId1 = "newbe36524-1";
-            Assert.ThrowsAsync<LocationNotFoundException>(()
+            Assert.ThrowsAsync<StationNotFoundException>(()
                 => grain.TakeSeatAsync(1000, 9999, reqId1));
-            Assert.ThrowsAsync<LocationNotFoundException>(()
+            Assert.ThrowsAsync<StationNotFoundException>(()
                 => grain.TakeSeatAsync(1, 1000, reqId1));
         }
 
@@ -58,7 +58,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Seat
             var grain = mocker.Create<SeatGrain>();
             grain.SeatId = 123;
             const string reqId1 = "newbe36524-1";
-            Assert.ThrowsAsync<LocationNotFoundException>(()
+            Assert.ThrowsAsync<StationNotFoundException>(()
                 => grain.TakeSeatAsync(1001, 1000, reqId1));
         }
 
