@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Ticketing.Actors", "Newbe.Claptrap.Ticketing.Actors\Newbe.Claptrap.Ticketing.Actors.csproj", "{3298E22C-974D-460A-9557-78599670C7B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Ticketing.BackendServer", "Newbe.Claptrap.Ticketing.BackendServer\Newbe.Claptrap.Ticketing.BackendServer.csproj", "{B416947F-079E-4D07-BD2F-3935ABB5FBB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Ticketing.Web", "Newbe.Claptrap.Ticketing.Web\Newbe.Claptrap.Ticketing.Web.csproj", "{7FEA5A8E-6805-4A21-B6E7-9D4C1904EC32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Ticketing.IActor", "Newbe.Claptrap.Ticketing.IActor\Newbe.Claptrap.Ticketing.IActor.csproj", "{8F20A5AD-FB03-4110-A396-7B3A41A42BDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Ticketing.Models", "Newbe.Claptrap.Ticketing.Models\Newbe.Claptrap.Ticketing.Models.csproj", "{60952E37-DE0A-4457-B602-779B21D24F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Ticketing.Actors.Tests", "Newbe.Claptrap.Ticketing.Actors.Tests\Newbe.Claptrap.Ticketing.Actors.Tests.csproj", "{6AE15739-FAD7-4604-884A-39FAB6525E63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newbe.Claptrap.Ticketing.Repository", "Newbe.Claptrap.Ticketing.Repository\Newbe.Claptrap.Ticketing.Repository.csproj", "{6AAE2251-B6E3-47D0-882F-CE07813C4D21}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3298E22C-974D-460A-9557-78599670C7B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3298E22C-974D-460A-9557-78599670C7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3298E22C-974D-460A-9557-78599670C7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3298E22C-974D-460A-9557-78599670C7B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B416947F-079E-4D07-BD2F-3935ABB5FBB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B416947F-079E-4D07-BD2F-3935ABB5FBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B416947F-079E-4D07-BD2F-3935ABB5FBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B416947F-079E-4D07-BD2F-3935ABB5FBB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FEA5A8E-6805-4A21-B6E7-9D4C1904EC32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FEA5A8E-6805-4A21-B6E7-9D4C1904EC32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FEA5A8E-6805-4A21-B6E7-9D4C1904EC32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FEA5A8E-6805-4A21-B6E7-9D4C1904EC32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F20A5AD-FB03-4110-A396-7B3A41A42BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F20A5AD-FB03-4110-A396-7B3A41A42BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F20A5AD-FB03-4110-A396-7B3A41A42BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F20A5AD-FB03-4110-A396-7B3A41A42BDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60952E37-DE0A-4457-B602-779B21D24F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60952E37-DE0A-4457-B602-779B21D24F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60952E37-DE0A-4457-B602-779B21D24F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60952E37-DE0A-4457-B602-779B21D24F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AE15739-FAD7-4604-884A-39FAB6525E63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AE15739-FAD7-4604-884A-39FAB6525E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AE15739-FAD7-4604-884A-39FAB6525E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AE15739-FAD7-4604-884A-39FAB6525E63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AAE2251-B6E3-47D0-882F-CE07813C4D21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AAE2251-B6E3-47D0-882F-CE07813C4D21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AAE2251-B6E3-47D0-882F-CE07813C4D21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AAE2251-B6E3-47D0-882F-CE07813C4D21}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
