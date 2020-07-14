@@ -1,4 +1,4 @@
-﻿namespace Newbe.Claptrap.Ticketing.Actors.Seat
+﻿namespace Newbe.Claptrap.Ticketing.Actors.Seat.Main
 {
     public struct SeatId
     {
@@ -6,10 +6,12 @@
         public int SeatNumber { get; set; }
 
         public static SeatId FromSeatId(string seatId)
+            => FromSeatId(int.Parse(seatId));
+
+        public static SeatId FromSeatId(int seatId)
         {
-            var i = int.Parse(seatId);
-            var seatNumber = i % 10000;
-            var trainId = i / 10000;
+            var seatNumber = seatId % 10000;
+            var trainId = seatId / 10000;
             var re = new SeatId
             {
                 SeatNumber = seatNumber,

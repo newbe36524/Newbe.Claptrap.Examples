@@ -10,12 +10,12 @@ namespace Newbe.Claptrap.Ticketing.IActor
 
         public StationNotFoundException(int trainId, int fromStationId, int toStationId)
             : this(
-                $"There is no seat found with seatId : {trainId}, fromLocationId:{fromStationId}, toLocationId:{toStationId}",
+                $"There is no seat found with seatId : {trainId}, fromStationId:{fromStationId}, toStationId:{toStationId}",
                 trainId,
                 fromStationId,
                 toStationId)
         {
-            this.TrainId = trainId;
+            TrainId = trainId;
             FromStationId = fromStationId;
             ToStationId = toStationId;
         }

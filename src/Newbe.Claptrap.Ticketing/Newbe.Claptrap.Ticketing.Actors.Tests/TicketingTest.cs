@@ -16,10 +16,10 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests
         [Test]
         public async Task TakeOne()
         {
-            var locations = Enumerable.Range(1000, 4).ToList();
-            var ticketing = new Ticketing(locations);
-            ticketing.LocationDic.Count.Should().Be(locations.Count);
-            ticketing.RequestIds.Count.Should().Be(locations.Count - 1);
+            var stations = Enumerable.Range(1000, 4).ToList();
+            var ticketing = new Ticketing(stations);
+            ticketing.StationDic.Count.Should().Be(stations.Count);
+            ticketing.RequestIds.Count.Should().Be(stations.Count - 1);
             var reqId1 = "newbe36524-1";
             await ticketing.GetSitAsync(1000, 1001, reqId1);
             ticketing.RequestIds.Should().BeEquivalentTo(reqId1, string.Empty, string.Empty);
@@ -28,10 +28,10 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests
         [Test]
         public async Task TakeMore()
         {
-            var locations = Enumerable.Range(1000, 4).ToList();
-            var ticketing = new Ticketing(locations);
-            ticketing.LocationDic.Count.Should().Be(locations.Count);
-            ticketing.RequestIds.Count.Should().Be(locations.Count - 1);
+            var stations = Enumerable.Range(1000, 4).ToList();
+            var ticketing = new Ticketing(stations);
+            ticketing.StationDic.Count.Should().Be(stations.Count);
+            ticketing.RequestIds.Count.Should().Be(stations.Count - 1);
             var reqId1 = "newbe36524-1";
             await ticketing.GetSitAsync(1000, 1002, reqId1);
             ticketing.RequestIds.Should().BeEquivalentTo(reqId1, reqId1, string.Empty);
@@ -40,10 +40,10 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests
         [Test]
         public async Task Conflict()
         {
-            var locations = Enumerable.Range(1000, 4).ToList();
-            var ticketing = new Ticketing(locations);
-            ticketing.LocationDic.Count.Should().Be(locations.Count);
-            ticketing.RequestIds.Count.Should().Be(locations.Count - 1);
+            var stations = Enumerable.Range(1000, 4).ToList();
+            var ticketing = new Ticketing(stations);
+            ticketing.StationDic.Count.Should().Be(stations.Count);
+            ticketing.RequestIds.Count.Should().Be(stations.Count - 1);
             var reqId1 = "newbe36524-1";
             await ticketing.GetSitAsync(1000, 1001, reqId1);
             ticketing.RequestIds.Should().BeEquivalentTo(reqId1, string.Empty, string.Empty);
@@ -56,31 +56,31 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests
 
     public interface ITicketing
     {
-        Task GetSitAsync(int fromLocationId, int toLocationId, string requestId);
+        Task GetSitAsync(int fromStationId, int toStationId, string requestId);
     }
 
     public class Ticketing : ITicketing
     {
-        public IList<int> Locations { get; }
-        public Dictionary<int, int> LocationDic { get; }
+        public IList<int> Stations { get; }
+        public Dictionary<int, int> StationDic { get; }
         public List<string> RequestIds { get; }
 
         public Ticketing(
-            IList<int> locations)
+            IList<int> stations)
         {
-            Locations = locations;
-            LocationDic = Locations
-                .Select((location, index) => (location, index))
-                .ToDictionary(x => x.location, x => x.index);
-            RequestIds = Locations.Take(Locations.Count - 1)
+            Stations = stations;
+            StationDic = Stations
+                .Select((station, index) => (station, index))
+                .ToDictionary(x => x.station, x => x.index);
+            RequestIds = Stations.Take(Stations.Count - 1)
                 .Select((x, i) => string.Empty)
                 .ToList();
         }
 
-        public Task GetSitAsync(int fromLocationId, int toLocationId, string requestId)
+        public Task GetSitAsync(int fromStationId, int toStationId, string requestId)
         {
-            var fromIndex = LocationDic[fromLocationId];
-            var toIndex = LocationDic[toLocationId];
+            var fromIndex = StationDic[fromStationId];
+            var toIndex = StationDic[toStationId];
             var distance = toIndex - fromIndex;
             var notRequested = RequestIds
                 .Skip(fromIndex)

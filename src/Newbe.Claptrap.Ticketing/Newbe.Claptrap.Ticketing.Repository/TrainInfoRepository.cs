@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 namespace Newbe.Claptrap.Ticketing.Repository
@@ -10,36 +7,30 @@ namespace Newbe.Claptrap.Ticketing.Repository
     {
         public Task<int[]> GetStationsAsync(int trainId)
         {
-            var re = DataSource.TrainLocations[trainId];
+            var re = DataSource.TrainStations[trainId];
             return Task.FromResult(re);
         }
 
-        public Task<int[]> GetTrainsAsync(int locationId)
+        public Task<int[]> GetTrainsAsync(int fromStationId, int toStationId)
         {
-            var trainIds = DataSource.LocationTrains[locationId];
-            return Task.FromResult(trainIds);
-        }
-
-        public Task<int[]> GetTrainsAsync(int fromLocationId, int toLocationId)
-        {
-            var fromTrains = DataSource.LocationTrains[fromLocationId];
-            var toTrains = DataSource.LocationTrains[toLocationId];
+            var fromTrains = DataSource.StationTrains[fromStationId];
+            var toTrains = DataSource.StationTrains[toStationId];
             var trainIds = fromTrains.Concat(toTrains).ToHashSet();
-            var re = DataSource.TrainLocations
+            var re = DataSource.TrainStations
                 .Where(kv => trainIds.Contains(kv.Key))
                 .Where(kv =>
                 {
-                    var locations = kv.Value;
+                    var stations = kv.Value;
                     var matchFrom = false;
                     var matchTo = false;
-                    foreach (var location in locations)
+                    foreach (var station in stations)
                     {
-                        if (!matchFrom && location == fromLocationId)
+                        if (!matchFrom && station == fromStationId)
                         {
                             matchFrom = true;
                         }
 
-                        if (matchFrom && location == toLocationId)
+                        if (matchFrom && station == toStationId)
                         {
                             matchTo = true;
                             break;

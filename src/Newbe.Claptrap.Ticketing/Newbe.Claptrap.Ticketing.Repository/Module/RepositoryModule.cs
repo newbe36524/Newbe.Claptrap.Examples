@@ -7,7 +7,7 @@ namespace Newbe.Claptrap.Ticketing.Repository.Module
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-            builder.RegisterType<LocationRepository>()
+            builder.RegisterType<StationRepository>()
                 .AsImplementedInterfaces()
                 .SingleInstance();
             builder.RegisterType<TrainInfoRepository>()

@@ -3,7 +3,10 @@ using Newbe.Claptrap.Ticketing.IActor;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newbe.Claptrap.Bootstrapper;
 using Newbe.Claptrap.Ticketing.Actors.Seat;
+using Newbe.Claptrap.Ticketing.Actors.Seat.Main;
+using Newbe.Claptrap.Ticketing.Models;
 using NLog.Web;
 using Orleans;
 
@@ -35,7 +38,19 @@ namespace Newbe.Claptrap.Ticketing.BackendServer
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
-                .UseClaptrap(typeof(ISeatGrain).Assembly, typeof(SeatGrain).Assembly)
+                .UseClaptrap(builder =>
+                {
+                    builder.ScanClaptrapDesigns(new[]
+                        {
+                            typeof(ISeatGrain).Assembly,
+                            typeof(SeatGrain).Assembly
+                        })
+                        .ConfigureClaptrapDesign(x =>
+                            x.ClaptrapOptions.EventCenterOptions.EventCenterType = EventCenterType.OrleansClient)
+                        .ConfigureClaptrapDesign(
+                            x => x.ClaptrapTypeCode == ClaptrapCodes.SeatUpdateCountMinionGrain,
+                            x => x.ClaptrapOptions.StateSavingOptions.SavingWindowVersionLimit = 1);
+                })
                 .UseOrleansClaptrap()
                 .UseOrleans(builder => builder.UseDashboard(options => options.Port = 9000))
                 .ConfigureLogging(logging =>

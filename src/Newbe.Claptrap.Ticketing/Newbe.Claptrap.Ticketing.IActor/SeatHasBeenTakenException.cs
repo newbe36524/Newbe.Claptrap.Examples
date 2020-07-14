@@ -5,35 +5,35 @@ namespace Newbe.Claptrap.Ticketing.IActor
     public class SeatHasBeenTakenException : Exception
     {
         public int SeatId { get; set; }
-        public int FromLocationId { get; set; }
-        public int ToLocationId { get; set; }
+        public int FromStationId { get; set; }
+        public int ToStationId { get; set; }
 
-        public SeatHasBeenTakenException(int seatId, int fromLocationId, int toLocationId)
+        public SeatHasBeenTakenException(int seatId, int fromStationId, int toStationId)
             : this(
-                $"Seat has been taken : {seatId}, fromLocationId:{fromLocationId}, toLocationId:{toLocationId}",
+                $"Seat has been taken : {seatId}, fromStationId:{fromStationId}, toStationId:{toStationId}",
                 seatId,
-                fromLocationId,
-                toLocationId)
+                fromStationId,
+                toStationId)
         {
             SeatId = seatId;
-            FromLocationId = fromLocationId;
-            ToLocationId = toLocationId;
+            FromStationId = fromStationId;
+            ToStationId = toStationId;
         }
 
-        public SeatHasBeenTakenException(string message, int seatId, int fromLocationId, int toLocationId) :
+        public SeatHasBeenTakenException(string message, int seatId, int fromStationId, int toStationId) :
             base(message)
         {
             SeatId = seatId;
-            FromLocationId = fromLocationId;
-            ToLocationId = toLocationId;
+            FromStationId = fromStationId;
+            ToStationId = toStationId;
         }
 
-        public SeatHasBeenTakenException(string message, Exception innerException, int seatId, int fromLocationId,
-            int toLocationId) : base(message, innerException)
+        public SeatHasBeenTakenException(string message, Exception innerException, int seatId, int fromStationId,
+            int toStationId) : base(message, innerException)
         {
             SeatId = seatId;
-            FromLocationId = fromLocationId;
-            ToLocationId = toLocationId;
+            FromStationId = fromStationId;
+            ToStationId = toStationId;
         }
     }
 }

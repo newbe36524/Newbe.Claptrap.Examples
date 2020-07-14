@@ -2,7 +2,7 @@
 using Newbe.Claptrap.Ticketing.Models.Seat;
 using Newbe.Claptrap.Ticketing.Repository;
 
-namespace Newbe.Claptrap.Ticketing.Actors.Seat
+namespace Newbe.Claptrap.Ticketing.Actors.Seat.Main
 {
     public class SeatInfoInitHandler : IInitialStateDataFactory
     {
@@ -17,8 +17,8 @@ namespace Newbe.Claptrap.Ticketing.Actors.Seat
         public async Task<IStateData> Create(IClaptrapIdentity identity)
         {
             var seatId = SeatId.FromSeatId(identity.Id);
-            var locations = await _trainInfoRepository.GetStationsAsync(seatId.TrainId);
-            var seatInfo = SeatInfo.Create(locations);
+            var stations = await _trainInfoRepository.GetStationsAsync(seatId.TrainId);
+            var seatInfo = SeatInfo.Create(stations);
             return seatInfo;
         }
     }

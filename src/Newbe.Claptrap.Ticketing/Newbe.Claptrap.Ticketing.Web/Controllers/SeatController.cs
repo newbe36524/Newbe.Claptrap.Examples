@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Metrics.Formatters.Ascii;
 using Microsoft.AspNetCore.Mvc;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository;
@@ -15,48 +13,48 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
     public class SeatController : Controller
     {
         private readonly IGrainFactory _grainFactory;
-        private readonly ILocationRepository _locationRepository;
+        private readonly IStationRepository _stationRepository;
         private readonly ITrainInfoRepository _trainInfoRepository;
 
         public SeatController(
             IGrainFactory grainFactory,
-            ILocationRepository locationRepository,
+            IStationRepository stationRepository,
             ITrainInfoRepository trainInfoRepository)
         {
             _grainFactory = grainFactory;
-            _locationRepository = locationRepository;
+            _stationRepository = stationRepository;
             _trainInfoRepository = trainInfoRepository;
         }
 
-        [HttpPost("{id}")]
-        public async Task<IActionResult> AddItemAsync(int id, [FromBody] TakeSeatInput input)
+        [HttpPost("{seatId}")]
+        public async Task<IActionResult> TakeSeatAsync(int seatId, [FromBody] TakeSeatInput input)
         {
-            var cartGrain = _grainFactory.GetGrain<ISeatGrain>(id.ToString());
+            var cartGrain = _grainFactory.GetGrain<ISeatGrain>(seatId.ToString());
             var requestId = Guid.NewGuid().ToString("N");
             try
             {
-                await cartGrain.TakeSeatAsync(input.FromLocationId, input.ToLocationId, requestId);
+                await cartGrain.TakeSeatAsync(input.FromStationId, input.ToStationId, requestId);
             }
             catch (Exception e)
             {
                 return Json(e.Message);
             }
 
-            var fromName = await _locationRepository.GetNameAsync(input.FromLocationId);
-            var toName = await _locationRepository.GetNameAsync(input.ToLocationId);
-            return Json($"take a seat success {id} [{fromName} -> {toName}] with requestId : {requestId}");
+            var fromName = await _stationRepository.GetNameAsync(input.FromStationId);
+            var toName = await _stationRepository.GetNameAsync(input.ToStationId);
+            return Json($"take a seat success {seatId} [{fromName} -> {toName}] with requestId : {requestId}");
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSeatAsync([FromBody] GetSeatInput input)
+        public async Task<IActionResult> GetSeatAsync([FromQuery] GetSeatInput input)
         {
-            var trains = await _trainInfoRepository.GetTrainsAsync(input.FromLocationId, input.ToLocationId);
+            var trains = await _trainInfoRepository.GetTrainsAsync(input.FromStationId, input.ToStationId);
             var tasks = trains.Select(async x =>
             {
                 var trainId = x;
                 var trainGran = _grainFactory.GetGrain<ITrainGran>(x.ToString());
                 var leftCount = await trainGran
-                    .GetLeftSeatCountAsync(input.FromLocationId, input.ToLocationId);
+                    .GetLeftSeatCountAsync(input.FromStationId, input.ToStationId);
                 return (trainId, leftCount);
             });
             var taskResult = await Task.WhenAll(tasks);
@@ -68,26 +66,26 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             var re = new GetSeatOutput
             {
                 Items = items,
-                FromLocationId = input.FromLocationId,
-                ToLocationId = input.ToLocationId,
-                FromLocationName = await _locationRepository.GetNameAsync(input.FromLocationId),
-                ToLocationName = await _locationRepository.GetNameAsync(input.ToLocationId)
+                FromStationId = input.FromStationId,
+                ToStationId = input.ToStationId,
+                FromStationName = await _stationRepository.GetNameAsync(input.FromStationId),
+                ToStationName = await _stationRepository.GetNameAsync(input.ToStationId)
             };
             return Json(re);
         }
 
         public class GetSeatInput
         {
-            public int FromLocationId { get; set; }
-            public int ToLocationId { get; set; }
+            public int FromStationId { get; set; }
+            public int ToStationId { get; set; }
         }
 
         public class GetSeatOutput
         {
-            public int FromLocationId { get; set; }
-            public int ToLocationId { get; set; }
-            public string FromLocationName { get; set; }
-            public string ToLocationName { get; set; }
+            public int FromStationId { get; set; }
+            public int ToStationId { get; set; }
+            public string FromStationName { get; set; }
+            public string ToStationName { get; set; }
             public IEnumerable<SeatListItem> Items { get; set; }
         }
 
@@ -99,8 +97,8 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
 
         public class TakeSeatInput
         {
-            public int FromLocationId { get; set; }
-            public int ToLocationId { get; set; }
+            public int FromStationId { get; set; }
+            public int ToStationId { get; set; }
         }
     }
 }

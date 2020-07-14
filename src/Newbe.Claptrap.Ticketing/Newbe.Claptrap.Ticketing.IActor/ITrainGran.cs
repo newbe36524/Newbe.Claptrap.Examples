@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newbe.Claptrap.Orleans;
 using Newbe.Claptrap.Ticketing.Models;
 using Newbe.Claptrap.Ticketing.Models.Train;
@@ -17,6 +18,12 @@ namespace Newbe.Claptrap.Ticketing.IActor
         /// <param name="toStationId"></param>
         /// <returns></returns>
         Task<int> GetLeftSeatCountAsync(int fromStationId, int toStationId);
+        
+        /// <summary>
+        /// get left count
+        /// </summary>
+        /// <returns></returns>
+        Task<Dictionary<StationTuple,int>> GetAllCountAsync();
 
         /// <summary>
         /// update count

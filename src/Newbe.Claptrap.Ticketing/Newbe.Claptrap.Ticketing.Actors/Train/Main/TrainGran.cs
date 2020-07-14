@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Newbe.Claptrap.Orleans;
-using Newbe.Claptrap.Ticketing.Actors.Train.Events;
+using Newbe.Claptrap.Ticketing.Actors.Train.Main.Events;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Models;
 using Newbe.Claptrap.Ticketing.Models.Train;
 using Newbe.Claptrap.Ticketing.Models.Train.Events;
 using Orleans;
 
-namespace Newbe.Claptrap.Ticketing.Actors.Train
+namespace Newbe.Claptrap.Ticketing.Actors.Train.Main
 {
     [ClaptrapStateInitialFactoryHandler(typeof(TrainGranInitHandler))]
     [ClaptrapEventHandler(typeof(UpdateCountEventHandler), ClaptrapCodes.UpdateCount)]
@@ -38,17 +39,17 @@ namespace Newbe.Claptrap.Ticketing.Actors.Train
 
         public Task<int> GetLeftSeatCountAsync(int fromStationId, int toStationId)
         {
-            var key = new StationTuple
-            {
-                FromStationId = fromStationId,
-                ToStationId = toStationId
-            };
-            if (!StateData.SeatCount.TryGetValue(key, out var count))
+            if (!StateData.TryGetSeatCount(fromStationId, toStationId, out var count))
             {
                 throw new StationNotFoundException(TrainId, fromStationId, toStationId);
             }
 
             return Task.FromResult(count);
+        }
+
+        public Task<Dictionary<StationTuple, int>> GetAllCountAsync()
+        {
+            return Task.FromResult(StateData.SeatCount.ToDictionary(x => x.Key, x => x.Value));
         }
 
         public Task UpdateCountAsync(int fromStationId, int toStationId)

@@ -1,17 +1,17 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Newbe.Claptrap.Orleans;
-using Newbe.Claptrap.Ticketing.Actors.Seat.Events;
+using Newbe.Claptrap.Ticketing.Actors.Seat.Main.Events;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Models;
 using Newbe.Claptrap.Ticketing.Models.Seat;
 using Newbe.Claptrap.Ticketing.Models.Seat.Events;
 using Orleans;
 
-namespace Newbe.Claptrap.Ticketing.Actors.Seat
+namespace Newbe.Claptrap.Ticketing.Actors.Seat.Main
 {
     [ClaptrapStateInitialFactoryHandler(typeof(SeatInfoInitHandler))]
-    [ClaptrapEventHandler(typeof(TakeSeatEventHandler), ClaptrapCodes.TakeSeat)]
+    [ClaptrapEventHandler(typeof(TakeSeatEventHandler), ClaptrapCodes.TakeSeatEvent)]
     public class SeatGrain : ClaptrapBoxGrain<SeatInfo>, ISeatGrain
     {
         private int _seatId;
@@ -35,14 +35,14 @@ namespace Newbe.Claptrap.Ticketing.Actors.Seat
             set => _seatId = value;
         }
 
-        public Task TakeSeatAsync(int fromLocationId, int toLocationId, string requestId)
+        public Task TakeSeatAsync(int fromStationId, int toStationId, string requestId)
         {
-            if (!StateData.LocationDic.TryGetValue(fromLocationId, out var fromIndex))
+            if (!StateData.StationDic.TryGetValue(fromStationId, out var fromIndex))
             {
                 throw CreateNotFoundException();
             }
 
-            if (!StateData.LocationDic.TryGetValue(toLocationId, out var toIndex))
+            if (!StateData.StationDic.TryGetValue(toStationId, out var toIndex))
             {
                 throw CreateNotFoundException();
             }
@@ -60,24 +60,24 @@ namespace Newbe.Claptrap.Ticketing.Actors.Seat
             if (!notRequested)
             {
                 throw new SeatHasBeenTakenException(SeatId,
-                    fromLocationId,
-                    toLocationId);
+                    fromStationId,
+                    toStationId);
             }
 
             var evt = this.CreateEvent(new TakeSeatEvent
             {
                 RequestId = requestId,
-                FromLocationId = fromLocationId,
-                ToLocationId = toLocationId
+                FromStationId = fromStationId,
+                ToStationId = toStationId
             });
             return Claptrap.HandleEventAsync(evt);
 
             StationNotFoundException CreateNotFoundException()
             {
-                var seatId = Seat.SeatId.FromSeatId(this.GetPrimaryKeyString());
+                var seatId = Main.SeatId.FromSeatId(SeatId);
                 return new StationNotFoundException(seatId.TrainId,
-                    fromLocationId,
-                    toLocationId);
+                    fromStationId,
+                    toStationId);
             }
         }
     }

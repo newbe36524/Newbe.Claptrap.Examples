@@ -5,7 +5,7 @@ namespace Newbe.Claptrap.Ticketing.Repository
 {
     public static class DataSource
     {
-        public static readonly IReadOnlyDictionary<int, string> LocationNames = new Dictionary<int, string>
+        public static readonly IReadOnlyDictionary<int, string> StationNames = new Dictionary<int, string>
         {
             {10001, "bei jing"},
             {10002, "shang hai"},
@@ -43,14 +43,14 @@ namespace Newbe.Claptrap.Ticketing.Repository
             {10034, "ao men"},
         };
 
-        public static readonly IReadOnlyDictionary<int, int[]> TrainLocations =
-            Enumerable.Range(2, LocationNames.Count - 1)
-                .ToDictionary(x => x, x => LocationNames.Keys.Take(x).ToArray());
+        public static readonly IReadOnlyDictionary<int, int[]> TrainStations =
+            Enumerable.Range(2, StationNames.Count - 1)
+                .ToDictionary(x => x, x => StationNames.Keys.Take(x).ToArray());
 
-        public static readonly IReadOnlyDictionary<int, int[]> LocationTrains
-            = TrainLocations
-                .SelectMany(x => x.Value.Select(locationId => (trainId: x.Key, locationId)))
-                .GroupBy(x => x.locationId, x => x.trainId)
+        public static readonly IReadOnlyDictionary<int, int[]> StationTrains
+            = TrainStations
+                .SelectMany(x => x.Value.Select(stationId => (trainId: x.Key, stationId)))
+                .GroupBy(x => x.stationId, x => x.trainId)
                 .ToDictionary(x => x.Key, x => x.ToArray());
     }
 }

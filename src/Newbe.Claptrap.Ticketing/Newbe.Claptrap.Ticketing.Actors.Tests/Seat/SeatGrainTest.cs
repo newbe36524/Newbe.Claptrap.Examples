@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Extras.Moq;
-using Moq;
 using Newbe.Claptrap.Orleans;
 using Newbe.Claptrap.Ticketing.Actors.Seat;
+using Newbe.Claptrap.Ticketing.Actors.Seat.Main;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Models;
 using Newbe.Claptrap.Ticketing.Models.Seat;
@@ -22,7 +22,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Seat
             mocker.Mock<IClaptrapGrainCommonService>()
                 .Setup(x => x.ClaptrapAccessor.Claptrap.State.Data)
                 .Returns(seatInfo);
-            mocker.MockEventHandling<TakeSeatEvent>(ClaptrapCodes.TakeSeat);
+            mocker.MockEventHandling<TakeSeatEvent>(ClaptrapCodes.TakeSeatEvent);
 
             var grain = mocker.Create<SeatGrain>();
             grain.SeatId = 123;
@@ -31,7 +31,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Seat
         }
 
         [Test]
-        public void LocationNotFound()
+        public void StationNotFound()
         {
             using var mocker = AutoMock.GetStrict();
             var seatInfo = SeatInfo.Create(Enumerable.Range(1000, 4).ToList());
@@ -48,7 +48,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Seat
         }
 
         [Test]
-        public void LocationMismatched()
+        public void StationMismatched()
         {
             using var mocker = AutoMock.GetStrict();
             var seatInfo = SeatInfo.Create(Enumerable.Range(1000, 4).ToList());

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using FluentAssertions;
-using Newbe.Claptrap.Ticketing.Actors.Seat.Events;
+using Newbe.Claptrap.Ticketing.Actors.Seat.Main.Events;
 using Newbe.Claptrap.Ticketing.Models.Seat;
 using Newbe.Claptrap.Ticketing.Models.Seat.Events;
 using NUnit.Framework;
@@ -21,8 +21,8 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Seat.Events
             var takeSeatEvent = new TakeSeatEvent
             {
                 RequestId = reqId1,
-                FromLocationId = 1000,
-                ToLocationId = 1001
+                FromStationId = 1000,
+                ToStationId = 1001
             };
             await handler.HandleEvent(seatInfo, takeSeatEvent, default);
             seatInfo.RequestIds.Should().BeEquivalentTo(reqId1, string.Empty, string.Empty);
@@ -38,8 +38,8 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Seat.Events
             var takeSeatEvent = new TakeSeatEvent
             {
                 RequestId = reqId1,
-                FromLocationId = 1000,
-                ToLocationId = 1002
+                FromStationId = 1000,
+                ToStationId = 1002
             };
             await handler.HandleEvent(seatInfo, takeSeatEvent, default);
             seatInfo.RequestIds.Should().BeEquivalentTo(reqId1, reqId1, string.Empty);

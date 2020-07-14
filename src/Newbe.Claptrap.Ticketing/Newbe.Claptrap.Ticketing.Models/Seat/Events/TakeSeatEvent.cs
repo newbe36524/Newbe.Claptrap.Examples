@@ -2,8 +2,8 @@
 {
     public class TakeSeatEvent : IEventData
     {
-        public int FromLocationId { get; set; }
-        public int ToLocationId { get; set; }
+        public int FromStationId { get; set; }
+        public int ToStationId { get; set; }
         public string RequestId { get; set; }
     }
 }

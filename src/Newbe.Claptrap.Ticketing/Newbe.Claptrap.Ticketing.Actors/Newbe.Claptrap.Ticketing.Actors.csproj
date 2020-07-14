@@ -19,4 +19,8 @@
       <ProjectReference Include="..\Newbe.Claptrap.Ticketing.Models\Newbe.Claptrap.Ticketing.Models.csproj" />
       <ProjectReference Include="..\Newbe.Claptrap.Ticketing.Repository\Newbe.Claptrap.Ticketing.Repository.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Orleans_CodeGenInputs Remove="Train\Events\UpdateCountEventHandler.cs" />
+    </ItemGroup>
 </Project>

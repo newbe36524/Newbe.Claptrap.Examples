@@ -7,18 +7,18 @@ using Newbe.Claptrap.Ticketing.Models.Seat.Events;
 namespace Newbe.Claptrap.Ticketing.IActor
 {
     [ClaptrapState(typeof(SeatInfo), ClaptrapCodes.SeatGrain)]
-    [ClaptrapEvent(typeof(TakeSeatEvent), ClaptrapCodes.TakeSeat)]
+    [ClaptrapEvent(typeof(TakeSeatEvent), ClaptrapCodes.TakeSeatEvent)]
     public interface ISeatGrain : IClaptrapGrain
     {
         /// <summary>
         /// Take a seat
         /// </summary>
-        /// <param name="fromLocationId"></param>
-        /// <param name="toLocationId"></param>
+        /// <param name="fromStationId"></param>
+        /// <param name="toStationId"></param>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        /// <exception cref="StationNotFoundException">location not found</exception>
+        /// <exception cref="StationNotFoundException">station not found</exception>
         /// <exception cref="SeatHasBeenTakenException">seat has been taken</exception>
-        Task TakeSeatAsync(int fromLocationId, int toLocationId, string requestId);
+        Task TakeSeatAsync(int fromStationId, int toStationId, string requestId);
     }
 }

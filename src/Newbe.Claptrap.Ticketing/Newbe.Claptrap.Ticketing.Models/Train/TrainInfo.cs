@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Newbe.Claptrap.Ticketing.Models.Train
 {
@@ -7,27 +6,50 @@ namespace Newbe.Claptrap.Ticketing.Models.Train
     {
         public IReadOnlyList<int> Stations { get; set; }
         public IDictionary<StationTuple, int> SeatCount { get; set; }
-    }
 
-    public struct StationTuple
-    {
-        public int FromStationId { get; set; }
-        public int ToStationId { get; set; }
-
-        private sealed class FromLocationIdToLocationIdEqualityComparer : IEqualityComparer<StationTuple>
+        public int GetSeatCount(int fromStationId, int toStationId)
         {
-            public bool Equals(StationTuple x, StationTuple y)
+            var key = new StationTuple
             {
-                return x.FromStationId == y.FromStationId && x.ToStationId == y.ToStationId;
-            }
-
-            public int GetHashCode(StationTuple obj)
-            {
-                return HashCode.Combine(obj.FromStationId, obj.ToStationId);
-            }
+                FromStationId = fromStationId,
+                ToStationId = toStationId
+            };
+            var re = SeatCount[key];
+            return re;
         }
 
-        public static IEqualityComparer<StationTuple> FromLocationIdToLocationIdComparer { get; } =
-            new FromLocationIdToLocationIdEqualityComparer();
+        public bool TryGetSeatCount(int fromStationId, int toStationId, out int count)
+        {
+            var key = new StationTuple
+            {
+                FromStationId = fromStationId,
+                ToStationId = toStationId
+            };
+            return SeatCount.TryGetValue(key, out count);
+        }
+
+        public static TrainInfo Create(IReadOnlyList<int> stations, int seatCount)
+        {
+            var dic = new Dictionary<StationTuple, int>(StationTuple.FromStationIdToStationIdComparer);
+            for (var i = 0; i < stations.Count - 1; i++)
+            {
+                for (var j = i + 1; j < stations.Count; j++)
+                {
+                    var stationTuple = new StationTuple
+                    {
+                        FromStationId = stations[i],
+                        ToStationId = stations[j]
+                    };
+                    dic[stationTuple] = seatCount;
+                }
+            }
+
+            var re = new TrainInfo
+            {
+                Stations = stations,
+                SeatCount = dic
+            };
+            return re;
+        }
     }
 }
