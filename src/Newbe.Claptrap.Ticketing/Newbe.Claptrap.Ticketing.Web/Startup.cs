@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository.Module;
 using Orleans;
 
@@ -24,22 +25,18 @@ namespace Newbe.Claptrap.Ticketing.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
             services.AddControllers();
             services.AddSwaggerGen(c => { });
-            services.AddCors(options =>
+            services.AddHttpClient("train", (s, h) =>
             {
-                options.AddPolicy("_AllowTrainOrigin", builder =>
-                {
-
-                    builder.WithOrigins("http://localhost:52953") //允许任何来源的主机访问
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials();//指定处理cookie
-                });
+                const string baseUrl = "https://localhost:36524/";
+                h.BaseAddress = new Uri(baseUrl);
             });
             AddOrleansClient(services);
         }
-        
+
         // ConfigureContainer is where you can register things directly
         // with Autofac. This runs after ConfigureServices so the things
         // here will override registrations made in ConfigureServices.
@@ -55,6 +52,7 @@ namespace Newbe.Claptrap.Ticketing.Web
             var clientBuilder = new ClientBuilder();
             var client = clientBuilder
                 .UseLocalhostClustering()
+                .ConfigureApplicationParts(manager => manager.AddApplicationPart(typeof(ITrainGran).Assembly).WithReferences())
                 .Build();
             client.Connect(exception =>
             {
@@ -75,15 +73,20 @@ namespace Newbe.Claptrap.Ticketing.Web
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
+            
             app.UseRouting();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
-            app.UseAuthorization();
             app.UseCors("_AllowTrainOrigin");
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
+                endpoints.MapControllers();
+            });
         }
     }
 }

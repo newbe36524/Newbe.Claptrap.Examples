@@ -1,10 +1,10 @@
 ﻿@page "/"
 @using System.Text
-@inject IHttpClientFactory http
-@inject IJSRuntime jsRuntime
+@inject IHttpClientFactory Http
+@inject IJSRuntime JsRuntime
 @implements IDisposable
 @using Microsoft.Extensions.Logging;
-@inject ILogger<Index> logger;
+@inject ILogger<Index> Logger;
 <div class="row">
 
     <div class="col-md-10 order-md-1">
@@ -97,7 +97,7 @@
     private ElementReference toEmptyOption;
     protected override async Task OnInitializedAsync()
     {
-        allStations = await http.CreateClient("train").GetFromJsonAsync<List<PassStation>>($"api/Train/GetAllStation");
+        allStations = await Http.CreateClient("train").GetFromJsonAsync<List<PassStation>>($"api/Train/GetAllStation");
         allStations.Insert(0, new PassStation() { StationId = 0, StationName = "-请选择-" });
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -106,9 +106,9 @@
         if (firstRender)
         {
             dotNetReference = DotNetObjectReference.Create(this);
-            await jsRuntime.InvokeVoidAsync("trainJsFunctions.generatorDotnetObject", dotNetReference);
-            await jsRuntime.InvokeAsync<object>("trainJsFunctions.fixOptionValue", this.fromEmptyOption);
-            await jsRuntime.InvokeAsync<object>("trainJsFunctions.fixOptionValue", this.toEmptyOption);
+            // await JsRuntime.InvokeVoidAsync("trainJsFunctions.generatorDotnetObject", dotNetReference);
+            // await JsRuntime.InvokeAsync<object>("trainJsFunctions.fixOptionValue", this.fromEmptyOption);
+            // await JsRuntime.InvokeAsync<object>("trainJsFunctions.fixOptionValue", this.toEmptyOption);
         }
     }
     GetSeatOutput seatOutput;
@@ -139,7 +139,7 @@
         //seatInput.FromStationId = Convert.ToInt32(fromStation);
         //seatInput.ToStationId = Convert.ToInt32(toStation);
 
-        seatOutput = await http.CreateClient("train").GetFromJsonAsync<GetSeatOutput>($"api/Seat?FromStationId={fromStation}&ToStationId={toStation}");
+        seatOutput = await Http.CreateClient("train").GetFromJsonAsync<GetSeatOutput>($"api/Seat?FromStationId={fromStation}&ToStationId={toStation}");
 
         //if (response.IsSuccessStatusCode)
         //{
@@ -163,11 +163,11 @@
                 return;
             }
             string sjseatid = trainId + zwid.ToString().PadLeft(4, '0');
-            logger.LogDebug($"预定的座位号={sjseatid}");
+            Logger.LogDebug($"预定的座位号={sjseatid}");
             TakeSeatInput seatInput = new TakeSeatInput();
             seatInput.FromStationId = fromStationId;
             seatInput.ToStationId = ToStationId;
-            var respone = await http.CreateClient("train").PostAsJsonAsync($"api/Seat/{sjseatid}", seatInput);
+            var respone = await Http.CreateClient("train").PostAsJsonAsync($"api/Seat/{sjseatid}", seatInput);
             if (respone.IsSuccessStatusCode)
             {
                 //logger.LogDebug(respone.Content.ReadAsStringAsync().Result);

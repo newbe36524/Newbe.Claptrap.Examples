@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Newbe.Claptrap.Ticketing.Ac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Newbe.Claptrap.Ticketing.Repository", "Newbe.Claptrap.Ticketing.Repository\Newbe.Claptrap.Ticketing.Repository.csproj", "{6AAE2251-B6E3-47D0-882F-CE07813C4D21}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Newbe.Claptrap.Ticketing.BlazorDemo", "Newbe.Claptrap.Ticketing.BlazorDemo\Newbe.Claptrap.Ticketing.BlazorDemo.csproj", "{F5F3E83F-F864-4EC5-8CD6-A2054F5A4487}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{6AAE2251-B6E3-47D0-882F-CE07813C4D21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AAE2251-B6E3-47D0-882F-CE07813C4D21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AAE2251-B6E3-47D0-882F-CE07813C4D21}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5F3E83F-F864-4EC5-8CD6-A2054F5A4487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5F3E83F-F864-4EC5-8CD6-A2054F5A4487}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5F3E83F-F864-4EC5-8CD6-A2054F5A4487}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5F3E83F-F864-4EC5-8CD6-A2054F5A4487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,10 +23,5 @@ namespace Newbe.Claptrap.Ticketing.Models.Train
 
         public static IEqualityComparer<StationTuple> FromStationIdToStationIdComparer { get; } =
             new FromStationIdToStationIdEqualityComparer();
-
-        public override string ToString()
-        {
-            return $"{nameof(FromStationId)}: {FromStationId}, {nameof(ToStationId)}: {ToStationId}";
-        }
     }
 }
