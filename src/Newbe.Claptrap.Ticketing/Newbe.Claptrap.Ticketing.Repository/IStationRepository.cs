@@ -7,5 +7,6 @@ namespace Newbe.Claptrap.Ticketing.Repository
     {
         Task<string> GetNameAsync(int stationId);
         Task<Dictionary<int, string>> GetNamesAsync(IEnumerable<int> stationId);
+        Task<Dictionary<int, string>> GetAllNameAsync();
     }
 }
