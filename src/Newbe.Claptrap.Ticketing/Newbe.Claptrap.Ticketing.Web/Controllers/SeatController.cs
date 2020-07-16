@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository;
@@ -9,6 +10,7 @@ using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
 {
+    [EnableCors("_AllowTrainOrigin")]
     [Route("api/[controller]")]
     public class SeatController : Controller
     {
@@ -37,12 +39,14 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             }
             catch (Exception e)
             {
-                return Json(e.Message);
+                //return Json(e.Message);
+                return Json(new { status = "0", message = e.Message });
             }
 
             var fromName = await _stationRepository.GetNameAsync(input.FromStationId);
             var toName = await _stationRepository.GetNameAsync(input.ToStationId);
-            return Json($"take a seat success {seatId} [{fromName} -> {toName}] with requestId : {requestId}");
+            //return Json($"take a seat success {seatId} [{fromName} -> {toName}] with requestId : {requestId}");
+            return Json(new { status = "1", message = $"take a seat success {seatId} [{fromName} -> {toName}] with requestId : {requestId}" });
         }
 
         [HttpGet]

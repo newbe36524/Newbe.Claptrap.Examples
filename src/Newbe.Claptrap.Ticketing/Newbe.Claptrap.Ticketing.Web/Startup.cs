@@ -26,7 +26,17 @@ namespace Newbe.Claptrap.Ticketing.Web
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("_AllowTrainOrigin", builder =>
+                {
 
+                    builder.WithOrigins("http://localhost:52953") //允许任何来源的主机访问
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();//指定处理cookie
+                });
+            });
             AddOrleansClient(services);
         }
         
@@ -72,7 +82,7 @@ namespace Newbe.Claptrap.Ticketing.Web
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseAuthorization();
-
+            app.UseCors("_AllowTrainOrigin");
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

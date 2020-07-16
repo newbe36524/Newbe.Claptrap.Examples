@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository;
@@ -8,7 +9,8 @@ using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
 {
-    [Route("api/[controller]")]
+    
+    [EnableCors("_AllowTrainOrigin")]
     public class TrainController : Controller
     {
         private readonly IGrainFactory _grainFactory;
@@ -21,7 +23,7 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             _grainFactory = grainFactory;
             _stationRepository = stationRepository;
         }
-
+        [Route("api/[controller]/GetLeftSeat")]
         [HttpGet]
         public async Task<IActionResult> GetLeftSeatAsync(int trainId)
         {
@@ -51,7 +53,24 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                 }
             }
         }
-
+        [Route("api/[controller]/GetAllStation")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllStationAsync()
+        {
+            var nameDic = await _stationRepository.GetAllNameAsync();
+            var re = nameDic.Select(x => new PassStation
+            {
+                StationId = x.Key,
+                StationName = x.Value
+            })
+              .ToArray();
+            return Json(re);
+        }
+        public class PassStation
+        {
+            public int StationId { get; set; }
+            public string StationName { get; set; }
+        }
         public class LeftCountItem
         {
             public int FromStationId { get; set; }
