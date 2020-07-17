@@ -13,13 +13,16 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
     public class TrainController : Controller
     {
         private readonly IGrainFactory _grainFactory;
+        private readonly ITrainInfoRepository _trainInfoRepository;
         private readonly IStationRepository _stationRepository;
 
         public TrainController(
             IGrainFactory grainFactory,
+            ITrainInfoRepository trainInfoRepository,
             IStationRepository stationRepository)
         {
             _grainFactory = grainFactory;
+            _trainInfoRepository = trainInfoRepository;
             _stationRepository = stationRepository;
         }
 
@@ -51,6 +54,23 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                     yield return allCountKey.ToStationId;
                 }
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllTrainInfoAsync()
+        {
+            var allTrainInfo = await _trainInfoRepository.GetAllTrainInfoAsync();
+            var tasks = allTrainInfo
+                .Select(async x => new TrainBasicInfoViewModel
+                {
+                    TrainId = x.TrainId,
+                    FromStationId = x.FromStationId,
+                    FromStationName = await _stationRepository.GetNameAsync(x.FromStationId),
+                    ToStationId = x.ToStationId,
+                    ToStationName = await _stationRepository.GetNameAsync(x.ToStationId)
+                });
+            var re = await Task.WhenAll(tasks);
+            return Json(re);
         }
     }
 }

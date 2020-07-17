@@ -168,4 +168,7 @@
   <data name="Invalid seat number" xml:space="preserve">
     <value>座位号必须为数字</value>
   </data>
+  <data name="Search by train" xml:space="preserve">
+    <value>车次查询</value>
+  </data>
 </root>

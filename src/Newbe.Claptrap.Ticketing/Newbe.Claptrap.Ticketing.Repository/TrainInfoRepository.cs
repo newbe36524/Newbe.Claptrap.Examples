@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Newbe.Claptrap.Ticketing.Repository
@@ -54,6 +55,18 @@ namespace Newbe.Claptrap.Ticketing.Repository
                 ToStationId = trainStation.Last()
             };
             return Task.FromResult(re);
+        }
+
+        public Task<IEnumerable<TrainBasicInfo>> GetAllTrainInfoAsync()
+        {
+            var trainBasicInfos = DataSource.TrainStations
+                .Select(x => new TrainBasicInfo
+                {
+                    TrainId = x.Key,
+                    FromStationId = x.Value.First(),
+                    ToStationId = x.Value.Last()
+                }).ToArray();
+            return Task.FromResult<IEnumerable<TrainBasicInfo>>(trainBasicInfos);
         }
     }
 }

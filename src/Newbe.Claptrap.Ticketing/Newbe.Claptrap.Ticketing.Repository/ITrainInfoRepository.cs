@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Newbe.Claptrap.Ticketing.Repository
 {
@@ -7,5 +8,6 @@ namespace Newbe.Claptrap.Ticketing.Repository
         Task<int[]> GetStationsAsync(int trainId);
         Task<int[]> GetTrainsAsync(int fromStationId, int toStationId);
         Task<TrainBasicInfo> GetTrainInfoAsync(int trainId);
+        Task<IEnumerable<TrainBasicInfo>> GetAllTrainInfoAsync();
     }
 }
