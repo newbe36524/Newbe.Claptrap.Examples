@@ -5,9 +5,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newbe.Claptrap.Bootstrapper;
 using Newbe.Claptrap.Ticketing.Actors.Seat.Main;
+using Newbe.Claptrap.Ticketing.Actors.Seat.Minions.SeatUpdateCount;
+using Newbe.Claptrap.Ticketing.Actors.Train.Main;
 using Newbe.Claptrap.Ticketing.Models;
 using NLog.Web;
 using Orleans;
+using Orleans.Configuration;
+using Orleans.Hosting;
 
 namespace Newbe.Claptrap.Ticketing.BackendServer
 {
@@ -51,7 +55,21 @@ namespace Newbe.Claptrap.Ticketing.BackendServer
                             x => x.ClaptrapOptions.StateSavingOptions.SavingWindowVersionLimit = 1);
                 })
                 .UseOrleansClaptrap()
-                .UseOrleans(builder => builder.UseDashboard(options => options.Port = 9000))
+                .UseOrleans(builder =>
+                {
+                    builder
+                        .Configure<GrainCollectionOptions>(options =>
+                        {
+                            options.CollectionAge = TimeSpan.FromMinutes(5);
+                            options.ClassSpecificCollectionAge[typeof(TrainGran).FullName!]
+                                = TimeSpan.FromHours(2);
+                            options.ClassSpecificCollectionAge[typeof(SeatGrain).FullName!]
+                                = TimeSpan.FromSeconds(1);
+                            options.ClassSpecificCollectionAge[typeof(SeatUpdateCountMinionGrain).FullName!]
+                                = TimeSpan.FromSeconds(1);
+                        })
+                        .UseDashboard(options => options.Port = 9000);
+                })
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
