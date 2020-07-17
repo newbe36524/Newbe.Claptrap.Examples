@@ -16,10 +16,10 @@ namespace Newbe.Claptrap.Ticketing.BlazorDemo
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-            //Èç¹û±¾µØ²¿Êðºó webapi ÇëÇóµØÖ·²»¶Ô£¬Çë¸ü»»×Ô¼ºµÄurlµØÖ·
+            //å¦‚æžœæœ¬åœ°éƒ¨ç½²åŽ webapi è¯·æ±‚åœ°å€ä¸å¯¹ï¼Œè¯·æ›´æ¢è‡ªå·±çš„urlåœ°å€
             string baseUrl = "https://localhost:36524/";
             //builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(baseUrl) });
-            builder.Logging.SetMinimumLevel(LogLevel.Debug);//¿ªÆôÈÕÖ¾
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);//å¼€å¯æ—¥å¿—
             builder.Services.AddHttpClient("train", (s, h) =>
             {
                 h.BaseAddress = new Uri(baseUrl);
