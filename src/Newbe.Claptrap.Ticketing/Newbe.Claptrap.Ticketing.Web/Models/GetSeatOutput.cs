@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Newbe.Claptrap.Ticketing.Web.Models.Api
+namespace Newbe.Claptrap.Ticketing.Web.Models
 {
     public class GetSeatOutput
     {

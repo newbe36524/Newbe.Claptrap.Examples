@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository;
 using Newbe.Claptrap.Ticketing.Web.Models;
-using Newbe.Claptrap.Ticketing.Web.Models.Api;
 using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
@@ -62,14 +59,20 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                 var trainGran = _grainFactory.GetGrain<ITrainGran>(x.ToString());
                 var leftCount = await trainGran
                     .GetLeftSeatCountAsync(input.FromStationId, input.ToStationId);
-                return (trainId, leftCount);
+                var trainInfo = await _trainInfoRepository.GetTrainInfoAsync(trainId);
+                var item = new SeatListItem
+                {
+                    LeftCount = leftCount,
+                    TrainId = trainId,
+                    FromStationId = trainInfo.FromStationId,
+                    ToStationId = trainInfo.ToStationId,
+                    FromStationName = await _stationRepository.GetNameAsync(trainInfo.FromStationId),
+                    ToStationName = await _stationRepository.GetNameAsync(trainInfo.ToStationId)
+                };
+                return item;
             });
-            var taskResult = await Task.WhenAll(tasks);
-            var items = taskResult.Select(x => new SeatListItem
-            {
-                TrainId = x.trainId,
-                LeftCount = x.leftCount
-            });
+            var items = await Task.WhenAll(tasks);
+
             var re = new GetSeatOutput
             {
                 Items = items,

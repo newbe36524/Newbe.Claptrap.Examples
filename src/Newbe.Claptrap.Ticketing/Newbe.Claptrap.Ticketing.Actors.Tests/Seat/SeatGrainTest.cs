@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using Newbe.Claptrap.Orleans;
-using Newbe.Claptrap.Ticketing.Actors.Seat;
 using Newbe.Claptrap.Ticketing.Actors.Seat.Main;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Models;

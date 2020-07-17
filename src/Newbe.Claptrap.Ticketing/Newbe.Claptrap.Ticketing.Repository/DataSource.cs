@@ -44,8 +44,21 @@ namespace Newbe.Claptrap.Ticketing.Repository
         };
 
         public static readonly IReadOnlyDictionary<int, int[]> TrainStations =
-            Enumerable.Range(2, StationNames.Count - 1)
-                .ToDictionary(x => x, x => StationNames.Keys.Take(x).ToArray());
+            From2ToEnd().Concat(FromEndTo2())
+                .ToDictionary(x => x.trainId, x => x.stattionIds);
+
+        private static IEnumerable<(int trainId, int[] stattionIds)> From2ToEnd()
+        {
+            return Enumerable.Range(2, StationNames.Count - 1)
+                .Select((x, i) => (trainId: x, stattionIds: StationNames.Keys.Take(i + 2).ToArray()));
+        }
+
+        private static IEnumerable<(int trainId, int[] stattionIds)> FromEndTo2()
+        {
+            var reversKeys = StationNames.Keys.Reverse().ToArray();
+            return Enumerable.Range(102, StationNames.Count - 1)
+                .Select((x, i) => (trainId: x, stattionIds: reversKeys.Take(i + 2).ToArray()));
+        }
 
         public static readonly IReadOnlyDictionary<int, int[]> StationTrains
             = TrainStations

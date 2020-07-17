@@ -3,83 +3,91 @@
 @inject IJSRuntime JsRuntime
 @implements IDisposable
 @using Microsoft.Extensions.Logging;
-@using Newbe.Claptrap.Ticketing.Web.Models.Api
+@using Newbe.Claptrap.Ticketing.Web.Models
+@using Microsoft.Extensions.Localization
+@using Newbe.Claptrap.Ticketing.Web.Services
 @inject ILogger<Index> Logger;
+@inject IStringLocalizer<Index> L;
+@inject IStringLocalizer<StationResources> stationL;
 <div class="row">
 
     <div class="col-md-10 order-md-1">
-        <h4 class="mb-3 mt-xl-1">车票-线路</h4>
+        <h4 class="mb-3 mt-xl-1">@(L["Train Route"])</h4>
         <div class="row">
 
             <div class="col-md-10 mb-3">
                 <p class="text-danger">@errorMessage</p>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="country">始发地</label>
+                <label for="country">@(L["Origin"])</label>
                 <select class="custom-select d-block w-100" id="SelectFrom" @bind="@fromStation">
-                    @if (allStations != null)
+                    @if (_allStations != null)
                     {
-                        foreach (var item in allStations)
+                        foreach (var item in _allStations)
                         {
-                            <option value="@item.StationId">@item.StationName</option>
+                            <option value="@item.StationId">@(stationL[item.StationName])</option>
                         }
                     }
                     else
                     {
-                        <option value="" @ref="_fromEmptyOption">-请选择-</option>
+                        <option value="" @ref="_fromEmptyOption">-@(L["Select"])-</option>
                     }
                 </select>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="state">目的地</label>
+                <label for="state">@(L["Destination"])</label>
                 <select class="custom-select d-block w-100" id="SelectTo" @bind="@toStation">
-                    @if (allStations != null)
+                    @if (_allStations != null)
                     {
-                        foreach (var item in allStations)
+                        foreach (var item in _allStations)
                         {
-                            <option value="@item.StationId">@item.StationName</option>
+                            <option value="@item.StationId">@(stationL[item.StationName])</option>
                         }
                     }
                     else
                     {
-                        <option value="" @ref="toEmptyOption">-请选择-</option>
+                        <option value="" @ref="toEmptyOption">-@(L["Select"])-</option>
                     }
                 </select>
             </div>
-            <button class="btn btn-primary btn-lg btn-block" type="button" @onclick="CheckFindTran">查询</button>
+            <button class="btn btn-primary btn-lg btn-block" type="button" @onclick="CheckFindTran">@(L["Search"])</button>
         </div>
 
         <h4 class="mb-3"></h4>
         <h4 class="d-flex justify-content-between align-items-center mb-3">
             @if (_seatOutput == null)
             {
-                <span class="text-muted">选择始发地和目的地</span>
+                <span class="text-muted">@(L["Please select origin and destination"])</span>
             }
             else
             {
-                <span class="text-muted">@_seatOutput.FromStationName --> @_seatOutput.ToStationName 共计@(_seatOutput.Items.Count())个车次</span>
+                <span class="text-muted">@(stationL[_seatOutput.FromStationName]) --> @(stationL[_seatOutput.ToStationName]) @(L["Total"]) @(_seatOutput.Items.Count()) @(L["Trips"])</span>
             }
         </h4>
         <ul class="list-group mb-3">
-            @if (_seatOutput == null)
+            @if (_seatItems == null)
             {
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    无车次
+                    @(L["No Trip"])
                 </li>
             }
             else
             {
-                foreach (var item in _seatOutput.Items)
+                foreach (var item in _seatItems)
                 {
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-6">
-                                <h6 class="my-0">车次：@item.TrainId</h6>
-                                <h6 class="my-0">剩余座位数：@item.LeftCount</h6>
+                            <div class="col-md-4">
+                                <h6 class="my-0">@(L["Trip:"])@item.TrainId @(stationL[item.FromStationName]) --> @(stationL[item.ToStationName])</h6>
+                                <h6 class="my-0">@(L["Seat Left:"])@item.LeftCount</h6>
                             </div>
-                            <div class="col-md-6">
-                                <button class="btn btn-primary btn-sm" type="button" @onclick="@(() => ReservationSeat(_seatOutput.FromStationId, _seatOutput.ToStationId, item.TrainId))">预定</button>
-                                <input placeholder="座位号0-9999之间" @bind="_seatNumber" class="input-small"/>
+                            <div class="col-md-8 form-inline">
+                                <div class="form-group col-md-8">
+                                    <input placeholder="@(L["Please type a seat number from 0 to 9999"])" @bind="item.TakingSeatNumber" class="form-control" type="text" style="width: 100%"/>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <button class="btn btn-primary" type="button" @onclick="@(() => BookSeat(_seatOutput.FromStationId, _seatOutput.ToStationId, item.TrainId))">@(L["Book"])</button>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -94,15 +102,15 @@
     public string fromStation;
     public string toStation;
     public string errorMessage = "";
-    List<PassStation> allStations; //所有座位数
+    List<PassStation> _allStations;
     DotNetObjectReference<Index> _dotNetReference;
     private ElementReference _fromEmptyOption;
     private ElementReference toEmptyOption;
 
     protected override async Task OnInitializedAsync()
     {
-        allStations = await Http.CreateClient("train").GetFromJsonAsync<List<PassStation>>($"api/Station/GetAllStation");
-        allStations.Insert(0, new PassStation {StationId = 0, StationName = "-请选择-"});
+        _allStations = await Http.CreateClient("train").GetFromJsonAsync<List<PassStation>>("api/Station/GetAllStation");
+        _allStations.Insert(0, new PassStation {StationId = 0, StationName = $"-{L["Select"]}-"});
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -115,7 +123,7 @@
     }
 
     GetSeatOutput _seatOutput;
-    string _seatNumber;
+    IEnumerable<SeatListItemViewModel> _seatItems;
 
     /// <summary>
     /// 查询剩余组座位数
@@ -125,43 +133,55 @@
     {
         if (string.IsNullOrEmpty(fromStation) || fromStation == "0")
         {
-            errorMessage = "请选择始发站";
+            errorMessage = L["Please select origin"];
             return;
         }
         if (string.IsNullOrEmpty(toStation) || toStation == "0")
         {
-            errorMessage = "请选择目的地";
+            errorMessage = L["Please select origin"];
             return;
         }
         if (fromStation == toStation)
         {
-            errorMessage = "始发地和目的地不能一样";
+            errorMessage = L["Please select a different destination to origin"];
             return;
         }
 
         _seatOutput = await Http.CreateClient("train").GetFromJsonAsync<GetSeatOutput>($"api/Seat?FromStationId={fromStation}&ToStationId={toStation}");
+        _seatItems = _seatOutput.Items
+            .Select(x => new SeatListItemViewModel
+            {
+                TakingSeatNumber = string.Empty,
+                LeftCount = x.LeftCount,
+                TrainId = x.TrainId,
+                FromStationId = x.FromStationId,
+                FromStationName = x.FromStationName,
+                ToStationId = x.ToStationId,
+                ToStationName = x.ToStationName
+            })
+            .ToArray();
     }
 
     /// <summary>
-    /// 订座
+    /// Book
     /// </summary>
     /// <returns></returns>
-    public async Task ReservationSeat(int fromStationId, int toStationId, int trainId)
+    public async Task BookSeat(int fromStationId, int toStationId, int trainId)
     {
-        var seatItem = _seatOutput.Items.FirstOrDefault(q => q.TrainId == trainId);
+        var seatItem = _seatItems.FirstOrDefault(q => q.TrainId == trainId);
         if (seatItem != null)
         {
-            if (!int.TryParse(_seatNumber, out var intSeatNumber))
+            if (!int.TryParse(seatItem.TakingSeatNumber, out var intSeatNumber))
             {
-                errorMessage = "座位号必须为数字";
+                errorMessage = L["Invalid seat number"];
                 return;
             }
             var seatId = $"{trainId}{intSeatNumber:0000}";
-            Logger.LogDebug($"预定的座位号={seatId}");
+            Logger.LogDebug($"seatId={seatId}");
             var seatInput = new TakeSeatInput
             {
                 FromStationId = fromStationId,
-                ToStationId = toStationId
+                ToStationId = toStationId,
             };
             var resp = await Http.CreateClient("train").PostAsJsonAsync($"api/Seat/{seatId}", seatInput);
             if (resp.IsSuccessStatusCode)
@@ -170,8 +190,7 @@
                 errorMessage = response.Message;
                 if (response.Status == "1")
                 {
-                    await CheckFindTran();
-                    _seatNumber = string.Empty;
+                    seatItem.LeftCount--;
                     StateHasChanged();
                 }
             }
@@ -183,6 +202,11 @@
         GC.SuppressFinalize(this);
     //Now dispose our object reference so our component can be garbage collected
         _dotNetReference?.Dispose();
+    }
+
+    public class SeatListItemViewModel : SeatListItem
+    {
+        public string TakingSeatNumber { get; set; }
     }
 
 }

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using FluentAssertions;
 using Newbe.Claptrap.Orleans;
-using Newbe.Claptrap.Ticketing.Actors.Train;
 using Newbe.Claptrap.Ticketing.Actors.Train.Main;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Models;

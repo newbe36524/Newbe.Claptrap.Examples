@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,9 +27,12 @@ namespace Newbe.Claptrap.Ticketing.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddControllers();
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
             services.AddSwaggerGen(c => { });
             services.AddHttpClient("train", (s, h) =>
             {
@@ -35,6 +40,7 @@ namespace Newbe.Claptrap.Ticketing.Web
                 h.BaseAddress = new Uri(baseUrl);
             });
             AddOrleansClient(services);
+            
         }
 
         // ConfigureContainer is where you can register things directly
@@ -73,6 +79,14 @@ namespace Newbe.Claptrap.Ticketing.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            var supportedCultures = new[] {"zh-CN", "en-US"};
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures.Last())
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

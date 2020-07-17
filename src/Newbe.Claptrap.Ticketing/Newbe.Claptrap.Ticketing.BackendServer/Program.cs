@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newbe.Claptrap.Bootstrapper;
-using Newbe.Claptrap.Ticketing.Actors.Seat;
 using Newbe.Claptrap.Ticketing.Actors.Seat.Main;
 using Newbe.Claptrap.Ticketing.Models;
 using NLog.Web;

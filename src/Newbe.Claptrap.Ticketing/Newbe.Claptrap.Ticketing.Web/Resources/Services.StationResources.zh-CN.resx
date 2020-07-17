@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="bei jing" xml:space="preserve"><value>北京</value></data>
+    <data name="shang hai" xml:space="preserve"><value>上海</value></data>
+    <data name="tian jin" xml:space="preserve"><value>天津</value></data>
+    <data name="chong qing" xml:space="preserve"><value>重庆</value></data>
+    <data name="ha er bin" xml:space="preserve"><value>哈尔滨</value></data>
+    <data name="chang chun" xml:space="preserve"><value>长春</value></data>
+    <data name="shen yang" xml:space="preserve"><value>沈阳</value></data>
+    <data name="hu he hao te" xml:space="preserve"><value>呼和浩特</value></data>
+    <data name="shi jia zhuang" xml:space="preserve"><value>石家庄</value></data>
+    <data name="wu lu mu qi" xml:space="preserve"><value>乌鲁木齐</value></data>
+    <data name="lan zhou" xml:space="preserve"><value>兰州</value></data>
+    <data name="xi ning" xml:space="preserve"><value>西宁</value></data>
+    <data name="xi an" xml:space="preserve"><value>西安</value></data>
+    <data name="yin chuan" xml:space="preserve"><value>银川</value></data>
+    <data name="zheng zhou" xml:space="preserve"><value>郑州 </value></data>
+    <data name="ji nan" xml:space="preserve"><value>济南</value></data>
+    <data name="tai yuan" xml:space="preserve"><value>太原</value></data>
+    <data name="he fei" xml:space="preserve"><value>合肥</value></data>
+    <data name="wu han" xml:space="preserve"><value>武汉</value></data>
+    <data name="chang sha" xml:space="preserve"><value>长沙</value></data>
+    <data name="nan jing" xml:space="preserve"><value>南京</value></data>
+    <data name="cheng du" xml:space="preserve"><value>成都</value></data>
+    <data name="gui yang" xml:space="preserve"><value>贵阳</value></data>
+    <data name="kun ming" xml:space="preserve"><value>昆明</value></data>
+    <data name="nan ning" xml:space="preserve"><value>南宁</value></data>
+    <data name="la sa" xml:space="preserve"><value>拉萨</value></data>
+    <data name="hang zhou" xml:space="preserve"><value>杭州</value></data>
+    <data name="nan chang" xml:space="preserve"><value>南昌</value></data>
+    <data name="guang zhou" xml:space="preserve"><value>广州</value></data>
+    <data name="fu zhou" xml:space="preserve"><value>福州</value></data>
+    <data name="tai bei" xml:space="preserve"><value>台北</value></data>
+    <data name="hai kou" xml:space="preserve"><value>海口</value></data>
+    <data name="xiang gang" xml:space="preserve"><value>香港</value></data>
+    <data name="ao men" xml:space="preserve"><value>澳门</value></data>
+</root>

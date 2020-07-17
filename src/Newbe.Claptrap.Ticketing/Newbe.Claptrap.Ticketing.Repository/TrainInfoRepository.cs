@@ -43,5 +43,17 @@ namespace Newbe.Claptrap.Ticketing.Repository
                 .ToArray();
             return Task.FromResult(re);
         }
+
+        public Task<TrainBasicInfo> GetTrainInfoAsync(int trainId)
+        {
+            var trainStation = DataSource.TrainStations[trainId];
+            var re = new TrainBasicInfo
+            {
+                TrainId = trainId,
+                FromStationId = trainStation.First(),
+                ToStationId = trainStation.Last()
+            };
+            return Task.FromResult(re);
+        }
     }
 }

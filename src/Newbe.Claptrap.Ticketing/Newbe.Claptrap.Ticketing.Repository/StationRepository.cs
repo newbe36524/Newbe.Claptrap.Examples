@@ -18,6 +18,7 @@ namespace Newbe.Claptrap.Ticketing.Repository
                 .ToDictionary(x => x, x => DataSource.StationNames[x]);
             return Task.FromResult(re);
         }
+
         public Task<Dictionary<int, string>> GetAllNameAsync()
         {
             var re = DataSource.StationNames;

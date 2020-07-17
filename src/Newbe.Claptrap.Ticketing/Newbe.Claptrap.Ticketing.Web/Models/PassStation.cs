@@ -1,4 +1,4 @@
-﻿namespace Newbe.Claptrap.Ticketing.Web.Models.Api
+﻿namespace Newbe.Claptrap.Ticketing.Web.Models
 {
     public class PassStation
     {

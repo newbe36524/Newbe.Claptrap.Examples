@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newbe.Claptrap.Ticketing.Repository;
 using Newbe.Claptrap.Ticketing.Web.Models;
-using Newbe.Claptrap.Ticketing.Web.Models.Api;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
 {
@@ -30,7 +29,5 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                 .ToArray();
             return Json(re);
         }
-
-       
     }
 }

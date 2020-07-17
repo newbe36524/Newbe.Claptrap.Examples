@@ -6,5 +6,6 @@ namespace Newbe.Claptrap.Ticketing.Repository
     {
         Task<int[]> GetStationsAsync(int trainId);
         Task<int[]> GetTrainsAsync(int fromStationId, int toStationId);
+        Task<TrainBasicInfo> GetTrainInfoAsync(int trainId);
     }
 }

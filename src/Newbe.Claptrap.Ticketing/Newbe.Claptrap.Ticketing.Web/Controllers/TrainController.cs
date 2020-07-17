@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository;
 using Newbe.Claptrap.Ticketing.Web.Models;
-using Newbe.Claptrap.Ticketing.Web.Models.Api;
 using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
