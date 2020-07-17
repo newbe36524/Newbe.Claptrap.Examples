@@ -39,7 +39,7 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                     ToStationId = x.Key.ToStationId,
                     ToStationName = nameDic[x.Key.ToStationId]
                 })
-                .ToArray();
+                .ToList();
             return Json(re);
 
             IEnumerable<int> GetStationIds()

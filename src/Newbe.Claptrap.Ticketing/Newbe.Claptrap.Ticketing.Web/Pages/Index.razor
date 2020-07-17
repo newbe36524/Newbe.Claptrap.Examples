@@ -19,7 +19,7 @@
                 <p class="text-danger">@errorMessage</p>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="country">@(L["Origin"])</label>
+                <label for="SelectFrom">@(L["Origin"])</label>
                 <select class="custom-select d-block w-100" id="SelectFrom" @bind="@fromStation">
                     @if (_allStations != null)
                     {
@@ -35,7 +35,7 @@
                 </select>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="state">@(L["Destination"])</label>
+                <label for="SelectTo">@(L["Destination"])</label>
                 <select class="custom-select d-block w-100" id="SelectTo" @bind="@toStation">
                     @if (_allStations != null)
                     {
@@ -96,6 +96,49 @@
         </ul>
 
     </div>
+    <div class="col-md-10 order-md-1 mt-xl-1">
+        <h4 class="mb-3 ">车次查询</h4>
+        <div class="row">
+
+            <div class="col-md-10 mb-3">
+                <label >车次</label>
+                <select class="custom-select d-block w-100" @bind="@selectTrainId">
+                    @foreach (string _trainid in lsTrainids)
+                    {
+                        <option value="@_trainid">@_trainid 次</option>
+                    }
+                </select>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-block" type="button" @onclick="FindLeftSeats">查询</button>
+            <ul class="list-group mb-3">
+                @if (leftCountItems == null)
+                {
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                       无数据
+                    </li>
+                }
+                else
+                {
+                    foreach (var item in leftCountItems)
+                    {
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="my-0">始发站：@item.FromStationName</h6>
+                                    <h6 class="my-0">到到站：@item.ToStationName</h6>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="my-0">剩余座位数：@item.LeftCount</h6>
+                                    <h6 class="my-0"></h6>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
 </div>
 
 @code{
@@ -106,11 +149,17 @@
     DotNetObjectReference<Index> _dotNetReference;
     private ElementReference _fromEmptyOption;
     private ElementReference toEmptyOption;
-
+    List<string> lsTrainids = new List<string>();
+    public string selectTrainId = "2";
+    List<LeftCountItem> leftCountItems;
     protected override async Task OnInitializedAsync()
     {
         _allStations = await Http.CreateClient("train").GetFromJsonAsync<List<PassStation>>("api/Station/GetAllStation");
         _allStations.Insert(0, new PassStation {StationId = 0, StationName = $"-{L["Select"]}-"});
+        for (int i = 2; i <= 34; i++)
+        {
+            lsTrainids.Add(i.ToString());
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -119,6 +168,9 @@
         if (firstRender)
         {
             _dotNetReference = DotNetObjectReference.Create(this);
+            //await JsRuntime.InvokeVoidAsync("trainJsFunctions.generatorDotnetObject", _dotNetReference);
+            //await JsRuntime.InvokeAsync<object>("trainJsFunctions.fixOptionValue", this._fromEmptyOption);
+            //await JsRuntime.InvokeAsync<object>("trainJsFunctions.fixOptionValue", this.toEmptyOption);
         }
     }
 
@@ -196,11 +248,14 @@
             }
         }
     }
-
+    public async Task FindLeftSeats()
+    {
+        leftCountItems = await Http.CreateClient("train").GetFromJsonAsync<List<LeftCountItem>>($"api/GetLeftSeat?trainId={selectTrainId}");
+    }
     public void Dispose()
     {
         GC.SuppressFinalize(this);
-    //Now dispose our object reference so our component can be garbage collected
+        //Now dispose our object reference so our component can be garbage collected
         _dotNetReference?.Dispose();
     }
 
@@ -209,4 +264,12 @@
         public string TakingSeatNumber { get; set; }
     }
 
+    public class LeftCountItem
+    {
+        public int FromStationId { get; set; }
+        public string FromStationName { get; set; }
+        public int ToStationId { get; set; }
+        public string ToStationName { get; set; }
+        public int LeftCount { get; set; }
+    }
 }
