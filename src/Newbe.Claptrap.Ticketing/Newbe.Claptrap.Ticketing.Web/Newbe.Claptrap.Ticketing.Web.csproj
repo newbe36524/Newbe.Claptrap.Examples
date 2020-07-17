@@ -43,12 +43,6 @@
         <Content Update="Shared\SurveyPrompt.razor">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
-        <Content Update="Pages\Counter.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Update="Pages\FetchData.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
         <Content Update="Pages\Index.razor">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>

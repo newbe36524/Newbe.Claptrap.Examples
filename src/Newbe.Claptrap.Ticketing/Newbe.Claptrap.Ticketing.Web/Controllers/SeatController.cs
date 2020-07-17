@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository;
+using Newbe.Claptrap.Ticketing.Web.Models;
+using Newbe.Claptrap.Ticketing.Web.Models.Api;
 using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
 {
-    [EnableCors("_AllowTrainOrigin")]
     [Route("api/[controller]")]
     public class SeatController : Controller
     {
@@ -39,14 +40,16 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             }
             catch (Exception e)
             {
-                //return Json(e.Message);
-                return Json(new { status = "0", message = e.Message });
+                return Json(new BlazorJsonResponse {Status = "0", Message = e.Message});
             }
 
             var fromName = await _stationRepository.GetNameAsync(input.FromStationId);
             var toName = await _stationRepository.GetNameAsync(input.ToStationId);
-            //return Json($"take a seat success {seatId} [{fromName} -> {toName}] with requestId : {requestId}");
-            return Json(new { status = "1", message = $"take a seat success {seatId} [{fromName} -> {toName}] with requestId : {requestId}" });
+            return Json(new BlazorJsonResponse
+            {
+                Status = "1",
+                Message = $"take a seat success {seatId} [{fromName} -> {toName}] with requestId : {requestId}"
+            });
         }
 
         [HttpGet]
@@ -76,33 +79,6 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                 ToStationName = await _stationRepository.GetNameAsync(input.ToStationId)
             };
             return Json(re);
-        }
-
-        public class GetSeatInput
-        {
-            public int FromStationId { get; set; }
-            public int ToStationId { get; set; }
-        }
-
-        public class GetSeatOutput
-        {
-            public int FromStationId { get; set; }
-            public int ToStationId { get; set; }
-            public string FromStationName { get; set; }
-            public string ToStationName { get; set; }
-            public IEnumerable<SeatListItem> Items { get; set; }
-        }
-
-        public class SeatListItem
-        {
-            public int TrainId { get; set; }
-            public int LeftCount { get; set; }
-        }
-
-        public class TakeSeatInput
-        {
-            public int FromStationId { get; set; }
-            public int ToStationId { get; set; }
         }
     }
 }

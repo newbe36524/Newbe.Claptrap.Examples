@@ -52,7 +52,8 @@ namespace Newbe.Claptrap.Ticketing.Web
             var clientBuilder = new ClientBuilder();
             var client = clientBuilder
                 .UseLocalhostClustering()
-                .ConfigureApplicationParts(manager => manager.AddApplicationPart(typeof(ITrainGran).Assembly).WithReferences())
+                .ConfigureApplicationParts(manager =>
+                    manager.AddApplicationPart(typeof(ITrainGran).Assembly).WithReferences())
                 .Build();
             client.Connect(exception =>
             {
@@ -74,7 +75,7 @@ namespace Newbe.Claptrap.Ticketing.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            
+
             app.UseRouting();
 
             app.UseSwagger();

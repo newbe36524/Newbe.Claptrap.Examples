@@ -1,9 +1,9 @@
 ﻿@page "/"
-@using System.Text
 @inject IHttpClientFactory Http
 @inject IJSRuntime JsRuntime
 @implements IDisposable
 @using Microsoft.Extensions.Logging;
+@using Newbe.Claptrap.Ticketing.Web.Models.Api
 @inject ILogger<Index> Logger;
 <div class="row">
 
@@ -11,7 +11,9 @@
         <h4 class="mb-3 mt-xl-1">车票-线路</h4>
         <div class="row">
 
-            <div class="col-md-10 mb-3"> <p class="text-danger">@errorMessage</p></div>
+            <div class="col-md-10 mb-3">
+                <p class="text-danger">@errorMessage</p>
+            </div>
             <div class="col-md-6 mb-3">
                 <label for="country">始发地</label>
                 <select class="custom-select d-block w-100" id="SelectFrom" @bind="@fromStation">
@@ -24,7 +26,7 @@
                     }
                     else
                     {
-                        <option value="" @ref="fromEmptyOption">-请选择-</option>
+                        <option value="" @ref="_fromEmptyOption">-请选择-</option>
                     }
                 </select>
             </div>
@@ -44,22 +46,22 @@
                     }
                 </select>
             </div>
-            <button class="btn btn-primary btn-lg btn-block" type="button" @onclick="checkFindTran">查询</button>
+            <button class="btn btn-primary btn-lg btn-block" type="button" @onclick="CheckFindTran">查询</button>
         </div>
 
         <h4 class="mb-3"></h4>
         <h4 class="d-flex justify-content-between align-items-center mb-3">
-            @if (seatOutput == null)
+            @if (_seatOutput == null)
             {
                 <span class="text-muted">选择始发地和目的地</span>
             }
             else
             {
-                <span class="text-muted">@seatOutput.FromStationName --> @seatOutput.ToStationName 共计@(seatOutput.Items.Count())个车次</span>
+                <span class="text-muted">@_seatOutput.FromStationName --> @_seatOutput.ToStationName 共计@(_seatOutput.Items.Count())个车次</span>
             }
         </h4>
         <ul class="list-group mb-3">
-            @if (seatOutput == null)
+            @if (_seatOutput == null)
             {
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     无车次
@@ -67,7 +69,7 @@
             }
             else
             {
-                foreach (var item in seatOutput.Items)
+                foreach (var item in _seatOutput.Items)
                 {
                     <li class="list-group-item">
                         <div class="row">
@@ -76,8 +78,8 @@
                                 <h6 class="my-0">剩余座位数：@item.LeftCount</h6>
                             </div>
                             <div class="col-md-6">
-                                <button class="btn btn-primary btn-sm" type="button" @onclick="@(()=>ReservationSeat(seatOutput.FromStationId,seatOutput.ToStationId,item.TrainId))">预定</button>
-                                <input placeholder="座位号0-9999之间" @bind="item.SteadId" class="input-small" />
+                                <button class="btn btn-primary btn-sm" type="button" @onclick="@(() => ReservationSeat(_seatOutput.FromStationId, _seatOutput.ToStationId, item.TrainId))">预定</button>
+                                <input placeholder="座位号0-9999之间" @bind="_seatNumber" class="input-small"/>
                             </div>
                         </div>
                     </li>
@@ -87,37 +89,39 @@
 
     </div>
 </div>
+
 @code{
     public string fromStation;
     public string toStation;
     public string errorMessage = "";
-    List<PassStation> allStations;//所有座位数
-    DotNetObjectReference<Index> dotNetReference;
-    private ElementReference fromEmptyOption;
+    List<PassStation> allStations; //所有座位数
+    DotNetObjectReference<Index> _dotNetReference;
+    private ElementReference _fromEmptyOption;
     private ElementReference toEmptyOption;
+
     protected override async Task OnInitializedAsync()
     {
-        allStations = await Http.CreateClient("train").GetFromJsonAsync<List<PassStation>>($"api/Train/GetAllStation");
-        allStations.Insert(0, new PassStation() { StationId = 0, StationName = "-请选择-" });
+        allStations = await Http.CreateClient("train").GetFromJsonAsync<List<PassStation>>($"api/Station/GetAllStation");
+        allStations.Insert(0, new PassStation {StationId = 0, StationName = "-请选择-"});
     }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        base.OnAfterRender(firstRender);
+        await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            dotNetReference = DotNetObjectReference.Create(this);
-            // await JsRuntime.InvokeVoidAsync("trainJsFunctions.generatorDotnetObject", dotNetReference);
-            // await JsRuntime.InvokeAsync<object>("trainJsFunctions.fixOptionValue", this.fromEmptyOption);
-            // await JsRuntime.InvokeAsync<object>("trainJsFunctions.fixOptionValue", this.toEmptyOption);
+            _dotNetReference = DotNetObjectReference.Create(this);
         }
     }
-    GetSeatOutput seatOutput;
+
+    GetSeatOutput _seatOutput;
+    string _seatNumber;
+
     /// <summary>
     /// 查询剩余组座位数
     /// </summary>
-    /// <param name="tranid"></param>
     /// <returns></returns>
-    public async Task checkFindTran()
+    public async Task CheckFindTran()
     {
         if (string.IsNullOrEmpty(fromStation) || fromStation == "0")
         {
@@ -134,103 +138,51 @@
             errorMessage = "始发地和目的地不能一样";
             return;
         }
-        //POST 数据用的 ，但现在是GET 注释掉吧
-        //GetSeatInput seatInput = new GetSeatInput();
-        //seatInput.FromStationId = Convert.ToInt32(fromStation);
-        //seatInput.ToStationId = Convert.ToInt32(toStation);
 
-        seatOutput = await Http.CreateClient("train").GetFromJsonAsync<GetSeatOutput>($"api/Seat?FromStationId={fromStation}&ToStationId={toStation}");
-
-        //if (response.IsSuccessStatusCode)
-        //{
-        //    seatOutput =await response.Content.ReadFromJsonAsync<GetSeatOutput>();
-        //}
+        _seatOutput = await Http.CreateClient("train").GetFromJsonAsync<GetSeatOutput>($"api/Seat?FromStationId={fromStation}&ToStationId={toStation}");
     }
+
     /// <summary>
     /// 订座
     /// </summary>
     /// <returns></returns>
-    public async Task ReservationSeat(int fromStationId, int ToStationId, int trainId)
+    public async Task ReservationSeat(int fromStationId, int toStationId, int trainId)
     {
-        string trueseatid = trainId.ToString();
-        SeatListItem seatItem = seatOutput.Items.Find(q => q.TrainId == trainId);
+        var seatItem = _seatOutput.Items.FirstOrDefault(q => q.TrainId == trainId);
         if (seatItem != null)
         {
-            int zwid = 0;
-            if (!int.TryParse(seatItem.SteadId, out zwid))
+            if (!int.TryParse(_seatNumber, out var intSeatNumber))
             {
                 errorMessage = "座位号必须为数字";
                 return;
             }
-            string sjseatid = trainId + zwid.ToString().PadLeft(4, '0');
-            Logger.LogDebug($"预定的座位号={sjseatid}");
-            TakeSeatInput seatInput = new TakeSeatInput();
-            seatInput.FromStationId = fromStationId;
-            seatInput.ToStationId = ToStationId;
-            var respone = await Http.CreateClient("train").PostAsJsonAsync($"api/Seat/{sjseatid}", seatInput);
-            if (respone.IsSuccessStatusCode)
+            var seatId = $"{trainId}{intSeatNumber:0000}";
+            Logger.LogDebug($"预定的座位号={seatId}");
+            var seatInput = new TakeSeatInput
             {
-                //logger.LogDebug(respone.Content.ReadAsStringAsync().Result);
-                BlazorJsonRespone jsonRespone =await respone.Content.ReadFromJsonAsync<BlazorJsonRespone>();
-                errorMessage = jsonRespone.message;
-                if (jsonRespone.status == "1")
+                FromStationId = fromStationId,
+                ToStationId = toStationId
+            };
+            var resp = await Http.CreateClient("train").PostAsJsonAsync($"api/Seat/{seatId}", seatInput);
+            if (resp.IsSuccessStatusCode)
+            {
+                var response = await resp.Content.ReadFromJsonAsync<BlazorJsonResponse>();
+                errorMessage = response.Message;
+                if (response.Status == "1")
                 {
-                    seatItem.LeftCount = seatItem.LeftCount - 1;
-                    //成功 影响实体变化
+                    await CheckFindTran();
+                    _seatNumber = string.Empty;
                     StateHasChanged();
                 }
             }
         }
-
-        await Task.FromResult("");
     }
+
     public void Dispose()
     {
         GC.SuppressFinalize(this);
-        if (dotNetReference != null)
-        {
-            //Now dispose our object reference so our component can be garbage collected
-            dotNetReference.Dispose();
-        }
+    //Now dispose our object reference so our component can be garbage collected
+        _dotNetReference?.Dispose();
     }
 
-
-    public class PassStation
-    {
-        public int StationId { get; set; }
-        public string StationName { get; set; }
-    }
-    public class GetSeatOutput
-    {
-        public int FromStationId { get; set; }
-        public int ToStationId { get; set; }
-        public string FromStationName { get; set; }
-        public string ToStationName { get; set; }
-        public List<SeatListItem> Items { get; set; }
-    }
-
-    public class SeatListItem
-    {
-        public int TrainId { get; set; }
-        public int LeftCount { get; set; }
-        /// <summary>
-        /// 座位号
-        /// </summary>
-        public string SteadId { get; set; }
-    }
-    public class GetSeatInput
-    {
-        public int FromStationId { get; set; }
-        public int ToStationId { get; set; }
-    }
-    public class TakeSeatInput
-    {
-        public int FromStationId { get; set; }
-        public int ToStationId { get; set; }
-    }
-    public class BlazorJsonRespone
-    {
-        public string status { get; set; }
-        public string message { get; set; }
-    }
 }
