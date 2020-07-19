@@ -6,5 +6,6 @@ namespace HelloClaptrap.Models
         private const string CartEventSuffix = "_e_" + CartGrain;
         public const string AddItemToCart = "addItem" + CartEventSuffix;
         public const string RemoveItemFromCart = "removeItem" + CartEventSuffix;
+        public const string RemoveAllItemsFromCart = "remoeAllItems" + CartEventSuffix;
     }
 }

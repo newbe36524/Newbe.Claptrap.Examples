@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HelloClaptrap.Actors.Cart.Events;
 using HelloClaptrap.IActor;
@@ -12,6 +14,7 @@ namespace HelloClaptrap.Actors.Cart
 {
     [ClaptrapEventHandler(typeof(AddItemToCartEventHandler), ClaptrapCodes.AddItemToCart)]
     [ClaptrapEventHandler(typeof(RemoveItemFromCartEventHandler), ClaptrapCodes.RemoveItemFromCart)]
+    [ClaptrapEventHandler(typeof(RemoveAllItemsFromCartEventHandler), ClaptrapCodes.RemoveAllItemsFromCart)]
     public class CartGrain : ClaptrapBoxGrain<CartState>, ICartGrain
     {
         public CartGrain(
@@ -46,6 +49,18 @@ namespace HelloClaptrap.Actors.Cart
         {
             var re = StateData.Items ?? new Dictionary<string, int>();
             return Task.FromResult(re);
+        }
+
+        public Task RemoveAllItemsAsync()
+        {
+            if (StateData.Items?.Any() != true)
+            {
+                return Task.CompletedTask;
+            }
+
+            var removeAllItemsFromCartEvent = new RemoveAllItemsFromCartEvent();
+            var evt = this.CreateEvent(removeAllItemsFromCartEvent);
+            return Claptrap.HandleEventAsync(evt);
         }
     }
 }

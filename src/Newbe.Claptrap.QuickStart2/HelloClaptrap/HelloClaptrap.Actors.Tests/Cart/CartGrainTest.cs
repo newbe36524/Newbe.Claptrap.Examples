@@ -3,7 +3,6 @@ using Autofac.Extras.Moq;
 using FluentAssertions;
 using HelloClaptrap.Actors.Cart;
 using HelloClaptrap.Models.Cart;
-using Newbe.Claptrap;
 using Newbe.Claptrap.Orleans;
 using NUnit.Framework;
 

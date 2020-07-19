@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using HelloClaptrap.IActor;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +38,14 @@ namespace HelloClaptrap.Web.Controllers
             var cartGrain = _grainFactory.GetGrain<ICartGrain>(id.ToString());
             var items = await cartGrain.RemoveItemAsync(skuId, count);
             return Json(items);
+        }
+
+        [HttpPost("{id}/clean")]
+        public async Task<IActionResult> RemoveAllItemAsync(int id)
+        {
+            var cartGrain = _grainFactory.GetGrain<ICartGrain>(id.ToString());
+            await cartGrain.RemoveAllItemsAsync();
+            return Json("clean success");
         }
 
         public class AddItemInput

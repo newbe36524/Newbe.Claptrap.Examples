@@ -4,7 +4,6 @@ using HelloClaptrap.IActor;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newbe.Claptrap.Bootstrapper;
 using NLog.Web;
 using Orleans;
 
