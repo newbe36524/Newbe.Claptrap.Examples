@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newbe.Claptrap" Version="0.4.2-alpha.g8d153db249" />
+        <PackageReference Include="Newbe.Claptrap.DataSerializer.Json" Version="0.4.2-alpha.g8d153db249" />
+        <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.4.2-alpha.g8d153db249" />
+        <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.2.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Newbe.Claptrap.Ticketing.IActor\Newbe.Claptrap.Ticketing.IActor.csproj" />
+      <ProjectReference Include="..\Newbe.Claptrap.Ticketing.Models\Newbe.Claptrap.Ticketing.Models.csproj" />
+      <ProjectReference Include="..\Newbe.Claptrap.Ticketing.Repository\Newbe.Claptrap.Ticketing.Repository.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Orleans_CodeGenInputs Remove="Train\Events\UpdateCountEventHandler.cs" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,41 @@
+﻿@using Microsoft.Extensions.Localization
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<MainLayout> L;
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>@(L["A Train ticketing simulator"])</h2>
+        <p class="lead">Newbe.Claptrap.Examples.Ticketing</p>
+        
+        @(L["Language"]) : <select @onchange="OnSelected">
+            <option>@(L["Select"])...</option>
+            <option value="en-US">English</option>
+            <option value="zh-CN">简体中文</option>
+        </select>
+    </div>
+
+    @Body
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="https://github.com/wangjunjx8868">Contributor wangjunjx8868</a></li>
+            <li class="list-inline-item"><a href="https://github.com/newbe36524/Newbe.Claptrap.Examples">Soure Code</a></li>
+            <li class="list-inline-item"><a href="http://claptrap.newbe.pro">claptrap.newbe.pro</a></li>
+            <li class="list-inline-item"><a href="https://https://github.com/newbe36524/Newbe.Claptrap">Newbe.Claptrap</a></li>
+        </ul>
+    </footer>
+</div>
+
+@code {
+    private void OnSelected(ChangeEventArgs e)
+    {
+        var culture = (string)e.Value;
+        var uri = new Uri(NavigationManager.Uri)
+            .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+        var query = $"?culture={Uri.EscapeDataString(culture)}&" +
+                    $"redirectUri={Uri.EscapeDataString(uri)}";
+
+        NavigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
+    }
+}

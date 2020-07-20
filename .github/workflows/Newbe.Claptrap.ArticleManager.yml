@@ -2,30 +2,29 @@ name: Newbe.Claptrap.ArticleManager
 
 on:
   push:
-    branches: 
+    branches:
       - master
       - develop
-  pull_request: 
-    branches: 
+  pull_request:
+    branches:
       - master
       - develop
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
-    - name: Install dependencies
-      run: |
-        cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.ArticleManager
-        dotnet restore
-    - name: Build
-      run: |
-        cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.ArticleManager
-        dotnet build --configuration Release --no-restore
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.101
+      - name: Install dependencies
+        run: |
+          cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.ArticleManager
+          dotnet restore
+      - name: Build
+        run: |
+          cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.ArticleManager
+          dotnet build --configuration Release --no-restore

@@ -2,11 +2,11 @@ name: Newbe.Claptrap.Auth
 
 on:
   push:
-    branches: 
+    branches:
       - master
       - develop
-  pull_request: 
-    branches: 
+  pull_request:
+    branches:
       - master
       - develop
 
@@ -16,7 +16,6 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:

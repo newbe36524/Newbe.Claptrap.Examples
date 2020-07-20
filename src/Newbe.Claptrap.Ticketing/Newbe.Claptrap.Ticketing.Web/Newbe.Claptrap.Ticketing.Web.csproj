@@ -1,0 +1,128 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Orleans.OrleansConsulUtils" Version="3.2.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.5" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Orleans.Core" Version="3.2.1" />
+        <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.2.1" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+        <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.4.2-alpha.g8d153db249" />
+        <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.5.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
+<!--        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />-->
+        <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.6" />
+        <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Newbe.Claptrap.Ticketing.IActor\Newbe.Claptrap.Ticketing.IActor.csproj" />
+        <ProjectReference Include="..\Newbe.Claptrap.Ticketing.Repository\Newbe.Claptrap.Ticketing.Repository.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="nlog.config">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Shared\MainLayout.razor">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+        <Content Update="Shared\NavMenu.razor">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+        <Content Update="Shared\SurveyPrompt.razor">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+        <Content Update="Pages\Index.razor">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+        <Content Update="wwwroot\css\bootstrap\bootstrap.min.css">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\bootstrap\bootstrap.min.css.map">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.eot">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.otf">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.woff">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\open-iconic\FONT-LICENSE">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\open-iconic\ICON-LICENSE">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\open-iconic\README.md">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\app.css">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\favicon.ico">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="App.razor">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+        <Content Update="_Imports.razor">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+        <Content Update="Pages\_Host.cshtml">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Pages.Index.zh-CN.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Pages.Index.cn.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Shared.MainLayout.zh-CN.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Shared.MainLayout.zh-CN.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Services.StationResources.zh-CN.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Newbe.Claptrap.Ticketing.Repository.StationRepository.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+</Project>
