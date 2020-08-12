@@ -153,8 +153,8 @@
   <data name="Book" xml:space="preserve">
     <value>预定</value>
   </data>
-  <data name="Please type a seat number from 0 to 9999" xml:space="preserve">
-    <value>请输入0-9999之间的座位号</value>
+  <data name="Please type a seat number from 0 to 9999, or -1 for random" xml:space="preserve">
+    <value>请输入0-9999之间的座位号，或者 -1 进行随机选择</value>
   </data>
   <data name="Please select origin" xml:space="preserve">
     <value>请选择始发站</value>

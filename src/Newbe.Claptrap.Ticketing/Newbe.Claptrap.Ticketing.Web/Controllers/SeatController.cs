@@ -26,10 +26,18 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             _trainInfoRepository = trainInfoRepository;
         }
 
-        [HttpPost("{seatId}")]
-        public async Task<IActionResult> TakeSeatAsync(int seatId, [FromBody] TakeSeatInput input)
+        [HttpPost]
+        public async Task<IActionResult> TakeSeatAsync([FromBody] TakeSeatInput input)
         {
-            var cartGrain = _grainFactory.GetGrain<ISeatGrain>(seatId.ToString());
+            var seatId = input.SeatId;
+            if (string.IsNullOrEmpty(input.SeatId))
+            {
+                var random = new Random();
+                var seatNumber = random.Next(0, 10000);
+                seatId = $"{input.TrainId}{seatNumber:0000}";
+            }
+
+            var cartGrain = _grainFactory.GetGrain<ISeatGrain>(seatId);
             var requestId = Guid.NewGuid().ToString("N");
             try
             {

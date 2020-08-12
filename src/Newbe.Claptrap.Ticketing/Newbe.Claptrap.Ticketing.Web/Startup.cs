@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
@@ -12,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository.Module;
 using Orleans;
+using Orleans.Configuration;
+using Orleans.Hosting;
 
 namespace Newbe.Claptrap.Ticketing.Web
 {
@@ -36,11 +39,10 @@ namespace Newbe.Claptrap.Ticketing.Web
             services.AddSwaggerGen(c => { });
             services.AddHttpClient("train", (s, h) =>
             {
-                const string baseUrl = "https://localhost:36524/";
+                var baseUrl = Configuration["Ticketing:ApiBaseUrl"];
                 h.BaseAddress = new Uri(baseUrl);
             });
             AddOrleansClient(services);
-            
         }
 
         // ConfigureContainer is where you can register things directly
@@ -53,20 +55,21 @@ namespace Newbe.Claptrap.Ticketing.Web
             builder.RegisterModule(new RepositoryModule());
         }
 
-        private static void AddOrleansClient(IServiceCollection services)
+        private void AddOrleansClient(IServiceCollection services)
         {
             var clientBuilder = new ClientBuilder();
             var client = clientBuilder
                 .UseLocalhostClustering()
+#if !DEBUG
+                .UseConsulClustering(options =>
+                {
+                    options.Address =
+                        new Uri(Configuration["Claptrap:Orleans:Clustering:ConsulUrl"]);
+                })
+#endif
                 .ConfigureApplicationParts(manager =>
                     manager.AddApplicationPart(typeof(ITrainGran).Assembly).WithReferences())
                 .Build();
-            client.Connect(exception =>
-            {
-                Console.WriteLine(exception);
-                Thread.Sleep(TimeSpan.FromSeconds(5));
-                return Task.FromResult(true);
-            }).Wait();
             services.AddSingleton(client);
             services.AddSingleton<IGrainFactory>(client);
         }
@@ -86,7 +89,7 @@ namespace Newbe.Claptrap.Ticketing.Web
                 .AddSupportedUICultures(supportedCultures);
 
             app.UseRequestLocalization(localizationOptions);
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -102,6 +105,14 @@ namespace Newbe.Claptrap.Ticketing.Web
                 endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapControllers();
             });
+
+            var client = app.ApplicationServices.GetService<IClusterClient>();
+            client.Connect(exception =>
+            {
+                Console.WriteLine(exception);
+                Thread.Sleep(TimeSpan.FromSeconds(5));
+                return Task.FromResult(true);
+            }).Wait();
         }
     }
 }
