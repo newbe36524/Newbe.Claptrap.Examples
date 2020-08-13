@@ -9,6 +9,9 @@ using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
 {
+    /// <summary>
+    /// Train Api
+    /// </summary>
     [Route("api/[controller]")]
     public class TrainController : Controller
     {
@@ -26,8 +29,13 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             _stationRepository = stationRepository;
         }
 
+        /// <summary>
+        /// Get Left Seat Count of a train
+        /// </summary>
+        /// <param name="trainId"></param>
+        /// <returns></returns>
         [HttpGet("GetLeftSeat")]
-        public async Task<IActionResult> GetLeftSeatAsync(int trainId)
+        public async Task<IEnumerable<LeftCountItem>> GetLeftSeatAsync(int trainId)
         {
             var trainGran = _grainFactory.GetGrain<ITrainGran>(trainId.ToString());
             var allCount = await trainGran.GetAllCountAsync();
@@ -43,7 +51,7 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                     ToStationName = nameDic[x.Key.ToStationId]
                 })
                 .ToList();
-            return Json(re);
+            return re;
 
             IEnumerable<int> GetStationIds()
             {
@@ -56,8 +64,12 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Get All Trains Info
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllTrainInfoAsync()
+        public async Task<TrainBasicInfoViewModel[]> GetAllTrainInfoAsync()
         {
             var allTrainInfo = await _trainInfoRepository.GetAllTrainInfoAsync();
             var tasks = allTrainInfo
@@ -70,7 +82,7 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                     ToStationName = await _stationRepository.GetNameAsync(x.ToStationId)
                 });
             var re = await Task.WhenAll(tasks);
-            return Json(re);
+            return re;
         }
     }
 }

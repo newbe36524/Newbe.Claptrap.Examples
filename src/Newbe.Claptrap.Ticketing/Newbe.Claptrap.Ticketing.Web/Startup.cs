@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository.Module;
+using Newbe.Claptrap.Ticketing.Web.Models;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
@@ -36,12 +39,19 @@ namespace Newbe.Claptrap.Ticketing.Web
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
-            services.AddSwaggerGen(c => { });
+            services.AddSwaggerGen(c =>
+            {
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
             services.AddHttpClient("train", (s, h) =>
             {
                 var baseUrl = Configuration["Ticketing:ApiBaseUrl"];
                 h.BaseAddress = new Uri(baseUrl);
             });
+            services.Configure<SiteOptions>(Configuration.GetSection("Ticketing"));
             AddOrleansClient(services);
         }
 

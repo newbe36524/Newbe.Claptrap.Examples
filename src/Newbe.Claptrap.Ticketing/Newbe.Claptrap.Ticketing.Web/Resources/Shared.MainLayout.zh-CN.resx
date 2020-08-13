@@ -32,4 +32,7 @@
     <data name="A Train ticketing simulator" xml:space="preserve">
         <value>火车售票模拟器</value>
     </data>
+    <data name="Click here to check out more information about this site" xml:space="preserve">
+        <value>点击此处了解本网站的详情</value>
+    </data>
 </root>
