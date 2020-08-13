@@ -23,12 +23,12 @@ jobs:
       - name: Install dependencies
         run: |
           cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Ticketing
-          dotnet restore
+          dotnet restore Newbe.Claptrap.Ticketing.sln
       - name: Build
         run: |
           cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Ticketing
-          dotnet build --configuration Release --no-restore
+          dotnet build Newbe.Claptrap.Ticketing.sln --configuration Release --no-restore
       - name: Test
         run: |
           cd $GITHUB_WORKSPACE/src/Newbe.Claptrap.Ticketing
-          dotnet test
+          dotnet test Newbe.Claptrap.Ticketing.sln
