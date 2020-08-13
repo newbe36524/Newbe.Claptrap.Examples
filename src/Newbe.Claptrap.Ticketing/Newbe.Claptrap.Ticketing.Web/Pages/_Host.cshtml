@@ -1,5 +1,8 @@
 ﻿@page "/"
+@using Microsoft.Extensions.Options
 @using Newbe.Claptrap.Ticketing.Web
+@using Newbe.Claptrap.Ticketing.Web.Models
+@inject IOptions<SiteOptions> Options;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
@@ -17,6 +20,7 @@
 <body>
     <app>
         <component type="typeof(App)" render-mode="ServerPrerendered" />
+        @Html.Raw(Options.Value.SiteFooterHtml)
     </app>
 
     <script src="_framework/blazor.server.js"></script>

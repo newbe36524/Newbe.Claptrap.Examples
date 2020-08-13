@@ -2,6 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+        <UserSecretsId>7c7b535a-6229-4a23-a9d6-c62d5e70c505</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,9 +20,6 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.5.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
-<!--        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />-->
         <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.6" />
         <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
     </ItemGroup>
@@ -33,80 +34,6 @@
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="Shared\MainLayout.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Update="Shared\NavMenu.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Update="Shared\SurveyPrompt.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Update="Pages\Index.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Update="wwwroot\css\bootstrap\bootstrap.min.css">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\bootstrap\bootstrap.min.css.map">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.eot">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.otf">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.svg">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.woff">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\open-iconic\FONT-LICENSE">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\open-iconic\ICON-LICENSE">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\open-iconic\README.md">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\css\app.css">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="wwwroot\favicon.ico">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-        <Content Update="App.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Update="_Imports.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Update="Pages\_Host.cshtml">
-          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
     </ItemGroup>
 

@@ -6,6 +6,9 @@ using Newbe.Claptrap.Ticketing.Web.Models;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
 {
+    /// <summary>
+    /// Station Api
+    /// </summary>
     [Route("api/[controller]")]
     public class StationController : Controller
     {
@@ -17,8 +20,12 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             _stationRepository = stationRepository;
         }
 
+        /// <summary>
+        /// Get All Station Info
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAllStation")]
-        public async Task<IActionResult> GetAllStationAsync()
+        public async Task<PassStation[]> GetAllStationAsync()
         {
             var nameDic = await _stationRepository.GetAllNameAsync();
             var re = nameDic.Select(x => new PassStation
@@ -27,7 +34,7 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                     StationName = x.Value
                 })
                 .ToArray();
-            return Json(re);
+            return re;
         }
     }
 }

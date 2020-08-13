@@ -9,6 +9,9 @@ using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
 {
+    /// <summary>
+    /// Seat Api
+    /// </summary>
     [Route("api/[controller]")]
     public class SeatController : Controller
     {
@@ -26,10 +29,23 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             _trainInfoRepository = trainInfoRepository;
         }
 
-        [HttpPost("{seatId}")]
-        public async Task<IActionResult> TakeSeatAsync(int seatId, [FromBody] TakeSeatInput input)
+        /// <summary>
+        /// Take a seat
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<BlazorJsonResponse> TakeSeatAsync([FromBody] TakeSeatInput input)
         {
-            var cartGrain = _grainFactory.GetGrain<ISeatGrain>(seatId.ToString());
+            var seatId = input.SeatId;
+            if (string.IsNullOrEmpty(input.SeatId))
+            {
+                var random = new Random();
+                var seatNumber = random.Next(0, 10000);
+                seatId = $"{input.TrainId}{seatNumber:0000}";
+            }
+
+            var cartGrain = _grainFactory.GetGrain<ISeatGrain>(seatId);
             var requestId = Guid.NewGuid().ToString("N");
             try
             {
@@ -37,20 +53,25 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             }
             catch (Exception e)
             {
-                return Json(new BlazorJsonResponse {Status = "0", Message = e.Message});
+                return new BlazorJsonResponse {Status = "0", Message = e.Message};
             }
 
             var fromName = await _stationRepository.GetNameAsync(input.FromStationId);
             var toName = await _stationRepository.GetNameAsync(input.ToStationId);
-            return Json(new BlazorJsonResponse
+            return new BlazorJsonResponse
             {
                 Status = "1",
                 Message = $"take a seat success {seatId} [{fromName} -> {toName}] with requestId : {requestId}"
-            });
+            };
         }
 
+        /// <summary>
+        /// Get current seat count
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetSeatAsync([FromQuery] GetSeatInput input)
+        public async Task<GetSeatOutput> GetSeatAsync([FromQuery] GetSeatInput input)
         {
             var trains = await _trainInfoRepository.GetTrainsAsync(input.FromStationId, input.ToStationId);
             var tasks = trains.Select(async x =>
@@ -81,7 +102,7 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                 FromStationName = await _stationRepository.GetNameAsync(input.FromStationId),
                 ToStationName = await _stationRepository.GetNameAsync(input.ToStationId)
             };
-            return Json(re);
+            return re;
         }
     }
 }

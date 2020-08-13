@@ -84,7 +84,7 @@
                             </div>
                             <div class="col-md-8 form-inline">
                                 <div class="form-group col-md-8">
-                                    <input placeholder="@(L["Please type a seat number from 0 to 9999"])" @bind="item.TakingSeatNumber" class="form-control" type="text" style="width: 100%"/>
+                                    <input placeholder="@(L["Please type a seat number from 0 to 9999, or -1 for random"])" @bind="item.TakingSeatNumber" class="form-control" type="text" style="width: 100%"/>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <button class="btn btn-primary" type="button" @onclick="@(() => BookSeat(_seatOutput.FromStationId, _seatOutput.ToStationId, item.TrainId))">@(L["Book"])</button>
@@ -225,9 +225,15 @@
                 return;
             }
             var seatId = $"{trainId}{intSeatNumber:0000}";
+            if (intSeatNumber < 0 || intSeatNumber >= 10000)
+            {
+                seatId = string.Empty;
+            }
             Logger.LogDebug($"seatId={seatId}");
             var seatInput = new TakeSeatInput
             {
+                TrainId = trainId,
+                SeatId = seatId,
                 FromStationId = fromStationId,
                 ToStationId = toStationId,
             };

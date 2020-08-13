@@ -61,15 +61,29 @@ namespace Newbe.Claptrap.Ticketing.BackendServer
                         .Configure<GrainCollectionOptions>(options =>
                         {
                             options.CollectionAge = TimeSpan.FromMinutes(5);
+                            options.CollectionQuantum = TimeSpan.FromSeconds(1);
                             options.ClassSpecificCollectionAge[typeof(TrainGran).FullName!]
                                 = TimeSpan.FromHours(2);
                             options.ClassSpecificCollectionAge[typeof(SeatGrain).FullName!]
-                                = TimeSpan.FromSeconds(1);
+                                = TimeSpan.FromSeconds(2);
                             options.ClassSpecificCollectionAge[typeof(SeatUpdateCountMinionGrain).FullName!]
-                                = TimeSpan.FromSeconds(1);
+                                = TimeSpan.FromSeconds(2);
                         })
                         .UseDashboard(options => options.Port = 9000);
                 })
+#if !DEBUG
+                .UseOrleans((context, siloBuilder) =>
+                {
+                    siloBuilder
+                        .UseConsulClustering(options =>
+                        {
+                            options.Address =
+                                new Uri(context.Configuration["Claptrap:Orleans:Clustering:ConsulUrl"]);
+                        })
+                        .ConfigureApplicationParts(manager =>
+                            manager.AddFromDependencyContext().WithReferences());
+                })
+#endif
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
