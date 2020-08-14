@@ -39,29 +39,25 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
         {
             var trainGran = _grainFactory.GetGrain<ITrainGran>(trainId.ToString());
             var allCount = await trainGran.GetAllCountAsync();
-            var stationIds = GetStationIds().Distinct();
+            var stationIds = allCount.Keys
+                .Concat(allCount.SelectMany(x => x.Value.Keys))
+                .Distinct();
             var nameDic = await _stationRepository.GetNamesAsync(stationIds);
 
-            var re = allCount.Select(x => new LeftCountItem
+            var re = allCount.SelectMany(x =>
                 {
-                    LeftCount = x.Value,
-                    FromStationId = x.Key.FromStationId,
-                    FromStationName = nameDic[x.Key.FromStationId],
-                    ToStationId = x.Key.ToStationId,
-                    ToStationName = nameDic[x.Key.ToStationId]
+                    var (key, value) = x;
+                    return value.Select(inner => new LeftCountItem
+                    {
+                        LeftCount = inner.Value,
+                        FromStationId = key,
+                        FromStationName = nameDic[key],
+                        ToStationId = inner.Key,
+                        ToStationName = nameDic[inner.Key]
+                    });
                 })
                 .ToList();
             return re;
-
-            IEnumerable<int> GetStationIds()
-            {
-                var allCountKeys = allCount.Keys;
-                foreach (var allCountKey in allCountKeys)
-                {
-                    yield return allCountKey.FromStationId;
-                    yield return allCountKey.ToStationId;
-                }
-            }
         }
 
         /// <summary>

@@ -47,7 +47,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Train.Main
             return Task.FromResult(count);
         }
 
-        public Task<Dictionary<StationTuple, int>> GetAllCountAsync()
+        public Task<Dictionary<int, IDictionary<int, int>>> GetAllCountAsync()
         {
             return Task.FromResult(StateData.SeatCount.ToDictionary(x => x.Key, x => x.Value));
         }

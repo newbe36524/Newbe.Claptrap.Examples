@@ -18,12 +18,12 @@ namespace Newbe.Claptrap.Ticketing.IActor
         /// <param name="toStationId"></param>
         /// <returns></returns>
         Task<int> GetLeftSeatCountAsync(int fromStationId, int toStationId);
-        
+
         /// <summary>
         /// get left count
         /// </summary>
         /// <returns></returns>
-        Task<Dictionary<StationTuple,int>> GetAllCountAsync();
+        Task<Dictionary<int, IDictionary<int, int>>> GetAllCountAsync();
 
         /// <summary>
         /// update count

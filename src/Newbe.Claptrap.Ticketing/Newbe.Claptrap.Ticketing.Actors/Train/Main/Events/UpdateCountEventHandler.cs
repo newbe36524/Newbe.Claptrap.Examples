@@ -33,12 +33,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Train.Main.Events
                 {
                     if (i < indexTo && j > indexFrom)
                     {
-                        var key = new StationTuple
-                        {
-                            FromStationId = stations[i],
-                            ToStationId = stations[j]
-                        };
-                        stateData.SeatCount[key]--;
+                        stateData.SeatCount[stations[i]][stations[j]]--;
                     }
                 }
             }

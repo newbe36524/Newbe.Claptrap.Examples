@@ -237,7 +237,7 @@
                 FromStationId = fromStationId,
                 ToStationId = toStationId,
             };
-            var resp = await Http.CreateClient("train").PostAsJsonAsync($"api/Seat/{seatId}", seatInput);
+            var resp = await Http.CreateClient("train").PostAsJsonAsync("api/Seat/", seatInput);
             if (resp.IsSuccessStatusCode)
             {
                 var response = await resp.Content.ReadFromJsonAsync<BlazorJsonResponse>();
