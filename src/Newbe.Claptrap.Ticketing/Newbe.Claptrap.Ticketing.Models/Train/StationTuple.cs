@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Newbe.Claptrap.Ticketing.Models.Train
 {
-    public struct StationTuple
+    public class StationTuple
     {
         public int FromStationId { get; set; }
         public int ToStationId { get; set; }
@@ -12,6 +12,10 @@ namespace Newbe.Claptrap.Ticketing.Models.Train
         {
             public bool Equals(StationTuple x, StationTuple y)
             {
+                if (ReferenceEquals(x, y)) return true;
+                if (ReferenceEquals(x, null)) return false;
+                if (ReferenceEquals(y, null)) return false;
+                if (x.GetType() != y.GetType()) return false;
                 return x.FromStationId == y.FromStationId && x.ToStationId == y.ToStationId;
             }
 
@@ -21,7 +25,6 @@ namespace Newbe.Claptrap.Ticketing.Models.Train
             }
         }
 
-        public static IEqualityComparer<StationTuple> FromStationIdToStationIdComparer { get; } =
-            new FromStationIdToStationIdEqualityComparer();
+        public static IEqualityComparer<StationTuple> FromStationIdToStationIdComparer { get; } = new FromStationIdToStationIdEqualityComparer();
     }
 }

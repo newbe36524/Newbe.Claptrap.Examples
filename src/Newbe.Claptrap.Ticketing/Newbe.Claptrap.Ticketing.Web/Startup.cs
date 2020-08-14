@@ -92,7 +92,7 @@ namespace Newbe.Claptrap.Ticketing.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            var supportedCultures = new[] {"zh-CN", "en-US"};
+            var supportedCultures = new[] {"zh", "en-US"};
             var localizationOptions = new RequestLocalizationOptions()
                 .SetDefaultCulture(supportedCultures.Last())
                 .AddSupportedCultures(supportedCultures)

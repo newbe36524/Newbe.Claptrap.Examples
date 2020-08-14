@@ -38,18 +38,45 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Update="Resources\Pages.Index.zh.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Pages.Index.cn.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Shared.MainLayout.zh.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Shared.MainLayout.zh-CN.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Services.StationResources.zh.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Newbe.Claptrap.Ticketing.Repository.StationRepository.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Pages.Index.zh-CN.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Pages.Index.cn.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Shared.MainLayout.zh-CN.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Shared.MainLayout.zh-CN.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Services.StationResources.zh-CN.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Newbe.Claptrap.Ticketing.Repository.StationRepository.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Newbe.Claptrap.Ticketing.Repository.StationRepository.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Services.StationResources.zh.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Shared.MainLayout.zh-CN.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Shared.MainLayout.zh.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Pages.Index.cn.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Pages.Index.zh-CN.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Pages.Index.cn.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Pages.Index.zh.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
     </ItemGroup>
 
 </Project>
