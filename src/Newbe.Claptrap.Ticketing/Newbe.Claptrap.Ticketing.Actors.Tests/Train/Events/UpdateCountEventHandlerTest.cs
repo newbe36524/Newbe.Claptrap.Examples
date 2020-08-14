@@ -26,7 +26,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Train.Events
             };
             await handler.HandleEvent(state, evt, default);
             var leftCount = maxCount - 1;
-            state.SeatCount.Count.Should().Be(6);
+            state.SeatCount.Count.Should().Be(3);
             state.GetSeatCount(100, 101).Should().Be(leftCount);
             state.GetSeatCount(100, 102).Should().Be(leftCount);
             state.GetSeatCount(100, 103).Should().Be(leftCount);
@@ -56,7 +56,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Train.Events
                 ToStationId = 103
             }, default);
 
-            state.SeatCount.Count.Should().Be(6);
+            state.SeatCount.Count.Should().Be(3);
             state.GetSeatCount(100, 101).Should().Be(maxCount - 1);
             state.GetSeatCount(100, 102).Should().Be(maxCount - 1);
             state.GetSeatCount(100, 103).Should().Be(maxCount - 2);
@@ -81,7 +81,7 @@ namespace Newbe.Claptrap.Ticketing.Actors.Tests.Train.Events
             };
             await handler.HandleEvent(state, wvt, default);
 
-            state.SeatCount.Count.Should().Be(6);
+            state.SeatCount.Count.Should().Be(3);
             var leftCount = maxCount - 1;
             state.GetSeatCount(100, 101).Should().Be(leftCount);
             state.GetSeatCount(100, 102).Should().Be(leftCount);
