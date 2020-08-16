@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -17,6 +18,8 @@ namespace Newbe.Claptrap.Ticketing.LoadTestClient.Services
         private readonly ITrainInfoRepository _trainInfoRepository;
         private readonly ILogger<LoadTestService> _logger;
         private readonly HttpClient _client;
+        private readonly Subject<int> _counter;
+        private readonly IDisposable _countHandler;
 
         public LoadTestService(
             ITrainInfoRepository trainInfoRepository,
@@ -24,23 +27,43 @@ namespace Newbe.Claptrap.Ticketing.LoadTestClient.Services
         {
             _trainInfoRepository = trainInfoRepository;
             _logger = logger;
-            _client = new HttpClient {BaseAddress = new Uri("http://localhost:36525")};
+            _client = new HttpClient {BaseAddress = new Uri("http://localhost:10080")};
+            _counter = new Subject<int>();
+            var totalCount = 0;
+            _countHandler = _counter.Subscribe(i =>
+            {
+                totalCount++;
+                _logger.LogInformation("requested {count} count", totalCount * 100);
+            });
         }
 
         public async Task RunAsync()
         {
+            _logger.LogInformation("test service started");
+
             var all = await _trainInfoRepository.GetAllTrainInfoAsync();
-            var task = Enumerable.Range(0, 10000)
-                .SelectMany(seatId => all.Select(train => SendRequest(new TakeSeatInput
+            var task = all
+                .SelectMany(train =>
                 {
-                    SeatId = "-1",
-                    TrainId = train.TrainId,
-                    FromStationId = train.FromStationId,
-                    ToStationId = train.ToStationId,
-                })))
-                .Select(x => Observable.FromAsync(() => x))
+                    return Enumerable.Range(0, 10000)
+                        .Select(seatId =>
+                            SendRequest(new TakeSeatInput
+                            {
+                                SeatId = string.Empty,
+                                TrainId = train.TrainId,
+                                FromStationId = train.FromStationId,
+                                ToStationId = train.ToStationId,
+                            }));
+                })
                 .ToObservable()
-                .Merge(100)
+                .Buffer(TimeSpan.FromSeconds(1), 10)
+                .Where(x => x.Count > 0)
+                .Select(tasks => Observable.FromAsync(async () =>
+                {
+                    await Task.WhenAll(tasks);
+                    _counter.OnNext(1);
+                }))
+                .Concat()
                 .ToTask();
             await task;
         }

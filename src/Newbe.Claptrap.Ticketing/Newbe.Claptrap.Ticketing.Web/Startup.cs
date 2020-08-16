@@ -123,6 +123,7 @@ namespace Newbe.Claptrap.Ticketing.Web
                 Thread.Sleep(TimeSpan.FromSeconds(5));
                 return Task.FromResult(true);
             }).Wait();
+            Console.WriteLine("connected");
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Newbe.Claptrap.Ticketing.LoadTestClient
                     logging.SetMinimumLevel(LogLevel.Trace);
                     logging.AddNLog();
                 });
-                logger.Debug("init main");
+                logger.Info("init main");
                 var builder = new ContainerBuilder();
                 builder.Populate(services);
                 builder.RegisterModule<LoadTestClientModule>();

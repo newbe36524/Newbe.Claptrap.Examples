@@ -1,0 +1,95 @@
+version: "3.4"
+
+services:
+  newbe.claptrap.ticketing.web:
+    image: newbe-claptrap-ticketing-web
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      ASPNETCORE_URLS: "http://+:80"
+    depends_on:
+      - newbe.claptrap.ticketing.backendserver
+    environment:
+      Claptrap__Orleans__Hostname: newbe.claptrap.ticketing.backendserver
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
+      Ticketing__ApiBaseUrl: "http://127.0.0.1/"
+      Ticketing__SiteFooterHtml: "<div class=\"my-5 pt-5 text-muted text-center text-small\"><a href=\"http://www.beian.miit.gov.cn/\" rel=\"external nofollow noopener noreferrer\" target=\"_blank\">闽 ICP 备 18002256 号 </a><a href=\"http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35010202000749\" rel=\"external nofollow noopener noreferrer\" target=\"_blank\">闽公网安备 35010202000749 号</a></div>"
+
+  newbe.claptrap.ticketing.backendserver:
+    image: newbe-claptrap-ticketing-backendserver
+    restart: always
+    ports:
+      - "11111"
+      - "30000"
+    depends_on:
+      - mongo
+    environment:
+      Claptrap__Orleans__Hostname: newbe.claptrap.ticketing.backendserver
+      Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
+      Claptrap__DefaultConnectionString: "mongodb://root:claptrap@mongo:27017/claptrap?authSource=admin"
+      Claptrap__EventStore__Strategy: SharedTable
+      Claptrap__EventStore__DatabaseType: MongoDB
+      Claptrap__EventStore__InsertManyWindowCount: 1500
+      Claptrap__StateStore__InsertManyWindowCount: SharedTable
+      Claptrap__StateStore__InsertManyWindowCount: MongoDB
+      Claptrap__StateStore__InsertManyWindowCount: 2000
+      Claptrap__RabbitMQ__Enabled: true
+      Claptrap__RabbitMQ__CompressType: Deflate
+      Claptrap__RabbitMQ__Uri: "amqp://guest:guest@rabbitmq:5672/%2f"
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: always
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: claptrap
+
+  mongo-express:
+      image: mongo-express
+      restart: always
+      ports:
+          - 48081:8081
+      environment:
+          ME_CONFIG_MONGODB_ADMINUSERNAME: root
+          ME_CONFIG_MONGODB_ADMINPASSWORD: claptrap
+
+  consulnode1:
+    image: bitnami/consul
+    restart: always
+    environment:
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT_LAN_ADDRESS=0.0.0.0
+      - CONSUL_DISABLE_KEYRING_FILE=true
+      - CONSUL_RETRY_JOIN_ADDRESS=consulnode1
+    ports:
+      - '8300:8300'
+      - '8301:8301'
+      - '8301:8301/udp'
+      - '8500:8500'
+      - '8600:8600'
+      - '8600:8600/udp'
+
+  consulnode2:
+    image: bitnami/consul
+    restart: always
+    environment:
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT_LAN_ADDRESS=0.0.0.0
+      - CONSUL_DISABLE_KEYRING_FILE=true
+      - CONSUL_RETRY_JOIN_ADDRESS=consulnode1
+      - CONSUL_ENABLE_UI=false
+
+  consulnode3:
+    image: bitnami/consul
+    restart: always
+    environment:
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT_LAN_ADDRESS=0.0.0.0
+      - CONSUL_DISABLE_KEYRING_FILE=true
+      - CONSUL_RETRY_JOIN_ADDRESS=consulnode1
+      - CONSUL_ENABLE_UI=false

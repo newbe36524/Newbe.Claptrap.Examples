@@ -11,6 +11,7 @@ COPY ["Newbe.Claptrap.Ticketing.Web/Newbe.Claptrap.Ticketing.Web.csproj", "Newbe
 COPY ["Newbe.Claptrap.Ticketing.Repository/Newbe.Claptrap.Ticketing.Repository.csproj", "Newbe.Claptrap.Ticketing.Repository/"]
 COPY ["Newbe.Claptrap.Ticketing.IActor/Newbe.Claptrap.Ticketing.IActor.csproj", "Newbe.Claptrap.Ticketing.IActor/"]
 COPY ["Newbe.Claptrap.Ticketing.Models/Newbe.Claptrap.Ticketing.Models.csproj", "Newbe.Claptrap.Ticketing.Models/"]
+COPY .nuget.config nuget.config
 RUN dotnet restore "Newbe.Claptrap.Ticketing.Web/Newbe.Claptrap.Ticketing.Web.csproj"
 COPY . .
 WORKDIR "/src/Newbe.Claptrap.Ticketing.Web"
