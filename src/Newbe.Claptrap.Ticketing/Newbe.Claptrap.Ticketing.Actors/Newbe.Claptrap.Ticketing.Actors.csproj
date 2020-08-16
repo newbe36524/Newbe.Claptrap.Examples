@@ -5,9 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newbe.Claptrap" Version="0.4.2-alpha.g8d153db249" />
-        <PackageReference Include="Newbe.Claptrap.DataSerializer.Json" Version="0.4.2-alpha.g8d153db249" />
-        <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.4.2-alpha.g8d153db249" />
+        <PackageReference Include="Newbe.Claptrap" Version="0.5.14-alpha.gd728b2f7f1" />
+        <PackageReference Include="Newbe.Claptrap.DataSerializer.Json" Version="0.5.14-alpha.gd728b2f7f1" />
+        <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.5.14-alpha.gd728b2f7f1" />
         <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.2.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

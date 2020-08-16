@@ -11,16 +11,18 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Orleans.OrleansConsulUtils" Version="3.2.1" />
-        <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.2"/>
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9"/>
-        <PackageReference Include="Newbe.Claptrap" Version="0.4.2-alpha.g8d153db249"/>
-        <PackageReference Include="Newbe.Claptrap.AppMetrics" Version="0.4.2-alpha.g8d153db249"/>
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.2.1"/>
-        <PackageReference Include="Microsoft.Orleans.OrleansProviders" Version="3.2.1"/>
-        <PackageReference Include="Newbe.Claptrap.Orleans.Hosting" Version="0.4.2-alpha.g8d153db249"/>
-        <PackageReference Include="Newbe.Claptrap.StorageProvider.SQLite" Version="0.4.2-alpha.g8d153db249"/>
-        <PackageReference Include="OrleansDashboard" Version="3.1.0"/>
+        <PackageReference Include="Newbe.Claptrap.EventCenter.RabbitMQ" Version="0.5.14-alpha.gd728b2f7f1" />
+        <PackageReference Include="Newbe.Claptrap.StorageProvider.MongoDB" Version="0.5.14-alpha.gd728b2f7f1" />
+        <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.2" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+        <PackageReference Include="Newbe.Claptrap" Version="0.5.14-alpha.gd728b2f7f1" />
+        <PackageReference Include="Newbe.Claptrap.AppMetrics" Version="0.5.14-alpha.gd728b2f7f1" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.2.1" />
+        <PackageReference Include="Microsoft.Orleans.OrleansProviders" Version="3.2.1" />
+        <PackageReference Include="Newbe.Claptrap.Orleans.Hosting" Version="0.5.14-alpha.gd728b2f7f1" />
+        <PackageReference Include="Newbe.Claptrap.StorageProvider.SQLite" Version="0.5.14-alpha.gd728b2f7f1" />
+        <PackageReference Include="OrleansDashboard" Version="3.1.0" />
     </ItemGroup>
 
     <ItemGroup>

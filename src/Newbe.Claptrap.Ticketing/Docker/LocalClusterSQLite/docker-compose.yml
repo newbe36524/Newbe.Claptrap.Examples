@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   newbe.claptrap.ticketing.web:
-    image: ${DOCKER_REGISTRY-}newbe-claptrap-ticketing-web
+    image: newbe-claptrap-ticketing-web
     restart: always
     ports:
       - "10080:80"
@@ -14,9 +14,10 @@ services:
       Claptrap__Orleans__Hostname: newbe.claptrap.ticketing.backendserver
       Claptrap__Orleans__Clustering__ConsulUrl: "http://consulnode1:8500"
       Ticketing__ApiBaseUrl: "http://127.0.0.1"
+      Ticketing__SiteFooterHtml: "<div class=\"my-5 pt-5 text-muted text-center text-small\"></div>"
 
   newbe.claptrap.ticketing.backendserver:
-    image: ${DOCKER_REGISTRY-}newbe-claptrap-ticketing-backendserver
+    image: newbe-claptrap-ticketing-backendserver
     restart: always
     ports:
       - "11111"
