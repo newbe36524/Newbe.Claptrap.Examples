@@ -1,9 +1,13 @@
 using System;
+using Autofac;
 using HelloClaptrap.Actors.Cart;
 using HelloClaptrap.IActor;
+using HelloClaptrap.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newbe.Claptrap;
+using Newbe.Claptrap.Bootstrapper;
 using NLog.Web;
 using Orleans;
 
@@ -35,7 +39,17 @@ namespace HelloClaptrap.BackendServer
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
-                .UseClaptrap(typeof(ICartGrain).Assembly, typeof(CartGrain).Assembly)
+                .UseClaptrap(
+                    builder =>
+                    {
+                        builder
+                            .ScanClaptrapDesigns(new[]
+                            {
+                                typeof(ICartGrain).Assembly,
+                                typeof(CartGrain).Assembly,
+                            });
+                    },
+                    builder => { builder.RegisterModule<RepositoryModule>(); })
                 .UseOrleansClaptrap()
                 .UseOrleans(builder => builder.UseDashboard(options => options.Port = 9000))
                 .ConfigureLogging(logging =>
