@@ -15,7 +15,7 @@ namespace HelloClaptrap.Models
         #region Sku
 
         public const string SkuGrain = "sku_claptrap_newbe";
-        private const string SkuEventSuffix = "_e_" + CartGrain;
+        private const string SkuEventSuffix = "_e_" + SkuGrain;
         public const string SkuInventoryUpdate = "inventoryUpdate" + SkuEventSuffix;
 
         #endregion
