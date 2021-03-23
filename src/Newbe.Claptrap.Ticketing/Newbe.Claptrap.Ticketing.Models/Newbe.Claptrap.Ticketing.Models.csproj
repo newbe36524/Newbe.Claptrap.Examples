@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Newbe.Claptrap.Abstractions" Version="0.5.14-alpha.gd728b2f7f1" />
+      <PackageReference Include="Newbe.Claptrap.Abstractions" Version="$(ClaptrapPackageVersion)" />
     </ItemGroup>
 
 </Project>

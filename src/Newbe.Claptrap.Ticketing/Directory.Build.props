@@ -1,6 +1,7 @@
 <Project>
- <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-    <NoWarn>$(NoWarn);1591</NoWarn>
- </PropertyGroup>
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <ClaptrapPackageVersion>0.9.6-alpha.g98b8962de6</ClaptrapPackageVersion>
+    </PropertyGroup>
 </Project>

@@ -1,19 +1,20 @@
 ﻿using System.Threading.Tasks;
+using Dapr.Actors.Client;
+using Newbe.Claptrap.Dapr;
 using Newbe.Claptrap.Ticketing.Actors.Seat.Main;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Models.Seat.Events;
-using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Actors.Seat.Minions.SeatUpdateCount.Events
 {
     public class TakeSeatEventHandler : NormalEventHandler<NoneStateData, TakeSeatEvent>
     {
-        private readonly IGrainFactory _grainFactory;
+        private readonly IActorProxyFactory _actorProxyFactory;
 
         public TakeSeatEventHandler(
-            IGrainFactory grainFactory)
+            IActorProxyFactory actorProxyFactory)
         {
-            _grainFactory = grainFactory;
+            _actorProxyFactory = actorProxyFactory;
         }
 
         public override async ValueTask HandleEvent(NoneStateData stateData,
@@ -22,8 +23,8 @@ namespace Newbe.Claptrap.Ticketing.Actors.Seat.Minions.SeatUpdateCount.Events
         {
             var claptrapIdentity = eventContext.State.Identity;
             var seatId = SeatId.FromSeatId(claptrapIdentity.Id);
-            var trainGran = _grainFactory.GetGrain<ITrainGran>(seatId.TrainId.ToString());
-            await trainGran.UpdateCountAsync(eventData.FromStationId, eventData.ToStationId);
+            var trainActor = _actorProxyFactory.GetClaptrap<ITrainGran>(seatId.TrainId.ToString());
+            await trainActor.UpdateCountAsync(eventData.FromStationId, eventData.ToStationId);
         }
     }
 }

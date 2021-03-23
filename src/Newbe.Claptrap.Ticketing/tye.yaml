@@ -1,0 +1,30 @@
+# tye application configuration file
+# read all about it at https://github.com/dotnet/tye
+#
+# when you've given us a try, we'd love to know what you think:
+#    https://aka.ms/AA7q20u
+#
+name: ticketing
+extensions:
+  - name: dapr
+    components-path: "./dapr_components/"
+    config: claptrap_config
+    exclude-placement-container: true
+    placement-port: 6050
+  - name: zipkin
+  - name: seq
+services:
+  - name: ticketing-web
+    project: Newbe.Claptrap.Ticketing.Web/Newbe.Claptrap.Ticketing.Web.csproj
+  - name: ticketing-backendserver
+    project: Newbe.Claptrap.Ticketing.BackendServer/Newbe.Claptrap.Ticketing.BackendServer.csproj
+  - name: zipkin
+    external: true
+    bindings:
+      - name: http
+        port: 9411
+  - name: seq
+    external: true
+    bindings:
+      - name: http
+        port: 5341

@@ -1,82 +1,68 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
-        <UserSecretsId>7c7b535a-6229-4a23-a9d6-c62d5e70c505</UserSecretsId>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Orleans.OrleansConsulUtils" Version="3.2.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.5" />
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Orleans.Core" Version="3.2.1" />
-        <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.2.1" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-        <PackageReference Include="Newbe.Claptrap.Orleans" Version="0.5.14-alpha.gd728b2f7f1" />
-        <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.5.1" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.6" />
-        <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+        <PackageReference Include="Dapr.Actors" Version="1.0.0" />
+        <PackageReference Include="Microsoft.Tye.Extensions.Configuration" Version="0.6.0-alpha.21070.5" />
+        <PackageReference Include="OpenTelemetry" Version="1.0.1" />
+        <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="1.0.1" />
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc2" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc2" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.0.0-rc2" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc2" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.7" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Newbe.Claptrap.Ticketing.IActor\Newbe.Claptrap.Ticketing.IActor.csproj" />
-        <ProjectReference Include="..\Newbe.Claptrap.Ticketing.Repository\Newbe.Claptrap.Ticketing.Repository.csproj" />
+      <ProjectReference Include="..\Newbe.Claptrap.Ticketing.Actors\Newbe.Claptrap.Ticketing.Actors.csproj" />
+      <ProjectReference Include="..\Newbe.Claptrap.Ticketing.IActor\Newbe.Claptrap.Ticketing.IActor.csproj" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Pages.Index.zh.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Pages.Index.cn.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Shared.MainLayout.zh.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Shared.MainLayout.zh-CN.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Services.StationResources.zh.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Newbe.Claptrap.Ticketing.Repository.StationRepository.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Pages.Index.zh-CN.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Pages.Index.cn.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Update="nlog.config">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
+        <Compile Update="Resources\Newbe.Claptrap.Ticketing.Repository.StationRepository.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Services.StationResources.zh.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Update="Resources\Shared.MainLayout.zh-CN.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Shared.MainLayout.zh.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Update="Resources\Pages.Index.cn.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Pages.Index.zh-CN.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Update="Resources\Pages.Index.cn.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Pages.Index.zh.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+        </Compile>
     </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Update="Resources\Pages.Index.zh.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Pages.Index.cn.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Shared.MainLayout.zh.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Shared.MainLayout.zh-CN.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Services.StationResources.zh.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Newbe.Claptrap.Ticketing.Repository.StationRepository.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Pages.Index.zh-CN.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Pages.Index.cn.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Resources\Newbe.Claptrap.Ticketing.Repository.StationRepository.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Services.StationResources.zh.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
-      <Compile Update="Resources\Shared.MainLayout.zh-CN.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Shared.MainLayout.zh.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
-      <Compile Update="Resources\Pages.Index.cn.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Pages.Index.zh-CN.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
-      <Compile Update="Resources\Pages.Index.cn.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Pages.Index.zh.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
-    </ItemGroup>
-
 </Project>
