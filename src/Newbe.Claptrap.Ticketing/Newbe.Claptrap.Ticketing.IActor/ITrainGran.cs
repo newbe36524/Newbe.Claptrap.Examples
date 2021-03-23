@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newbe.Claptrap.Orleans;
+using Newbe.Claptrap.Dapr.Core;
 using Newbe.Claptrap.Ticketing.Models;
 using Newbe.Claptrap.Ticketing.Models.Train;
 using Newbe.Claptrap.Ticketing.Models.Train.Events;
 
 namespace Newbe.Claptrap.Ticketing.IActor
 {
-    [ClaptrapState(typeof(TrainInfo), ClaptrapCodes.TrainGrain)]
+    [ClaptrapState(typeof(TrainInfo), ClaptrapCodes.TrainActor)]
     [ClaptrapEvent(typeof(UpdateCountEvent), ClaptrapCodes.UpdateCount)]
-    public interface ITrainGran : IClaptrapGrain
+    public interface ITrainGran : IClaptrapActor
     {
         /// <summary>
         /// get left count

@@ -1,25 +1,30 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Newbe.Claptrap.Orleans;
+using Dapr.Actors.Runtime;
+using Newbe.Claptrap.Dapr;
 using Newbe.Claptrap.Ticketing.Actors.Seat.Main.Events;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Models;
 using Newbe.Claptrap.Ticketing.Models.Seat;
 using Newbe.Claptrap.Ticketing.Models.Seat.Events;
-using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Actors.Seat.Main
 {
+    [Actor(TypeName = ClaptrapCodes.SeatActor)]
     [ClaptrapStateInitialFactoryHandler(typeof(SeatInfoInitHandler))]
     [ClaptrapEventHandler(typeof(TakeSeatEventHandler), ClaptrapCodes.TakeSeatEvent)]
-    public class SeatGrain : ClaptrapBoxGrain<SeatInfo>, ISeatGrain
+    public class SeatActor : ClaptrapBoxActor<SeatInfo>, ISeatActor
     {
+        private readonly ActorHost _actorHost;
         private int _seatId;
 
-        public SeatGrain(IClaptrapGrainCommonService claptrapGrainCommonService)
-            : base(claptrapGrainCommonService)
+        public SeatActor(ActorHost actorHost,
+            IClaptrapActorCommonService claptrapActorCommonService)
+            : base(actorHost, claptrapActorCommonService)
         {
+            _actorHost = actorHost;
         }
+
 
         public int SeatId
         {
@@ -27,12 +32,11 @@ namespace Newbe.Claptrap.Ticketing.Actors.Seat.Main
             {
                 if (_seatId == 0)
                 {
-                    _seatId = int.Parse(this.GetPrimaryKeyString());
+                    _seatId = int.Parse(_actorHost.Id.GetId());
                 }
 
                 return _seatId;
             }
-            set => _seatId = value;
         }
 
         public Task TakeSeatAsync(int fromStationId, int toStationId, string requestId)

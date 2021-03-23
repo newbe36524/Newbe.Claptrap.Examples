@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapr.Actors.Client;
 using Microsoft.AspNetCore.Mvc;
+using Newbe.Claptrap.Dapr;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository;
 using Newbe.Claptrap.Ticketing.Web.Models;
-using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
 {
@@ -15,16 +16,16 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
     [Route("api/[controller]")]
     public class SeatController : Controller
     {
-        private readonly IGrainFactory _grainFactory;
+        private readonly IActorProxyFactory _actorProxyFactory;
         private readonly IStationRepository _stationRepository;
         private readonly ITrainInfoRepository _trainInfoRepository;
 
         public SeatController(
-            IGrainFactory grainFactory,
+            IActorProxyFactory actorProxyFactory,
             IStationRepository stationRepository,
             ITrainInfoRepository trainInfoRepository)
         {
-            _grainFactory = grainFactory;
+            _actorProxyFactory = actorProxyFactory;
             _stationRepository = stationRepository;
             _trainInfoRepository = trainInfoRepository;
         }
@@ -45,11 +46,11 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
                 seatId = $"{input.TrainId}{seatNumber:0000}";
             }
 
-            var cartGrain = _grainFactory.GetGrain<ISeatGrain>(seatId);
+            var cartActor = _actorProxyFactory.GetClaptrap<ISeatActor>(seatId);
             var requestId = Guid.NewGuid().ToString("N");
             try
             {
-                await cartGrain.TakeSeatAsync(input.FromStationId, input.ToStationId, requestId);
+                await cartActor.TakeSeatAsync(input.FromStationId, input.ToStationId, requestId);
             }
             catch (Exception e)
             {
@@ -77,7 +78,7 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
             var tasks = trains.Select(async x =>
             {
                 var trainId = x;
-                var trainGran = _grainFactory.GetGrain<ITrainGran>(x.ToString());
+                var trainGran = _actorProxyFactory.GetClaptrap<ITrainGran>(x.ToString());
                 var leftCount = await trainGran
                     .GetLeftSeatCountAsync(input.FromStationId, input.ToStationId);
                 var trainInfo = await _trainInfoRepository.GetTrainInfoAsync(trainId);

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapr.Actors.Client;
 using Microsoft.AspNetCore.Mvc;
+using Newbe.Claptrap.Dapr;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Repository;
 using Newbe.Claptrap.Ticketing.Web.Models;
-using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Web.Controllers
 {
@@ -15,16 +16,16 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
     [Route("api/[controller]")]
     public class TrainController : Controller
     {
-        private readonly IGrainFactory _grainFactory;
+        private readonly IActorProxyFactory _actorProxyFactory;
         private readonly ITrainInfoRepository _trainInfoRepository;
         private readonly IStationRepository _stationRepository;
 
         public TrainController(
-            IGrainFactory grainFactory,
+            IActorProxyFactory actorProxyFactory,
             ITrainInfoRepository trainInfoRepository,
             IStationRepository stationRepository)
         {
-            _grainFactory = grainFactory;
+            _actorProxyFactory = actorProxyFactory;
             _trainInfoRepository = trainInfoRepository;
             _stationRepository = stationRepository;
         }
@@ -37,7 +38,7 @@ namespace Newbe.Claptrap.Ticketing.Web.Controllers
         [HttpGet("GetLeftSeat")]
         public async Task<IEnumerable<LeftCountItem>> GetLeftSeatAsync(int trainId)
         {
-            var trainGran = _grainFactory.GetGrain<ITrainGran>(trainId.ToString());
+            var trainGran = _actorProxyFactory.GetClaptrap<ITrainGran>(trainId.ToString());
             var allCount = await trainGran.GetAllCountAsync();
             var stationIds = allCount.Keys
                 .Concat(allCount.SelectMany(x => x.Value.Keys))

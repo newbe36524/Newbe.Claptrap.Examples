@@ -1,23 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newbe.Claptrap.Orleans;
+using Dapr.Actors.Runtime;
+using Newbe.Claptrap.Dapr;
 using Newbe.Claptrap.Ticketing.Actors.Train.Main.Events;
 using Newbe.Claptrap.Ticketing.IActor;
 using Newbe.Claptrap.Ticketing.Models;
 using Newbe.Claptrap.Ticketing.Models.Train;
 using Newbe.Claptrap.Ticketing.Models.Train.Events;
-using Orleans;
 
 namespace Newbe.Claptrap.Ticketing.Actors.Train.Main
 {
+    [Actor(TypeName = ClaptrapCodes.TrainActor)]
     [ClaptrapStateInitialFactoryHandler(typeof(TrainGranInitHandler))]
     [ClaptrapEventHandler(typeof(UpdateCountEventHandler), ClaptrapCodes.UpdateCount)]
-    public class TrainGran : ClaptrapBoxGrain<TrainInfo>, ITrainGran
+    public class TrainGran : ClaptrapBoxActor<TrainInfo>, ITrainGran
     {
-        public TrainGran(IClaptrapGrainCommonService claptrapGrainCommonService)
-            : base(claptrapGrainCommonService)
+        private readonly ActorHost _actorHost;
+
+        public TrainGran(ActorHost actorHost,
+            IClaptrapActorCommonService claptrapActorCommonService)
+            : base(actorHost, claptrapActorCommonService)
         {
+            _actorHost = actorHost;
         }
 
         private int _trainId;
@@ -28,12 +33,11 @@ namespace Newbe.Claptrap.Ticketing.Actors.Train.Main
             {
                 if (_trainId == 0)
                 {
-                    _trainId = int.Parse(this.GetPrimaryKeyString());
+                    _trainId = int.Parse(_actorHost.Id.GetId());
                 }
 
                 return _trainId;
             }
-            set => _trainId = value;
         }
 
 

@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
-using Newbe.Claptrap.Orleans;
+using Newbe.Claptrap.Dapr.Core;
 using Newbe.Claptrap.Ticketing.Models;
 using Newbe.Claptrap.Ticketing.Models.Seat;
 using Newbe.Claptrap.Ticketing.Models.Seat.Events;
 
 namespace Newbe.Claptrap.Ticketing.IActor
 {
-    [ClaptrapState(typeof(SeatInfo), ClaptrapCodes.SeatGrain)]
+    [ClaptrapState(typeof(SeatInfo), ClaptrapCodes.SeatActor)]
     [ClaptrapEvent(typeof(TakeSeatEvent), ClaptrapCodes.TakeSeatEvent)]
-    public interface ISeatGrain : IClaptrapGrain
+    public interface ISeatActor : IClaptrapActor
     {
         /// <summary>
         /// Take a seat
